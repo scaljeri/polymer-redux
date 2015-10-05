@@ -1,0 +1,35 @@
+<link rel="import" href="../../bower/polymer/polymer.html">
+<link rel="import" href="app-store.html">
+
+<dom-module id="app-reducer">
+    <script>
+        const actions = [
+                (state, action, data) => {
+                    return Object.assign({}, state, {stock: data});
+                }
+              ],
+              types = {CHANGE_STOCKNAME: 'CHANGE_STOCK'};
+
+        (function () {
+            class AppReducer {
+                beforeRegister() {
+                    this.is = 'app-reducer';
+                }
+
+                get actions() {
+                    return types;
+                }
+
+                transform(state, action, data, index = 0) {
+                    if (actions.length > index) {
+                        state = this.transform(actions[index](state, action, data), action, data, ++index);
+                    }
+
+                    return state;
+                }
+            }
+
+            Polymer(AppReducer);
+        })();
+    </script>
+</dom-module>

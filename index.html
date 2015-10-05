@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+    <title>Polymer classes in ES6</title>
+    <link rel="import" href="bower/polymer/polymer.html">
+
+    <script src="./node_modules/gulp-babel/node_modules/babel-core/browser-polyfill.js"></script>
+
+    <script>
+    </script>
+
+    <link rel="import" href="dist/html/stock-app.html">
+    <style>
+        main {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title {
+            font-size: 35px;
+        }
+
+        .search-wrapper {
+            align-items: center;
+            display: flex;
+        }
+
+        .stock-input {
+            width: 200px;
+        }
+
+        .search {
+            border: 2px solid lightgray;
+            height: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1 class="title">Stock Ticker</h1>
+    </header>
+
+    <stock-app></stock-app>
+</body>
+
+</html>

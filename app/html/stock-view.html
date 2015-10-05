@@ -1,0 +1,53 @@
+<link rel="import" href="../../bower/polymer/polymer.html">
+<link rel="import" href="stock-ticker.html">
+
+<dom-module id="stock-view">
+    <style>
+        :host {
+            display: block;
+        }
+    </style>
+    <template>
+        <stock-ticker></stock-ticker>
+
+        <content></content>
+        <div>Stock ticker d3 graph</div>
+    </template>
+    <script>
+        (function () {
+            'use strict';
+
+            class StockView {
+
+                // Element setup goes in beforeRegister instead of createdCallback.
+                beforeRegister() {
+                    this.is = 'stock-view';
+
+                    // Define the properties object in beforeRegister.
+                    this.properties = {
+                        symbols: {
+                            type: Array,
+                            value: function () {
+                                return [];
+                            },
+                            observer: '_updateQuotes'
+                        }
+                    };
+                }
+
+                // Define other lifecycle methods as you need.
+                ready() {}
+                attached() {}
+                detached() {}
+                attributeChanged() {}
+
+                _updateQuotes() {
+                    // Same as the vanilla component.
+                }
+            }
+
+            // Register the element using Polymer's constructor.
+            Polymer(StockView);
+        })();
+    </script>
+</dom-module>
