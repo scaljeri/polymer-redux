@@ -15,13 +15,9 @@ gulp.task('js', function () {
    .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('default', ['js'], function () {
-    gulp.watch(['app/**/*.{js,html}'], ['js']);
-});
+gulp.task('default', ['js']);
 
-gulp.task('test', ['js'], function () {
-    b.transform('polymerize');
-    b.add('./app/js/stock-app.js')
-    b.bundle().pipe(process.stdout);
+gulp.task('watch', ['js'], function () {
+  gulp.watch(['app/**/*.{js,html}'], ['js']);
 });
 

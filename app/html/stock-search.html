@@ -1,6 +1,8 @@
-<link rel="import" href="../../bower/polymer/polymer.html">
-<link rel="import" href="../../bower/paper-input/paper-input.html">
-<link rel="import" href="../../bower/paper-button/paper-button.html">
+<link rel="import" href="/bower/polymer/polymer.html">
+<link rel="import" href="/bower/paper-input/paper-input.html">
+<link rel="import" href="/bower/paper-button/paper-button.html">
+<link rel="import" href="/bower/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="/bower/paper-radio-group/paper-radio-group.html">
 
 <link rel="import" href="app-store.html">
 
@@ -9,8 +11,13 @@
         <app-store id="store"></app-store>
 
         <div class="search-wrapper">
-            <paper-input value$="{{stock}}" id="stock-name" label="Stock name" alwaysFloatLabel class="stock-input"></paper-input>
+            <paper-input value$="{{stockname}}" id="stock-name" label="Stock name" alwaysFloatLabel class="stock-input"></paper-input>
             <paper-button on-click="handleStockChange" class="search">Search</paper-button>
+
+            <paper-radio-group selected="lower" on-click="handleCase">
+                <paper-radio-button name="upper" value="upper">Uppercase</paper-radio-button>
+                <paper-radio-button name="lower" value="lower">Lowercase</paper-radio-button>
+            </paper-radio-group>
         </div>
     </template>
     <script>
@@ -21,9 +28,8 @@
                 beforeRegister() {
                     this.is = 'stock-search';
 
-                    // Define the properties object in beforeRegister.
                     this.properties = {
-                        stock: {
+                        stockname: {
                             type: String,
                             observer: '_updateName',
                             notify: true
@@ -38,11 +44,18 @@
                 handleStockChange() {
                     let store = this.$.store;
 
-                    store.dispatch(store.actions.CHANGE_STOCKNAME, this.$['stock-name'].value);
+                    store.dispatch(store.actions.STOCK_NAME_CHANGE, this.$['stock-name'].value);
+                }
+
+                handleCase(event) {
+                    let type = event.currentTarget.selected,
+                        store = this.$.store;
+
+                    this.handleStockChange();
+                    store.dispatch(store.actions[`STOCK_NAME_${type === 'upper' ? 'UPPER' : 'LOWER'}`]);
                 }
             }
 
-            // Register the element using Polymer's constructor.
             Polymer(StockSearch);
         })();
     </script>

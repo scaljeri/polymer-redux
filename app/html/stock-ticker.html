@@ -1,35 +1,29 @@
 <link rel="import" href="../../bower/polymer/polymer.html">
+<link rel="import" href="app-store.html">
 
 <dom-module id="stock-ticker">
+    <template>
+        <app-store id="store"></app-store>
+    </template>
+
     <script>
         (function () {
             'use strict';
 
             class StockTicker {
-                constructor() {
-                    debugger;
-                    //this.start();
-                }
-
-                // Element setup goes in beforeRegister instead of createdCallback.
                 beforeRegister() {
                     this.is = 'stock-ticker';
 
-                    // Define the properties object in beforeRegister.
-
                     this.properties = {
-                        symbol: {
+                        stockname: {
                             type: String,
-                            notify: true,
-                            value: function () {
-                                return 'goog';
-                            },
-                            observer: '_updateQuotes'
+                            observer: '_updateName',
+                            notify: true
+
                         }
                     };
                 }
 
-                // Define other lifecycle methods as you need.
                 ready() {
                     this.start();
                     /*
@@ -47,7 +41,7 @@
                 }
 
                 async updateUsingWebServiceYahoo() {
-                    let requestURL = `https://finance.yahoo.com/webservice/v1/symbols/goog/quote?format=json`;
+                    let requestURL = `https://finance.yahoo.com/webservice/v1/symbols/${this.stockname}/quote?format=json`;
 
                     let response = await fetch(requestURL);
 
@@ -57,7 +51,8 @@
                 start() {
                     this.timeoutId = setTimeout(() => {
                         console.log("ok");
-                        if (this.stock) {
+                    debugger;
+                        if (this.stockname) {
                             this.updateUsingWebServiceYahoo().then((response) => {
                                 console.log(response);
 

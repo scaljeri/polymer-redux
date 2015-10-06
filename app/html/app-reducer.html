@@ -1,14 +1,12 @@
 <link rel="import" href="../../bower/polymer/polymer.html">
-<link rel="import" href="app-store.html">
+<link rel="import" href="reducers/stock-name-reducer.html">
 
 <dom-module id="app-reducer">
+    <template>
+        <stock-name-reducer></stock-name-reducer>
+    </template>
     <script>
-        const actions = [
-                (state, action, data) => {
-                    return Object.assign({}, state, {stock: data});
-                }
-              ],
-              types = {CHANGE_STOCKNAME: 'CHANGE_STOCK'};
+        let actions = [], reducers = [];
 
         (function () {
             class AppReducer {
@@ -16,14 +14,22 @@
                     this.is = 'app-reducer';
                 }
 
-                get actions() {
-                    return types;
+                ready() {
+                    // Note that `this.children` is a NodeList (host object) not an Array
+                    for( let i = 0; i < this.children.length; i++) {
+                        actions.push(...this.children[i].actions);
+                        reducers.push(this.children[i]);
+                    };
                 }
 
-                transform(state, action, data, index = 0) {
-                    if (actions.length > index) {
-                        state = this.transform(actions[index](state, action, data), action, data, ++index);
-                    }
+                get actions() {
+                    return actions;
+                }
+
+                transform(state, action, data) {
+                    reducers.forEach( (reducer) => {
+                        state = reducer.transform(state, action, data);
+                    });
 
                     return state;
                 }

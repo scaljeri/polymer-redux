@@ -5,7 +5,7 @@
         (function () {
             'use strict';
 
-            let state = { stock: 'goog'}, appReducer, appStore;
+            let appActions, appReducer, appStore;
 
             class AppStore {
                 beforeRegister() {
@@ -17,7 +17,7 @@
                             type: Object,
                             notify: true,
                             readOnly: true,
-                            value: state
+                            value: {stockName: 'goog', stockDetails: {}}
                         },
                         reducer: {
                             type: Object,
@@ -27,23 +27,33 @@
                         }
                     };
                 }
+
                 _updateReducers(reducer) {
                     appReducer = reducer;
                     // If anything changes, we only trigger at the top level
                     appStore = this;
+
+                    appActions = appReducer.actions.reduce( (actions, action, i) => {
+                            actions[action] = action;
+                            return actions;
+                        }, {});
                 }
 
                 ready() {}
 
                 dispatch(action, data) {
-                    appStore._setState(appReducer.transform(state, action, data));
+                    if (action) {
+                        appStore._setState(appReducer.transform(appStore.state, action, data));
+                    } else {
+                        throw 'Cannot dispatch an undefined action';
+                    }
                 }
 
                 get actions() {
-                    return appReducer.actions;
+                    return appActions;
                 }
 
-                get state() { return state;}
+                get state() { return appStore.state;}
             }
 
             Polymer(AppStore);

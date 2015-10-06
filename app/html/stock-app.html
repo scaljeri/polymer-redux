@@ -18,13 +18,10 @@
     <template>
         <!-- store.dispatch(store.actions.CHANGE_STOCK, name); -->
         <app-store id="store" state="{{state}}" reducer="[[reducer]]"></app-store>
-        <h1>{{state.stock}}</h1>
         <app-reducer id="reducer"></app-reducer>
 
-        <button on-click="handleClick">Change</button>
-
-        <stock-view>
-            <stock-search stock="[[state.stock]]"></stock-search>
+        <stock-view stockname="[[state.stockName]]" stockdetails="[[state.stockDetails]]">
+            <stock-search stockname="[[state.stockName]]"></stock-search>
         </stock-view>
     </template>
     <script>
@@ -47,10 +44,6 @@
                             notify: true
                         }
                     };
-                }
-
-                handleClick() {
-                    this.$.store.dispatch(this.$.store.actions.CHANGE_STOCKNAME, 'ING');
                 }
 
                 ready() {
