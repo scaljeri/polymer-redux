@@ -1,5 +1,4 @@
 .idea
 .tmp
-bower
 node_modules
 app

@@ -1,0 +1,15 @@
+{
+  "name": "es6-module-loader",
+  "homepage": "https://github.com/ModuleLoader/es6-module-loader",
+  "version": "0.17.8",
+  "_release": "0.17.8",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.17.8",
+    "commit": "ce7e86b86862cafd8a43693e7055428c75b0c5ef"
+  },
+  "_source": "git://github.com/ModuleLoader/es6-module-loader.git",
+  "_target": "~0.17.8",
+  "_originalSource": "es6-module-loader",
+  "_direct": true
+}
