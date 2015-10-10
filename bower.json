@@ -7,7 +7,9 @@
     "iron-icon": "PolymerElements/iron-icon#~1.0.4",
     "iron-iconset-svg": "PolymerElements/iron-iconset-svg#~1.0.4",
     "paper-radio-button": "PolymerElements/paper-radio-button#~1.0.8",
-    "paper-radio-group": "PolymerElements/paper-radio-group#~1.0.4"
+    "paper-radio-group": "PolymerElements/paper-radio-group#~1.0.4",
+    "paper-slider": "PolymerElements/paper-slider#~1.0.7",
+    "firebase-element": "GoogleWebComponents/firebase-element#~1.0.6"
   },
   "devDependencies": {
     "es6-module-loader": "~0.17.8"

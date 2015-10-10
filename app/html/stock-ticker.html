@@ -15,55 +15,60 @@
                     this.is = 'stock-ticker';
 
                     this.properties = {
-                        stockname: {
+                        tickersymbol: {
                             type: String,
-                            observer: '_updateName',
                             notify: true
 
+                        },
+                        timeout: {
+                          type: Number,
+                          notify: true
                         }
                     };
                 }
 
-                ready() {
-                    this.start();
-                    /*
-                    this.updateUsingWebServiceYahoo().then((r) => {
-                        console.log(JSON.parse(r));
-                    });
-                    */
-                }
-                attached() {}
-                detached() {}
-                attributeChanged() {}
+                async getQuote() {
+                    let url = 'http://query.yahooapis.com/v1/public/yql';
+                    let data = encodeURIComponent(`select * from yahoo.finance.quotes where symbol in ('${this.stockname}')`);
+                    let requestUrl = `${url}?q=${data}&format=json&diagnostics=true&env=http://datatables.org/alltables.env`;
 
-                _updateQuotes() {
-                    // Same as the vanilla component.
-                }
-
-                async updateUsingWebServiceYahoo() {
-                    let requestURL = `https://finance.yahoo.com/webservice/v1/symbols/${this.stockname}/quote?format=json`;
-
-                    let response = await fetch(requestURL);
+                    let response = await fetch(requestUrl);
 
                     return response.text();
                 }
 
-                start() {
+                _runner() {
+                  if (this.isRunning) {
                     this.timeoutId = setTimeout(() => {
-                        console.log("ok");
-                    debugger;
+                        this.stockname = 'goog';
                         if (this.stockname) {
-                            this.updateUsingWebServiceYahoo().then((response) => {
-                                console.log(response);
-
+                            this.getQuote().then((response) => {
+                                let json = JSON.parse(response);
+                                if (this.isRunning) {
+                                   this.$.store.dispatch(this.$.store.actions.QUOTE_CHANGE, {quote: json.query.results.quote})
+                                }
                             });
                         }
 
-                        this.start();
-                    }, 1000);
+                        if (this.isRunning) {
+                          this._runner();
+                        }
+                    }, this.timeout);
+                }
+              }
+
+                start() {
+                  if (!this.isRunning) {
+                      this.isRunning = true;
+                      this._runner();
+                  }
+                }
+
+                stop() {
+                  clearTimeout(this.timeoutId);
+                  this.isRunning = false;
                 }
             }
-
 
             // Register the element using Polymer's constructor.
             Polymer(StockTicker);

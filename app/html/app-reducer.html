@@ -1,9 +1,12 @@
 <link rel="import" href="../../bower/polymer/polymer.html">
-<link rel="import" href="reducers/stock-name-reducer.html">
+<link rel="import" href="reducers/quote-reducer.html">
+<link rel="import" href="reducers/ticker-reducer.html">
+<link rel="import" href="reducers/quote-reducer.html">
 
 <dom-module id="app-reducer">
     <template>
-        <stock-name-reducer></stock-name-reducer>
+        <quote-reducer></quote-reducer>
+        <ticker-reducer></ticker-reducer>
     </template>
     <script>
         let actions = [], reducers = [];

@@ -1,0 +1,33 @@
+<link rel="import" href="/bower/polymer/polymer.html">
+
+<dom-module id="ticker-reducer">
+    <script>
+        (function () {
+            'use strict';
+
+            class TickerReducer {
+                beforeRegister() {
+                    this.is = 'ticker-reducer';
+                }
+
+                get actions() {
+                    return ['TICKER_SYMBOL_CHANGE'];
+                }
+
+                transform(state, action, data) {
+                    switch (action) {
+                        case 'TICKER_SYMBOL_CHANGE':
+                            // TODO: Check if not the whole object should be replaced
+                            //state.tickerSymbol = data.tickerSymbol;
+                            return Object.assign({}, state, {tickerSymbol: data.tickerSymbol});
+                            //return Object.assign({}, state, {quote: data});
+                        default:
+                            return state;
+                    }
+                }
+            }
+
+            Polymer(TickerReducer);
+        })();
+    </script>
+</dom-module>
