@@ -1,1 +1,0 @@
-{"version":3,"sources":["js/actions.js"],"names":[],"mappings":";;;;;;;AAAO,SAAS,WAAW,CAAC,IAAI,EAAE;AAC9B,WAAO;AACH,YAAI,EAAE,cAAc;AACpB,YAAI,EAAE,IAAI;KACb,CAAC;CACL","file":"js/actions.js","sourcesContent":["export function changeStock(name) {\n    return {\n        type: 'CHANGE_STOCK',\n        name: name\n    };\n}\n"],"sourceRoot":"/source/"}

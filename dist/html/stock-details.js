@@ -28,16 +28,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     }
                 };
             }
-
-            // Define other lifecycle methods as you need.
-        }, {
-            key: 'ready',
-            value: function ready() {}
-        }, {
-            key: '_updateQuote',
-            value: function _updateQuote() {
-                debugger;
-            }
         }]);
 
         return StockDetails;
