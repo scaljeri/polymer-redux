@@ -1,5 +1,5 @@
 .idea
 .tmp
 bower
-dist
 node_modules
+app

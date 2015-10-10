@@ -1,8 +1,8 @@
-<link rel="import" href="/bower/polymer/polymer.html">
+<html><head><link rel="import" href="/bower/polymer/polymer.html">
 <link rel="import" href="/bower/paper-input/paper-input.html">
 <link rel="import" href="/bower/paper-button/paper-button.html">
 <link rel="import" href="/bower/iron-icon/iron-icon.html">
-<link rel='import' href="/bower/iron-iconset-svg/iron-iconset-svg.html">
+<link rel="import" href="/bower/iron-iconset-svg/iron-iconset-svg.html">
 <link rel="import" href="/bower/firebase-element/firebase-document.html">
 
 <link rel="import" href="stock-view.html">
@@ -11,7 +11,7 @@
 <link rel="import" href="stock-search.html">
 <link rel="import" href="stock-details.html">
 
-<dom-module id="stock-app">
+</head><body><dom-module id="stock-app">
     <style>
         :host {
             display: block;
@@ -87,10 +87,7 @@
         }
     </style>
     <template>
-      <firebase-document id='fstats'
-        location="https://polymer-redux.firebaseio.com/stats"
-        log="true"
-        data="{{stats}}"></firebase-document>
+      <firebase-document id="fstats" location="https://polymer-redux.firebaseio.com/stats" log="true" data="{{stats}}"></firebase-document>
 
 
         <!-- store.dispatch(store.actions.CHANGE_STOCK, name); -->
@@ -104,7 +101,7 @@
               <span id="light">Redux</span>
             </p>
           </div>
-          <div id="page-hits">Pagehits: <span>{{count}}</div>
+          <div id="page-hits">Pagehits: <span>{{count}}</span></div>
         </header>
 
         <stock-view tickersymbol="[[state.tickerSymbol]]" quote="[[state.quote]]">
@@ -112,56 +109,9 @@
               <stock-search tickersymbol="[[state.tickerSymbol]]"></stock-search>
               <stock-details quote="[[state.quote]]"></stock-details>
             <article>
-        </stock-view>
+        
         <footer>
         </footer>
-    </template>
-    <script>
-        (function () {
-            'use strict';
-
-            class StockApp {
-                // Element setup goes in beforeRegister instead of createdCallback.
-                beforeRegister() {
-                    this.is = 'stock-app';
-
-                    // Define the properties object in beforeRegister.
-                    this.properties = {
-                        state: {
-                            type: Object,
-                            notify: true
-                        },
-                        reducer: {
-                            type: Object,
-                            notify: true
-                        },
-                        stats: {
-                          type: Object,
-                          observer: '_handleFirebase',
-                          notify: true
-                        }
-                    };
-                }
-                _handleFirebase(stats) {
-                    if (this.count === undefined && this.stats) {
-                      this.count = this.stats.count + 1;
-
-                      setTimeout( () => {
-                        this.stats = {count: this.count};
-                      }, 500)
-                    }
-                }
-
-                ready() {
-                    this.state = this.$.store.state;
-                    this.reducer = this.$.reducer;
-
-                    //this.$.store.dispatch(this.$.store.actions.TICKER_SYMBOL_CHANGE, {tickerSymbol: 'goog'});
-                }
-            }
-
-            // Register the element using Polymer's constructor.
-            Polymer(StockApp);
-        })();
-    </script>
-</dom-module>
+    </article></article></stock-view></template>
+    </dom-module>
+<script src="stock-app.js"></script></body></html>

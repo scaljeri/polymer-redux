@@ -1,0 +1,1 @@
+{"version":3,"sources":["js/reducers.js"],"names":[],"mappings":";;;;;;;AAAO,SAAS,KAAK,CAAC,KAAK,EAAO,MAAM,EAAE;QAApB,KAAK,gBAAL,KAAK,GAAG,EAAE;;AAC5B,WAAO,KAAK,CAAC;CAChB","file":"js/reducers.js","sourcesContent":["export function stock(state = {}, action) {\n    return state;\n}\n"],"sourceRoot":"/source/"}

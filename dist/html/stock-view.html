@@ -1,0 +1,58 @@
+<html><head><script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+<link rel="import" href="/bower/polymer/polymer.html">
+<link rel="import" href="/bower/paper-slider/paper-slider.html">
+<link rel="import" href="/bower/paper-ripple/paper-ripple.html">
+<link rel="import" href="stock-ticker.html">
+
+</head><body><dom-module id="stock-view">
+    <style>
+      * {
+        --paper-input-container-input-color: #fff;
+      }
+      :host {
+        display: flex;
+        justify-content: center;
+      }
+      .graph {
+        position: relative;
+        width: 600px;
+        height: 100%;
+        background-image: url(/dist/img/background-blur.jpg);
+      }
+      .overlay {
+        background-color: #fff;
+        opacity: .3;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        height: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      #container {
+        border: 2px solid #fff;
+        border-radius: 3px;
+      }
+
+      span {
+          padding-left: 30px;
+      }
+
+    </style>
+    <template>
+        <stock-ticker id="ticker" tickersymbol="[[tickersymbol]]" timeout="2000"></stock-ticker>
+          <content></content>
+        <span></span>
+        <article class="graph">
+          <div class="overlay"></div>
+          <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        </article>
+        <!--<paper-slider min="10" max="200" value="110"></paper-slider>-->
+    </template>
+    </dom-module>
+<script src="stock-view.js"></script></body></html>
