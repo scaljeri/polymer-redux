@@ -29,7 +29,7 @@
 
                 async getQuote() {
                     let url = 'http://query.yahooapis.com/v1/public/yql';
-                    let data = encodeURIComponent(`select * from yahoo.finance.quotes where symbol in ('${this.stockname}')`);
+                    let data = encodeURIComponent(`select * from yahoo.finance.quotes where symbol in ('${this.tickersymbol}')`);
                     let requestUrl = `${url}?q=${data}&format=json&diagnostics=true&env=http://datatables.org/alltables.env`;
 
                     let response = await fetch(requestUrl);
@@ -40,8 +40,7 @@
                 _runner() {
                   if (this.isRunning) {
                     this.timeoutId = setTimeout(() => {
-                        this.stockname = 'goog';
-                        if (this.stockname) {
+                        if (this.tickersymbol) {
                             this.getQuote().then((response) => {
                                 let json = JSON.parse(response);
                                 if (this.isRunning) {
