@@ -28,6 +28,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     }
                 };
             }
+        }, {
+            key: 'status',
+            value: function status(change) {
+                if (change) {
+                    return parseFloat(change) >= 0 ? 'up' : 'down';
+                }
+                return '';
+            }
         }]);
 
         return StockDetails;
