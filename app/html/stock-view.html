@@ -18,7 +18,7 @@
       .graph {
         position: relative;
         width: 600px;
-        height: 100%;
+        height: 403px;
         background-image: url(../img/background-blur.jpg);
       }
       .overlay {
@@ -33,25 +33,79 @@
         height: 100%;
       }
 
-      #container {
+      #highcharts {
         border: 2px solid #fff;
         border-radius: 3px;
       }
 
-      span {
-          padding-left: 30px;
+      :host > article {
+          margin-left: 30px;
+      }
+
+
+
+      paper-slider {
+        width: 100%;
+      }
+
+      paper-input-container {
+        --paper-input-container-label: {
+          color: lightgray;
+        }
+        --paper-input-container-label-focus: {
+          color: #000;
+        }
+        --paper-input-container-underline-focus: {
+          background: green;
+        }
+
+        width: 200px;
+      }
+
+      .view-settings-wrapper {
+        display: flex;
+        margin: 0 20px;
+      }
+
+      .slider-wrapper {
+        flex: 1;
+      }
+
+      .slider-wrapper label {
+        font-family: 'Roboto', 'Noto', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 24px;
+        color: lightgray;
+
+        display: block;
+        margin-top: -4px;
+        padding: 10px 0 6px 15px;
+        height: 24px;
       }
 
     </style>
     <template>
-        <stock-ticker id="ticker" tickersymbol="[[tickersymbol]]" timeout="2000"></stock-ticker>
-          <content></content>
-        <span></span>
+        <stock-ticker id="ticker" tickersymbol="[[tickersymbol]]" interval="[[interval]]"></stock-ticker>
+        <content></content>
         <article class=graph>
-          <div class="overlay"></div>
-          <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+              <div class="overlay"></div>
+              <div id="highcharts"></div>
+
+              <div class="view-settings-wrapper" on-input="_onChangeInput">
+                  <paper-input-container type="number">
+                      <label>Interval (ms, > 1000)</label>
+                      <input type="number" id="stock-name" is="iron-input" value="{{interval}}">
+                  </paper-input-container>
+
+                  <div class="slider-wrapper">
+                      <label>Max data points: <span>{{maxPoints}}</label>
+                      <paper-slider on-change="_onChangeSlider" min="10" max="200" value="{{maxPoints}}" pin="true"></paper-slider>
+                  <div>
+              </div>
         </article>
-        <!--<paper-slider min="10" max="200" value="110"></paper-slider>-->
     </template>
     <script>
         (function () {
@@ -77,11 +131,28 @@
                         }
                     };
                 }
+                _onChangeInput(event) {
+                  this.interval = parseInt(event.target.value);
+
+                  if (!this.tickersymbol || this.tickersymbol === 'random') {
+                       this.randomGen();
+                  }
+                }
+
+                _onChangeSlider(event) {
+                  this.maxPoints = parseInt(event.target.value);
+
+                  // recalculate graph
+                }
+
 
                 // Define other lifecycle methods as you need.
                 ready() {
                   let self = this;
                   this.dataCount = 0;
+                  this.interval = 1000;
+                  this.dataPoints = {}
+                  this.maxPoints = 20;
 
                   Highcharts.setOptions({
                         global: {
@@ -89,10 +160,11 @@
                         }
                     });
 
-                    this.chart = $(this.$.container).highcharts({
+                    this.chart = $(this.$.highcharts).highcharts({
                         chart: {
                             type: 'spline',
-                            animation: Highcharts.svg, // don't animate in old IE
+                            animation: Highcharts.svg,
+                            height: 300,
                             marginRight: 10,
                             backgroundColor: 'transparent',
                             events: {
@@ -145,9 +217,14 @@
                       let x = (new Date()).getTime(), // current time
                           y = parseFloat(this.quote.LastTradePriceOnly);
 
+                      if (!this.data[this.tickersymbol]) {
+                          data[this.tickersymbol] = [];
+                      }
+                      this.data[this.tickersymbol].push([x,y], true, this.dataCount > this.maxPoints);
+
                       this.stockName = this.quote.Name;
                       if (this.stockName) {
-                         $(this.$.container).highcharts().setTitle({text: `Live data from ${this.stockName}`});
+                         $(this.$.highcharts).highcharts().setTitle({text: `Live data from ${this.stockName}`});
                          this.series.addPoint([x,y], true, ++this.dataCount > 20);
                       }
                   }
@@ -158,19 +235,27 @@
                     this.dataCount = 0;
 
                     if (this.tickersymbol === 'random') {
-                      $(this.$.container).highcharts().setTitle({text: 'Random data'});
+                      $(this.$.highcharts).highcharts().setTitle({text: 'Random data'});
                       this.$.ticker.stop();
-                      this.timer = setInterval(() => {
-                          let x = (new Date()).getTime(), // current time
-                              y = Math.random();
-
-                          this.series.addPoint([x, y], true, this.dataCount++ > 20);
-                      }, 1000);
+                      this.randomGen();
                     }
                     else if (this.tickersymbol) {
                       clearInterval(this.timer);
                       this.$.ticker.start();
                     }
+                }
+
+                randomGen() {
+                  if (this.timer) {
+                    clearInterval(this.timer);
+                  }
+
+                  this.timer = setInterval(() => {
+                      let x = (new Date()).getTime(), // current time
+                          y = Math.random();
+
+                      this.series.addPoint([x, y], true, this.dataCount++ > 20);
+                  }, this.interval);
                 }
             }
 

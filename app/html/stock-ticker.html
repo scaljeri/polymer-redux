@@ -20,9 +20,9 @@
                             notify: true
 
                         },
-                        timeout: {
+                        interval: {
                           type: Number,
-                          notify: true
+                          notify: true,
                         }
                     };
                 }
@@ -39,6 +39,7 @@
 
                 _runner() {
                   if (this.isRunning) {
+                    console.log(this.interval);
                     this.timeoutId = setTimeout(() => {
                         if (this.tickersymbol) {
                             this.getQuote().then((response) => {
@@ -52,7 +53,7 @@
                         if (this.isRunning) {
                           this._runner();
                         }
-                    }, this.timeout);
+                    }, Math.max(1000, this.interval));
                 }
               }
 
