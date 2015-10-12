@@ -15,23 +15,28 @@
         text-align: right;
         margin: 3px;
       }
+      .hightlight {
+        font-weight: 700;
+        color: red;
+        text-shadow: 0px 0px 20px #FFF;
+      }
       .value {
         padding-left: 10px;
       }
     </style>
     <template>
       <ol>
-        <li><span class="label">Price:</span><span class="value">{{quote.LastTradePriceOnly}}</span></li>
+        <li><span class="label">Price:</span><span class="value hightlight">{{quote.LastTradePriceOnly}}</span></li>
         <li><span class="label">Ask:</span><span class="value">{{quote.Ask}}</span></li>
         <li><span class="label">Bid:</span><span class="value">{{quote.Bid}}</span></li>
-        <li><span class="label">Change:</span><span class="value">{{quote.Change}}</span></li>
+        <li><span class="label">Change:</span><span class="value hightlight">{{quote.Change}}</span></li>
         <li><span class="label">Currency:</span><span class="value">{{quote.Currency}}</span></li>
         <li><span class="label">DaysHigh:</span><span class="value">{{quote.DaysHigh}}</span></li>
         <li><span class="label">DaysLow:</span><span class="value">{{quote.DaysLow}}</span></li>
         <li><span class="label">LastTradeDate:</span><span class="value">{{quote.LastTradeDate}}</span></li>
         <li><span class="label">LastTradeTime:</span><span class="value">{{quote.LastTradeTime}}</span></li>
         <li><span class="label">PercentChange:</span><span class="value">{{quote.PercentChange}}</span></li>
-        <li><span class="label">Volume:</span><span class="value">{{quote.Volume}}</span></li>
+        <li><span class="label">Volume:</span><span class="value hightlight">{{quote.Volume}}</span></li>
         <li><span class="label">YearHigh:</span><span class="value">{{quote.YearHigh}}</span></li>
         <li><span class="label">YearLow:</span><span class="value">{{quote.YearLow}}</span></li>
       </ol>
