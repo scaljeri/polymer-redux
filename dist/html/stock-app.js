@@ -56,8 +56,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             value: function ready() {
                 this.state = this.$.store.state;
                 this.reducer = this.$.reducer;
+                var tickerSymbol = (location.search.match(/^\?q=(.*)$/) || [])[1];
 
-                //this.$.store.dispatch(this.$.store.actions.TICKER_SYMBOL_CHANGE, {tickerSymbol: 'goog'});
+                this.$.store.dispatch(this.$.store.actions.TICKER_SYMBOL_CHANGE, { tickerSymbol: tickerSymbol });
             }
         }]);
 
