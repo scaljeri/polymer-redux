@@ -39,7 +39,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     while (1) switch (context$3$0.prev = context$3$0.next) {
                         case 0:
                             url = 'http://query.yahooapis.com/v1/public/yql';
-                            data = encodeURIComponent('select * from yahoo.finance.quotes where symbol in (\'' + this.stockname + '\')');
+                            data = encodeURIComponent('select * from yahoo.finance.quotes where symbol in (\'' + this.tickersymbol + '\')');
                             requestUrl = url + '?q=' + data + '&format=json&diagnostics=true&env=http://datatables.org/alltables.env';
                             context$3$0.next = 5;
                             return regeneratorRuntime.awrap(fetch(requestUrl));
@@ -61,8 +61,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
                 if (this.isRunning) {
                     this.timeoutId = setTimeout(function () {
-                        _this.stockname = 'goog';
-                        if (_this.stockname) {
+                        if (_this.tickersymbol) {
                             _this.getQuote().then(function (response) {
                                 var json = JSON.parse(response);
                                 if (_this.isRunning) {

@@ -10,6 +10,5 @@
   },
   "_source": "git://github.com/ModuleLoader/es6-module-loader.git",
   "_target": "~0.17.8",
-  "_originalSource": "es6-module-loader",
-  "_direct": true
+  "_originalSource": "es6-module-loader"
 }

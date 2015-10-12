@@ -30,6 +30,5 @@
   },
   "_source": "git://github.com/GoogleWebComponents/firebase-element.git",
   "_target": "~1.0.6",
-  "_originalSource": "GoogleWebComponents/firebase-element",
-  "_direct": true
+  "_originalSource": "GoogleWebComponents/firebase-element"
 }
