@@ -35,6 +35,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     }
                 };
             }
+        }, {
+            key: '_onChangeInput',
+            value: function _onChangeInput(event) {
+                this.interval = parseInt(event.target.value);
+
+                if (!this.tickersymbol || this.tickersymbol === 'random') {
+                    this.randomGen();
+                }
+            }
+        }, {
+            key: '_onChangeSlider',
+            value: function _onChangeSlider(event) {
+                this.maxPoints = parseInt(event.target.value);
+
+                // recalculate graph
+            }
 
             // Define other lifecycle methods as you need.
         }, {
@@ -42,6 +58,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             value: function ready() {
                 var self = this;
                 this.dataCount = 0;
+                this.interval = 1000;
+                this.dataPoints = {};
+                this.maxPoints = 20;
 
                 Highcharts.setOptions({
                     global: {
@@ -49,10 +68,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     }
                 });
 
-                this.chart = $(this.$.container).highcharts({
+                this.chart = $(this.$.highcharts).highcharts({
                     chart: {
                         type: 'spline',
-                        animation: Highcharts.svg, // don't animate in old IE
+                        animation: Highcharts.svg,
+                        height: 300,
                         marginRight: 10,
                         backgroundColor: 'transparent',
                         events: {
@@ -105,9 +125,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                         // current time
                     y = parseFloat(this.quote.LastTradePriceOnly);
 
+                    if (!this.data[this.tickersymbol]) {
+                        data[this.tickersymbol] = [];
+                    }
+                    this.data[this.tickersymbol].push([x, y], true, this.dataCount > this.maxPoints);
+
                     this.stockName = this.quote.Name;
                     if (this.stockName) {
-                        $(this.$.container).highcharts().setTitle({ text: 'Live data from ' + this.stockName });
+                        $(this.$.highcharts).highcharts().setTitle({ text: 'Live data from ' + this.stockName });
                         this.series.addPoint([x, y], true, ++this.dataCount > 20);
                     }
                 }
@@ -115,25 +140,34 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }, {
             key: '_updateTickerSymbol',
             value: function _updateTickerSymbol() {
-                var _this = this;
-
                 this.series.setData([]);
                 this.dataCount = 0;
 
                 if (this.tickersymbol === 'random') {
-                    $(this.$.container).highcharts().setTitle({ text: 'Random data' });
+                    $(this.$.highcharts).highcharts().setTitle({ text: 'Random data' });
                     this.$.ticker.stop();
-                    this.timer = setInterval(function () {
-                        var x = new Date().getTime(),
-                            // current time
-                        y = Math.random();
-
-                        _this.series.addPoint([x, y], true, _this.dataCount++ > 20);
-                    }, 1000);
+                    this.randomGen();
                 } else if (this.tickersymbol) {
                     clearInterval(this.timer);
                     this.$.ticker.start();
                 }
+            }
+        }, {
+            key: 'randomGen',
+            value: function randomGen() {
+                var _this = this;
+
+                if (this.timer) {
+                    clearInterval(this.timer);
+                }
+
+                this.timer = setInterval(function () {
+                    var x = new Date().getTime(),
+                        // current time
+                    y = Math.random();
+
+                    _this.series.addPoint([x, y], true, _this.dataCount++ > 20);
+                }, this.interval);
             }
         }]);
 

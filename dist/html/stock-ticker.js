@@ -25,7 +25,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                         notify: true
 
                     },
-                    timeout: {
+                    interval: {
                         type: Number,
                         notify: true
                     }
@@ -60,6 +60,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 var _this = this;
 
                 if (this.isRunning) {
+                    console.log(this.interval);
                     this.timeoutId = setTimeout(function () {
                         if (_this.tickersymbol) {
                             _this.getQuote().then(function (response) {
@@ -73,7 +74,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                         if (_this.isRunning) {
                             _this._runner();
                         }
-                    }, this.timeout);
+                    }, Math.max(1000, this.interval));
                 }
             }
         }, {
