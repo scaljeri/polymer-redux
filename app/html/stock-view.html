@@ -4,7 +4,9 @@
 
 <link rel="import" href="../../bower/polymer/polymer.html">
 <link rel="import" href="../../bower/paper-slider/paper-slider.html">
-<link rel="import" href="stock-ticker.html">
+<link rel="import" href="app-ticker.html">
+<link rel="import" href="stock-graph.html">
+<link rel="import" href="stock-graph-filter.html">
 
 <dom-module id="stock-view">
     <style>
@@ -44,67 +46,16 @@
 
 
 
-      paper-slider {
-        width: 100%;
-      }
 
-      paper-input-container {
-        --paper-input-container-label: {
-          color: lightgray;
-        }
-        --paper-input-container-label-focus: {
-          color: #000;
-        }
-        --paper-input-container-underline-focus: {
-          background: green;
-        }
-
-        width: 200px;
-      }
-
-      .view-settings-wrapper {
-        display: flex;
-        margin: 0 20px;
-      }
-
-      .slider-wrapper {
-        flex: 1;
-      }
-
-      .slider-wrapper label {
-        font-family: 'Roboto', 'Noto', sans-serif;
-        -webkit-font-smoothing: antialiased;
-        text-rendering: optimizeLegibility;
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 24px;
-        color: lightgray;
-
-        display: block;
-        margin-top: -4px;
-        padding: 10px 0 6px 15px;
-        height: 24px;
-      }
 
     </style>
     <template>
-        <stock-ticker id="ticker" tickersymbol="[[tickersymbol]]" interval="[[interval]]"></stock-ticker>
+
         <content></content>
         <article class=graph>
               <div class="overlay"></div>
-              <div id="highcharts"></div>
-
-              <div class="view-settings-wrapper" on-input="_onChangeInput">
-                  <paper-input-container type="number">
-                      <label>Interval (ms, > 1000)</label>
-                      <input type="number" id="stock-name" is="iron-input" value="{{interval}}">
-                  </paper-input-container>
-
-                  <div class="slider-wrapper">
-                      <label>Max data points: <span>{{maxPoints}}</label>
-                      <paper-slider on-change="_onChangeSlider" min="10" max="200" value="{{maxPoints}}" pin="true"></paper-slider>
-                  <div>
-              </div>
+              <stock-graph quote="[[quote]]" points="[[filter.points]]"></stock-graph>
+              <stock-graph-filter filter="[[filter]]"></stock-graph-filter>
         </article>
     </template>
     <script>
@@ -119,10 +70,10 @@
 
                     // Define the properties object in beforeRegister.
                     this.properties = {
-                        tickersymbol: {
-                            type: String,
+                        filter: {
+                            type: Object,
                             notify: true,
-                            observer: '_updateTickerSymbol'
+                            observer: '_updateFilter'
                         },
                         quote: {
                             type: Object,
@@ -131,135 +82,10 @@
                         }
                     };
                 }
-                _onChangeInput(event) {
-                  this.interval = parseInt(event.target.value);
 
-                  if (!this.tickersymbol || this.tickersymbol === 'random') {
-                       this.randomGen();
-                  }
-                }
-
-                _onChangeSlider(event) {
-                  this.maxPoints = parseInt(event.target.value);
-
-                  // recalculate graph
-                }
-
-
-                // Define other lifecycle methods as you need.
-                ready() {
-                  let self = this;
-                  this.dataCount = 0;
-                  this.interval = 1000;
-                  this.dataPoints = {}
-                  this.maxPoints = 20;
-
-                  Highcharts.setOptions({
-                        global: {
-                            useUTC: false
-                        }
-                    });
-
-                    this.chart = $(this.$.highcharts).highcharts({
-                        chart: {
-                            type: 'spline',
-                            animation: Highcharts.svg,
-                            height: 300,
-                            marginRight: 10,
-                            backgroundColor: 'transparent',
-                            events: {
-                                load: function () {
-
-                                    // set up the updating of the chart each second
-                                    self.series = this.series[0];
-                                }
-                            }
-                        },
-                        title: {
-                            text: 'Live ' + this.tickersymbol + ' data'
-                        },
-                        xAxis: {
-                            type: 'datetime',
-                            tickPixelInterval: 150
-                        },
-                        yAxis: {
-                            title: {
-                                text: 'Value'
-                            },
-                            plotLines: [{
-                                value: 0,
-                                width: 1,
-                                color: '#808080'
-                            }]
-                        },
-                        tooltip: {
-                            formatter: function () {
-                                return '<b>' + this.series.name + '</b><br/>' +
-                                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                                        Highcharts.numberFormat(this.y, 2);
-                            }
-                        },
-                        legend: {
-                            enabled: false
-                        },
-                        exporting: {
-                            enabled: false
-                        },
-                        series: [{
-                            name: 'Quote data',
-                            data: []
-                        }]
-                    });
-                }
-
-                _updateQuote(a, b) {
-                  if (this.quote) {
-                      let x = (new Date()).getTime(), // current time
-                          y = parseFloat(this.quote.LastTradePriceOnly);
-
-                      if (!this.data[this.tickersymbol]) {
-                          data[this.tickersymbol] = [];
-                      }
-                      this.data[this.tickersymbol].push([x,y], true, this.dataCount > this.maxPoints);
-
-                      this.stockName = this.quote.Name;
-                      if (this.stockName) {
-                         $(this.$.highcharts).highcharts().setTitle({text: `Live data from ${this.stockName}`});
-                         this.series.addPoint([x,y], true, ++this.dataCount > 20);
-                      }
-                  }
-                }
-
-                _updateTickerSymbol() {
-                    this.series.setData([]);
-                    this.dataCount = 0;
-
-                    if (this.tickersymbol === 'random') {
-                      $(this.$.highcharts).highcharts().setTitle({text: 'Random data'});
-                      this.$.ticker.stop();
-                      this.randomGen();
-                    }
-                    else if (this.tickersymbol) {
-                      clearInterval(this.timer);
-                      this.$.ticker.start();
-                    }
-                }
-
-                randomGen() {
-                  if (this.timer) {
-                    clearInterval(this.timer);
-                  }
-
-                  this.timer = setInterval(() => {
-                      let x = (new Date()).getTime(), // current time
-                          y = Math.random();
-
-                      this.series.addPoint([x, y], true, this.dataCount++ > 20);
-                  }, this.interval);
-                }
+                ready() {}
             }
 
-            // Register the element using Polymer's constructor.
             Polymer(StockView);
         })();
     </script>

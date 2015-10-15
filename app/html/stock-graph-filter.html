@@ -1,0 +1,95 @@
+<link rel="import" href="../../bower/polymer/polymer.html">
+
+<dom-module id="stock-graph-filter">
+    <style>
+    paper-slider {
+      width: 100%;
+    }
+
+    paper-input-container {
+      --paper-input-container-label: {
+        color: lightgray;
+      }
+      --paper-input-container-label-focus: {
+        color: #000;
+      }
+      --paper-input-container-underline-focus: {
+        background: green;
+      }
+
+      width: 200px;
+    }
+
+    .view-settings-wrapper {
+      display: flex;
+      margin: 0 20px;
+    }
+
+    .slider-wrapper {
+      flex: 1;
+    }
+
+    .slider-wrapper label {
+      font-family: 'Roboto', 'Noto', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 24px;
+      color: lightgray;
+
+      display: block;
+      margin-top: -4px;
+      padding: 10px 0 6px 15px;
+      height: 24px;
+    }
+    </style>
+    <template>
+      <div class="view-settings-wrapper" on-input="_onChangeInput">
+          <paper-input-container type="number">
+              <label>Interval (ms,  1000)</label>
+              <input type="number" id="stock-name" is="iron-input" value="{{filter.interval}}">
+          </paper-input-container>
+
+          <div class="slider-wrapper">
+              <label>Max data points: <span>{{maxPoints}}</label>
+              <paper-slider on-change="_onChangeSlider" min="10" max="200" value="{{filter.points}}" pin="true"></paper-slider>
+          <div>
+      </div>
+    </template>
+    <script>
+        (function () {
+            class StockGraphFilter {
+
+                // Element setup goes in beforeRegister instead of createdCallback.
+                beforeRegister() {
+                    this.is = 'stock-graph-filter';
+
+                    this.properties = {
+                        filter: {
+                            type: Object,
+                            notify: true,
+                        }
+                    };
+                }
+
+                _onChangeInput(event) {
+                  this.interval = parseInt(event.target.value);
+
+                  if (!this.tickersymbol || this.tickersymbol === 'random') {
+                       this.randomGen();
+                  }
+                }
+
+                _onChangeSlider(event) {
+                  this.maxPoints = parseInt(event.target.value);
+
+                  // recalculate graph
+                }
+
+            }
+
+            Polymer(StockGraphFilter);
+        })();
+    </script>
+</dom-module>

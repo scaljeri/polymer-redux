@@ -1,0 +1,61 @@
+<link rel="import" href="../../../bower/polymer/polymer.html">
+<link rel="import" href="../app-store.html">
+
+<dom-module id="random-ticker">
+    <template>
+        <app-store id="store"></app-store>
+    </template>
+
+    <script>
+        (function () {
+            'use strict';
+
+            class RandomTicker {
+                beforeRegister() {
+                    this.is = 'random-ticker';
+
+                    this.properties = {
+                        interval: {
+                            notify: true,
+                            observer: 'updateInterval',
+                            type: Number
+                        },
+                        symbol: {
+                          notify: true,
+                          observer: 'updateSymbol',
+                          type: String
+                        }
+                    };
+                }
+
+                generator() {
+                  let x = new Date(),
+                      y = Math.floor(Math.random() * 100) + 1;
+
+                   return [x, y];
+                }
+
+                updateInterval() {
+                    this.stop().start();
+                }
+
+                start() {
+                  if (!this.timer) {
+                      this.timer = setInterval(() => {
+                          this.$.store.dispatch(this.$.store.action.QUOTE_CHANGE, {quote: this.generator()});
+                      }, this.interval);
+                  }
+                }
+
+                stop() {
+                  clearTimeout(this.timer);
+                  this.timer = null;
+
+                  return this;
+                }
+            }
+
+            Polymer(RandomTicker);
+        })();
+    </script>
+</dom-module>

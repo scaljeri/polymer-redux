@@ -17,9 +17,8 @@
                 transform(state, action, data) {
                     switch (action) {
                         case 'TICKER_SYMBOL_CHANGE':
-                            // TODO: Check if not the whole object should be replaced
-                            //state.tickerSymbol = data.tickerSymbol;
-                            return Object.assign({}, state, {tickerSymbol: data.tickerSymbol});
+                            let filter = Object.assign({}, state.filter, {symbol: data.symbol});
+                            return Object.assign({}, state, {filter});
                             //return Object.assign({}, state, {quote: data});
                         default:
                             return state;

@@ -1,0 +1,50 @@
+<link rel="import" href="../../bower/polymer/polymer.html">
+
+<link rel="import" href="./tickers/random-ticker.html">
+<link rel="import" href="./tickers/stock-ticker.html">
+
+<dom-module id="app-ticker">
+    <template>
+      <stock-ticker  interval="[[filter.interval]]" symbol="[[filter.symbol]]"></stock-ticker>
+      <random-ticker interval="[[filter.interval]]" symbol="[[filter.symbol]]"></random-ticker>
+    </template>
+    <script>
+        (function () {
+            let series;
+
+            class AppTicker {
+                beforeRegister() {
+                    this.is = 'app-ticker';
+
+                    this.properties = {
+                        interval: {
+                            type: Object,
+                            notify: true,
+                            observer: 'updateInterval'
+                        },
+                        quote: {
+                            type: Object,
+                            notify: true,
+                            observer: 'updateQuote'
+                        }
+                    };
+                }
+
+                updateFilter(interval) {
+
+                }
+
+                updateSymbol(interval) {
+
+                }
+
+                ready() {
+                  // If no symbol is defined start the random ticker
+                }
+            }
+
+            // Register the element using Polymer's constructor.
+            Polymer(AppTicker);
+        })();
+    </script>
+</dom-module>

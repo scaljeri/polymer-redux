@@ -5,6 +5,8 @@
 <link rel='import' href="../../bower/iron-iconset-svg/iron-iconset-svg.html">
 <link rel="import" href="../../bower/firebase-element/firebase-document.html">
 
+<link rel="import" href="app-header.html">
+<link rel="import" href="symbol-url.html">
 <link rel="import" href="stock-view.html">
 <link rel="import" href="app-store.html">
 <link rel="import" href="app-reducer.html">
@@ -15,64 +17,6 @@
     <style>
         :host {
             display: block;
-        }
-
-        header {
-          background: hsl(210, 30%, 0%) radial-gradient( hsl(210, 30%, 20%), hsl(210, 30%, 0%));
-          font-family: Geneva, sans-serif;
-          margin-bottom: 30px;
-          position: relative;
-        }
-
-        #page-hits {
-          font-family: Geneva, sans-serif;
-          color: #fff;
-          position: absolute;
-          bottom: 10px;
-          left: 10px;
-        }
-
-        /* box ------------------------------------------------------ */
-        #box {
-          padding: 10px;
-          text-align: center;
-          min-width: 500px;
-          font-size: 3em;
-          font-weight: bold;
-          -webkit-backface-visibility: hidden; /* fixes flashing */
-        }
-
-        /* flashlight ------------------------------------------------------ */
-
-        #flashlight {
-          color: hsla(0,0%,0%,0);
-          perspective: 80px;
-          outline: none;
-        }
-
-        /* flash ------------------------------------------------------ */
-
-        #flash {
-          display: inline-block;
-          text-shadow: #bbb 0 0 1px, #fff 0 -1px 2px, #fff 0 -3px 2px, rgba(0,0,0,0.8) 0 30px 25px;
-          transition: margin-left 0.3s cubic-bezier(0, 1, 0, 1);
-        }
-
-        #box:hover #flash {
-          margin-left: 20px;
-          transition: margin-left 1s cubic-bezier(0, 0.75, 0, 1);
-        }
-
-        /* light ------------------------------------------------------ */
-        #light {
-          display: inline-block;
-          text-shadow: #111 0 0 1px, rgba(255,255,255,0.1) 0 1px 3px;
-        }
-
-        #box:hover #light {
-          text-shadow: #fff 0 0 4px, #fcffbb 0 0 20px;
-          transform: rotateY(-60deg);
-          transition: transform 0.3s cubic-bezier(0, 0.75, 0, 1), text-shadow 0.1s ease-out;
         }
 
         #details {
@@ -87,29 +31,22 @@
         }
     </style>
     <template>
-      <firebase-document id='fstats'
-        location="https://polymer-redux.firebaseio.com/stats"
-        log="true"
-        data="{{stats}}"></firebase-document>
+        <firebase-document id='fstats'
+            location="https://polymer-redux.firebaseio.com/stats"
+            log="true"
+            data="{{stats}}"></firebase-document>
 
-
-        <!-- store.dispatch(store.actions.CHANGE_STOCK, name); -->
         <app-store id="store" state="{{state}}" reducer="[[reducer]]"></app-store>
         <app-reducer id="reducer"></app-reducer>
 
-        <header>
-          <div id="box">
-            <p id="flashlight">
-              <span id="flash">Polymer</span>
-              <span id="light">Redux</span>
-            </p>
-          </div>
-          <div id="page-hits">Pagehits: <span>{{count}}</div>
-        </header>
+        <app-ticker symbol="[[state.filter.symbol]]" interval="[[state.filter.interval]]"></app-ticker>
+        <symbol-url symbol="[[state.filter.symbol]]"></symbol-url>
 
-        <stock-view tickersymbol="[[state.tickerSymbol]]" quote="[[state.quote]]">
+        <app-header visitors="[[stats]]"></app-header>
+
+        <stock-view filter="[[state.filter]]" quote="[[state.quote]]">
             <article id="details">
-              <stock-search tickersymbol="[[state.tickerSymbol]]"></stock-search>
+              <stock-search symbol="[[state.filter.symbol]]"></stock-search>
               <stock-details quote="[[state.quote]]"></stock-details>
             <article>
         </stock-view>
@@ -137,12 +74,13 @@
                         },
                         stats: {
                           type: Object,
-                          observer: '_handleFirebase',
+                          observer: 'handleFirebase',
                           notify: true
                         }
                     };
                 }
-                _handleFirebase(stats) {
+
+                handleFirebase(stats) {
                     if (this.count === undefined && this.stats) {
                       this.count = this.stats.count + 1;
 
@@ -155,9 +93,6 @@
                 ready() {
                     this.state = this.$.store.state;
                     this.reducer = this.$.reducer;
-                    let tickerSymbol = (location.search.match(/^\?q=(.*)$/) || [])[1]
-
-                    this.$.store.dispatch(this.$.store.actions.TICKER_SYMBOL_CHANGE, {tickerSymbol: tickerSymbol});
                 }
             }
 

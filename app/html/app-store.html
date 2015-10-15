@@ -11,42 +11,43 @@
                 beforeRegister() {
                     this.is = 'app-store';
 
-                    // Define the properties object in beforeRegister.
                     this.properties = {
                         state: {
                             type: Object,
                             notify: true,
                             readOnly: true,
-                            value: {quote: null, tickerSymbol: 'random'}
+                            value: {quote: null, filter: {symbol: 'random', interval: 1000}}
                         },
                         reducer: {
                             type: Object,
                             notify: true,
                             readOnly: false,
-                            observer: '_updateReducers'
+                            observer: 'updateReducers'
                         }
                     };
                 }
 
-                _updateReducers(reducer) {
+                updateReducers(reducer) {
                     appReducer = reducer;
                     // If anything changes, we only trigger at the top level
                     appStore = this;
 
-                    appActions = appReducer.actions.reduce( (actions, action, i) => {
+                    appActions = appReducer.actions.reduce((actions, action) => {
                             actions[action] = action;
                             return actions;
                         }, {});
                 }
 
-                ready() {}
-
                 dispatch(action, data) {
                     if (action) {
+                        console.log(`dispatching action: ${action}`)
+                        console.dir(data);
                         appStore._setState(appReducer.transform(appStore.state, action, data));
                     } else {
                         throw 'Cannot dispatch an undefined action';
                     }
+
+                    console.dir(appStore.state);
                 }
 
                 get actions() {

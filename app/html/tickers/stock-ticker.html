@@ -1,5 +1,5 @@
-<link rel="import" href="../../bower/polymer/polymer.html">
-<link rel="import" href="app-store.html">
+<link rel="import" href="../../../bower/polymer/polymer.html">
+<link rel="import" href="../app-store.html">
 
 <dom-module id="stock-ticker">
     <template>
@@ -15,14 +15,16 @@
                     this.is = 'stock-ticker';
 
                     this.properties = {
-                        tickersymbol: {
-                            type: String,
-                            notify: true
+                        interval: {
+                            type: Number,
+                            notify: true,
+                            observer: '_updateInterval'
 
                         },
-                        interval: {
-                          type: Number,
+                        symbol: {
+                          type: String,
                           notify: true,
+                          observer: '_updateSymbol'
                         }
                     };
                 }
