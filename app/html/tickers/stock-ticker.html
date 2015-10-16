@@ -17,21 +17,19 @@
                     this.properties = {
                         interval: {
                             type: Number,
-                            notify: true,
-                            observer: '_updateInterval'
+                            notify: true
 
                         },
                         symbol: {
                           type: String,
-                          notify: true,
-                          observer: '_updateSymbol'
+                          notify: true
                         }
                     };
                 }
 
                 async getQuote() {
                     let url = 'http://query.yahooapis.com/v1/public/yql';
-                    let data = encodeURIComponent(`select * from yahoo.finance.quotes where symbol in ('${this.tickersymbol}')`);
+                    let data = encodeURIComponent(`select * from yahoo.finance.quotes where symbol in ('${this.symbol}')`);
                     let requestUrl = `${url}?q=${data}&format=json&diagnostics=true&env=http://datatables.org/alltables.env`;
 
                     let response = await fetch(requestUrl);
@@ -39,36 +37,20 @@
                     return response.text();
                 }
 
-                _runner() {
-                  if (this.isRunning) {
-                    console.log(this.interval);
-                    this.timeoutId = setTimeout(() => {
-                        if (this.tickersymbol) {
+                start() {
+                    if (!this.timer) {
+                        this.timer = setTimeout(() => {
                             this.getQuote().then((response) => {
                                 let json = JSON.parse(response);
-                                if (this.isRunning) {
-                                   this.$.store.dispatch(this.$.store.actions.QUOTE_CHANGE, {quote: json.query.results.quote})
-                                }
+                                this.$.store.dispatch(this.$.store.actions.QUOTE_CHANGE, {quote: json.query.results.quote})
                             });
-                        }
-
-                        if (this.isRunning) {
-                          this._runner();
-                        }
-                    }, Math.max(1000, this.interval));
-                }
-              }
-
-                start() {
-                  if (!this.isRunning) {
-                      this.isRunning = true;
-                      this._runner();
-                  }
+                        }, Math.max(1000, this.interval));
+                    }
                 }
 
                 stop() {
-                  clearTimeout(this.timeoutId);
-                  this.isRunning = false;
+                  clearTimeout(this.timer);
+                  this.timer = null;
                 }
             }
 

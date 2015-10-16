@@ -26,7 +26,7 @@
                 attached() {
                     let symbol = (location.search.match(/^\?q=(.*)$/) || [])[1];
 
-                    if (symbol) {
+                    if (symbol && symbol !== this.symbol) {
                         this.$.store.dispatch(this.$.store.actions.TICKER_SYMBOL_CHANGE, {symbol: symbol});
                     }
                     this.isReady = true;
@@ -34,7 +34,7 @@
 
                 updateSymbol() {
                     if (this.isReady) { // this function is called before `attached`
-                        history.replaceState(null, this.symbol, `?q=${this.symbol}`);
+                        history.replaceState(null, this.symbol, this.symbol === 'random' ? '?' : `?q=${this.symbol}`);
                     }
                 }
             }

@@ -5,8 +5,8 @@
 
 <dom-module id="app-ticker">
     <template>
-      <stock-ticker  interval="[[filter.interval]]" symbol="[[filter.symbol]]"></stock-ticker>
-      <random-ticker interval="[[filter.interval]]" symbol="[[filter.symbol]]"></random-ticker>
+      <stock-ticker  id="yahoo" interval="[[interval]]" symbol="[[symbol]]"></stock-ticker>
+      <random-ticker id="random" interval="[[interval]]"></random-ticker>
     </template>
     <script>
         (function () {
@@ -19,31 +19,28 @@
                     this.properties = {
                         interval: {
                             type: Object,
-                            notify: true,
-                            observer: 'updateInterval'
+                            notify: true
                         },
-                        quote: {
-                            type: Object,
+                        symbol: {
+                            type: String,
                             notify: true,
-                            observer: 'updateQuote'
+                            observer: 'updateSymbol'
                         }
                     };
-                }
-
-                updateFilter(interval) {
-
-                }
-
-                updateSymbol(interval) {
 
                 }
 
                 ready() {
-                  // If no symbol is defined start the random ticker
+                    this.current = this.$.random;
+                }
+
+                updateSymbol() {
+                    this.current.stop();
+                    this.current = this.symbol === 'random' ? this.$.random : this.$.yahoo;
+                    this.current.start();
                 }
             }
 
-            // Register the element using Polymer's constructor.
             Polymer(AppTicker);
         })();
     </script>

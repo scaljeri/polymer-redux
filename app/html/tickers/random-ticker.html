@@ -19,11 +19,6 @@
                             notify: true,
                             observer: 'updateInterval',
                             type: Number
-                        },
-                        symbol: {
-                          notify: true,
-                          observer: 'updateSymbol',
-                          type: String
                         }
                     };
                 }
@@ -36,13 +31,26 @@
                 }
 
                 updateInterval() {
-                    this.stop().start();
+                    this.changeInterval = true;
                 }
 
                 start() {
                   if (!this.timer) {
                       this.timer = setInterval(() => {
-                          this.$.store.dispatch(this.$.store.action.QUOTE_CHANGE, {quote: this.generator()});
+                          let price = this.generator;
+
+                          this.$.store.dispatch(this.$.store.actions.QUOTE_CHANGE,
+                              {
+                                  quote: {
+                                      Price: price,
+                                      Change: (price - this.lastPrice > 0 ? '+' : '') + (price - this.lastPrice)
+                                  }
+                              });
+
+                          if (this.changeInterval) {
+                              this.changeInterval = false;
+                              this.restart();
+                          }
                       }, this.interval);
                   }
                 }
@@ -52,6 +60,10 @@
                   this.timer = null;
 
                   return this;
+                }
+
+                restart() {
+                    this.stop().start();
                 }
             }
 

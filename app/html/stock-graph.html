@@ -21,8 +21,8 @@
                             notify: true,
                             observer: 'updateQuote'
                         },
-                        'filter-options': {
-                          type: Object,
+                        'points': {
+                          type: Number,
                           notify: true,
                           observer: 'updateFilterOptions'
                         }
@@ -44,7 +44,6 @@
                             backgroundColor: 'transparent',
                             events: {
                                 load: function () {
-
                                     // set up the updating of the chart each second
                                     self.series = this.series[0];
                                 }
@@ -87,7 +86,8 @@
                     });
 
                 }
-                
+
+/*
                 updateTickerSymbol() {
                     this.series.setData([]);
                     this.dataCount = 0;
@@ -102,6 +102,7 @@
                       this.$.ticker.start();
                     }
                 }
+                */
 
                 updateQuote(a, b) {
                   if (this.quote) {

@@ -63,16 +63,14 @@
                     this.properties = {
                         quote: {
                             type: Object,
-                            notify: true,
-                            observer: '_updateQuote'
+                            notify: true
                         }
                     };
                 }
+
                 status(change) {
-                  if (change) {
-                    return parseFloat(change) >= 0 ? 'up' : 'down';
-                  }
-                  return '';
+                    debugger;
+                    return change === undefined ? '' : (parseFloat(change) >= 0 ? 'up' : 'down');
                 }
             }
 
