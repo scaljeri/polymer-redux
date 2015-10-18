@@ -5,28 +5,26 @@
         (function () {
             'use strict';
 
-            class TickerReducer {
+            class StateReducer {
                 beforeRegister() {
-                    this.is = 'ticker-reducer';
+                    this.is = 'state-reducer';
                 }
 
                 get actions() {
-                    return ['TICKER_SYMBOL_CHANGE'];
+                    return ['INITIALIZE_STATE'];
                 }
 
                 transform(state, action, data) {
                     switch (action) {
-                        case 'TICKER_SYMBOL_CHANGE':
-                            let filter = Object.assign({}, state.filter, {symbol: data.symbol});
-                            return Object.assign({}, state, {filter});
-                            //return Object.assign({}, state, {quote: data});
+                        case 'INITIALIZE_STATE':
+                            return Object.assign({}, data);
                         default:
                             return state;
                     }
                 }
             }
 
-            Polymer(TickerReducer);
+            Polymer(StateReducer);
         })();
     </script>
 </dom-module>

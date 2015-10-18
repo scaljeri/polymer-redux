@@ -59,16 +59,26 @@
           transform: rotateY(-60deg);
           transition: transform 0.3s cubic-bezier(0, 0.75, 0, 1), text-shadow 0.1s ease-out;
         }
+
+        header > ::content > .reload {
+            position: absolute;
+            right: 0;
+            bottom: -10px;
+        }
     </style>
     <template>
         <header>
-          <div id="box">
-            <p id="flashlight">
-              <span id="flash">Polymerz</span>
-              <span id="light">Redux</span>
-            </p>
-          </div>
-          <div id="page-hits">Pagehits: <span>[[visitors.count]]</div>
+            <div id="box">
+                <p id="flashlight">
+                    <span id="flash">Polymerz</span>
+                    <span id="light">Redux</span>
+                </p>
+            </div>
+            <content></content>
+            <div id="page-hits">
+                <span>Pagehits:</span>
+                <span>{{hits}}</span>
+            </div>
         </header>
     <template>
     <script>
@@ -80,11 +90,16 @@
                     this.is = 'app-header';
 
                     this.properties = {
-                        visitors: {
+                        hits: {
                             type: Number,
-                            notify: true
+                            notify: true,
+                            observer: 'updatedHits'
                         }
                     };
+                }
+
+                updatedHits() {
+                    debugger;
                 }
             }
 

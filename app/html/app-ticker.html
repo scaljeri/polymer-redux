@@ -1,12 +1,12 @@
 <link rel="import" href="../../bower/polymer/polymer.html">
 
-<link rel="import" href="./tickers/random-ticker.html">
+<link rel="import" href="./tickers/polymer-ticker.html">
 <link rel="import" href="./tickers/stock-ticker.html">
 
 <dom-module id="app-ticker">
     <template>
-      <stock-ticker  id="yahoo" interval="[[interval]]" symbol="[[symbol]]"></stock-ticker>
-      <random-ticker id="random" interval="[[interval]]"></random-ticker>
+      <stock-ticker  id="yahoo" interval="[[filter.interval]]" symbol="[[filter.symbol]]"></stock-ticker>
+      <polymer-ticker id="polymer" filter="[[filter]]" quote="[[quote]]"></polymer-ticker>
     </template>
     <script>
         (function () {
@@ -17,27 +17,27 @@
                     this.is = 'app-ticker';
 
                     this.properties = {
-                        interval: {
+                        filter: {
+                            type: Object,
+                            notify: true,
+                            observer: 'updateFilter'
+                        },
+                        quote: {
                             type: Object,
                             notify: true
-                        },
-                        symbol: {
-                            type: String,
-                            notify: true,
-                            observer: 'updateSymbol'
                         }
                     };
-
                 }
 
-                ready() {
-                    this.current = this.$.random;
-                }
+                updateFilter() {
+                    if (this.filter.symbol && this.filter.interval) {
+                        if (this.current) {
+                            this.current.stop();
+                        }
 
-                updateSymbol() {
-                    this.current.stop();
-                    this.current = this.symbol === 'random' ? this.$.random : this.$.yahoo;
-                    this.current.start();
+                        this.current = this.filter.symbol === 'polymer' ? this.$.polymer : this.$.yahoo;
+                        this.current.start();
+                    }
                 }
             }
 

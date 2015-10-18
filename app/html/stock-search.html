@@ -52,7 +52,7 @@
                     let store = this.$.store,
                         symbol = this.$['stock-name'].value;
 
-                    store.dispatch(store.actions.TICKER_SYMBOL_CHANGE, {symbol: symbol});
+                    store.dispatch(store.actions.FILTER_SYMBOL_CHANGE, {symbol: symbol});
                 }
             }
 

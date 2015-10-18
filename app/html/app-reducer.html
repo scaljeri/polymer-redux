@@ -1,12 +1,16 @@
 <link rel="import" href="../../bower/polymer/polymer.html">
+
+<link rel="import" href="reducers/graph-reducer.html">
+<link rel="import" href="reducers/page-reducer.html">
 <link rel="import" href="reducers/quote-reducer.html">
-<link rel="import" href="reducers/ticker-reducer.html">
-<link rel="import" href="reducers/quote-reducer.html">
+<link rel="import" href="reducers/state-reducer.html">
 
 <dom-module id="app-reducer">
     <template>
+        <graph-reducer points=[[filter.points]]></graph-reducer>
+        <page-reducer></page-reducer>
         <quote-reducer></quote-reducer>
-        <ticker-reducer></ticker-reducer>
+        <state-reducer></state-reducer>
     </template>
     <script>
         let actions = [], reducers = [];
@@ -15,6 +19,13 @@
             class AppReducer {
                 beforeRegister() {
                     this.is = 'app-reducer';
+
+                    this.properties = {
+                        filter: {
+                            type: Object,
+                            notify: true
+                        }
+                    };
                 }
 
                 ready() {

@@ -3,7 +3,7 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^1.0",
     "paper-input": "PolymerElements/paper-input#~1.0.14",
-    "paper-button": "PolymerElements/paper-button#~1.0.6",
+    "paper-button": "PolymerElements/paper-button#~1.0.8",
     "iron-icon": "PolymerElements/iron-icon#~1.0.4",
     "iron-iconset-svg": "PolymerElements/iron-iconset-svg#~1.0.4",
     "paper-radio-button": "PolymerElements/paper-radio-button#~1.0.8",

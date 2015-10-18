@@ -4,7 +4,8 @@
     <style>
     </style>
     <template>
-      <div id="highcharts"></div>
+        <quote-transform quote="[[quote]]"></quote-transform>
+        <div id="highcharts"></div>
     </template>
     <script>
         (function () {
@@ -21,15 +22,22 @@
                             notify: true,
                             observer: 'updateQuote'
                         },
-                        'points': {
-                          type: Number,
+                        data: {
+                          type: Array,
                           notify: true,
-                          observer: 'updateFilterOptions'
+                          observer: 'updateData'
+                        },
+                        points: {
+                            type: Number,
+                            notify: true
                         }
+
                     };
                 }
+
                 ready() {
-                  Highcharts.setOptions({
+                    let self = this;
+                    Highcharts.setOptions({
                         global: {
                             useUTC: false
                         }
@@ -102,24 +110,36 @@
                       this.$.ticker.start();
                     }
                 }
-                */
+*/
 
-                updateQuote(a, b) {
-                  if (this.quote) {
-                      let x = (new Date()).getTime(), // current time
-                          y = parseFloat(this.quote.LastTradePriceOnly);
 
-                      if (!this.data[this.tickersymbol]) {
-                          data[this.tickersymbol] = [];
+                updatePoints() {
+                    //debugger;
+                }
+
+                updateData() {
+                    console.log('new data');
+                    console.log(this.quote.LastTradePriceOnly);
+                    let numberOfItems = this.data.length,
+                        lastItem = this.data[numberOfItems - 1]
+
+                    $(this.$.highcharts).highcharts().setTitle({text: `Live data from ${this.quote.Name}`});
+                    this.series.addPoint(lastItem, true, this.series.data.length >= this.points);
+                    /*
+                    if (this.quote) {
+                        let x = (new Date()), // current time
+                            y = parseFloat(this.quote.LastTradePriceOnly);
+
+                              // Yahoo quotes are delay by 15 minutes
+                        x.setSeconds(x.getSeconds() - 900);
+
+                        debugger;
+                        this.$.store.dispatch(this.$.store.actions.ADD_DATA_ITEM, {item: [x.getTime(),y]});
+
+                        $(this.$.highcharts).highcharts().setTitle({text: `Live data from ${this.quote.Name}`});
+                        //this.series.addPoint([x,y], true, ++this.dataCount > 20);
                       }
-                      this.data[this.tickersymbol].push([x,y], true, this.dataCount > this.maxPoints);
-
-                      this.stockName = this.quote.Name;
-                      if (this.stockName) {
-                         $(this.$.highcharts).highcharts().setTitle({text: `Live data from ${this.stockName}`});
-                         this.series.addPoint([x,y], true, ++this.dataCount > 20);
-                      }
-                  }
+                      */
                 }
             }
 

@@ -44,46 +44,44 @@
           margin-left: 30px;
       }
 
-
-
-
-
     </style>
     <template>
 
         <content></content>
         <article class=graph>
               <div class="overlay"></div>
-              <stock-graph quote="[[quote]]" points="[[filter.points]]"></stock-graph>
+              <stock-graph quote="[[quote]]" data="[[data]]" points="[[filter.points]]"></stock-graph>
               <stock-graph-filter filter="[[filter]]"></stock-graph-filter>
         </article>
+        <div>{{pageHits}}</div>
     </template>
     <script>
         (function () {
             let series;
 
             class StockView {
-
-                // Element setup goes in beforeRegister instead of createdCallback.
                 beforeRegister() {
                     this.is = 'stock-view';
 
-                    // Define the properties object in beforeRegister.
                     this.properties = {
                         filter: {
                             type: Object,
-                            notify: true,
-                            observer: '_updateFilter'
+                            notify: true
                         },
                         quote: {
                             type: Object,
+                            notify: true
+                        },
+                        pageHits: {
+                            type: Number,
                             notify: true,
-                            observer: '_updateQuote'
+                            observer: 'handleHits'
                         }
                     };
                 }
-
-                ready() {}
+                handleHits() {
+                    debugger;
+                }
             }
 
             Polymer(StockView);

@@ -1,0 +1,33 @@
+<link rel="import" href="../../../bower/polymer/polymer.html">
+
+<dom-module id="page-reducer">
+    <script>
+        (function () {
+            'use strict';
+
+            class PageReducer {
+                beforeRegister() {
+                    this.is = 'page-reducer';
+                }
+
+                get actions() {
+                    return ['PAGE_HIT_CHANGE'];
+                }
+
+                transform(state, action, data) {
+                    switch (action) {
+                        case 'PAGE_HIT_CHANGE':
+                            let page = Object.assign({}, state.page);
+                            page.hits++;
+
+                            return Object.assign({}, state, {page});
+                        default:
+                            return state;
+                    }
+                }
+            }
+
+            Polymer(PageReducer);
+        })();
+    </script>
+</dom-module>

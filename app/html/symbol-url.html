@@ -26,15 +26,12 @@
                 attached() {
                     let symbol = (location.search.match(/^\?q=(.*)$/) || [])[1];
 
-                    if (symbol && symbol !== this.symbol) {
-                        this.$.store.dispatch(this.$.store.actions.TICKER_SYMBOL_CHANGE, {symbol: symbol});
-                    }
-                    this.isReady = true;
+                    this.$.store.dispatch(this.$.store.actions.FILTER_SYMBOL_CHANGE, {symbol: symbol || 'polymer'});
                 }
 
                 updateSymbol() {
-                    if (this.isReady) { // this function is called before `attached`
-                        history.replaceState(null, this.symbol, this.symbol === 'random' ? '?' : `?q=${this.symbol}`);
+                    if (this.symbol) { // this function is called before `attached`
+                        history.replaceState(null, this.symbol, `?q=${this.symbol}`);
                     }
                 }
             }
