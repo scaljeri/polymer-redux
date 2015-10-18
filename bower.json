@@ -10,7 +10,8 @@
     "paper-radio-group": "PolymerElements/paper-radio-group#~1.0.4",
     "paper-slider": "PolymerElements/paper-slider#~1.0.7",
     "firebase-element": "GoogleWebComponents/firebase-element#~1.0.6",
-    "paper-behaviors": "PolymerElements/paper-behaviors#~1.0.5"
+    "paper-behaviors": "PolymerElements/paper-behaviors#~1.0.5",
+    "iron-localstorage": "PolymerElements/iron-localstorage#~1.0.4"
   },
   "devDependencies": {
     "es6-module-loader": "~0.17.8"

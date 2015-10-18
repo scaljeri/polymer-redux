@@ -28,14 +28,16 @@
                 }
 
                 updateReducers(reducer) {
-                    appReducer = reducer;
-                    // If anything changes, we only trigger at the top level
-                    appStore = this;
+                    if (reducer) {
+                        appReducer = reducer;
+                        // If anything changes, we only trigger at the top level
+                        appStore = this;
 
-                    appActions = appReducer.actions.reduce((actions, action) => {
+                        appActions = appReducer.actions.reduce((actions, action) => {
                             actions[action] = action;
                             return actions;
                         }, {});
+                    }
                 }
 
                 dispatch(action, data) {

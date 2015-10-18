@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower/iron-icon/iron-icon.html">
 <link rel='import' href="../../bower/iron-iconset-svg/iron-iconset-svg.html">
 <link rel="import" href="../../bower/firebase-element/firebase-document.html">
+<link rel="import" href="../../bower/iron-localstorage/iron-localstorage.html">
 
 <link rel="import" href="app-store.html">
 <link rel="import" href="symbol-url.html">
@@ -30,15 +31,24 @@
           width: 400px;
           height: 400px;
         }
-        paper-button.reload {
+        paper-button.save {
             background: #035177;
             opacity: .9;
             color: #fff;
         }
     </style>
     <template>
+        <iron-localstorage name="stock-app"
+            value="{{ls}}"
+            on-iron-localstorage-load-empty="initializeLocalStorage"></iron-localstorage>
+
         <firebase-document id='fstats'
-            location="https://polymer-redux.firebaseio.com/"
+            location="https://polymer-redux.firebaseio.com/stats"
+            log="true"
+            data="{{fbStats}}"></firebase-document>
+
+        <firebase-document id='fstate'
+            location="{{fbLocation}}"
             log="true"
             data="{{fbState}}"></firebase-document>
 
@@ -48,8 +58,8 @@
         <app-ticker quote="[[state.quote]]" filter="[[state.filter]]"></app-ticker>
         <symbol-url symbol="[[state.filter.symbol]]"></symbol-url>
 
-        <app-header hits="[[state.page.hits]]">
-            <paper-button raised class="reload">Save app-state</paper-button>
+        <app-header hits="[[pageHits]]">
+            <paper-button on-click="saveState" raised class="save">Save app-state</paper-button>
         </app-header>
 
         <stock-view filter="[[state.filter]]" quote="[[state.quote]]" data="[[state.data]]">
@@ -64,7 +74,16 @@
     </template>
     <script>
         (function () {
-            'use strict';
+
+            function guid() {
+                function s4() {
+                    return Math.floor((1 + Math.random()) * 0x10000)
+                    .toString(16)
+                    .substring(1);
+                }
+                return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                s4() + '-' + s4() + s4() + s4();
+            }
 
             class StockApp {
                 // Element setup goes in beforeRegister instead of createdCallback.
@@ -78,6 +97,16 @@
                             notify: true,
                             observer: 'updatedFbState'
                         },
+                        fbStats: {
+                            type: Object,
+                            notify: true,
+                            observer: 'updatedFbStats'
+                        },
+                        ls: {
+                            type: Object,
+                            notify: true,
+                            observer: 'handleLs'
+                        },
                         reducer: {
                             type: Object,
                             notify: true
@@ -88,24 +117,42 @@
                         }
                     };
                 }
+                handleLs() {
+                    if (this.ls) {
+                        this.fbLocation = `https://polymer-redux.firebaseio.com/${this.ls.guid}`;
+                    }
+                }
+                initializeLocalStorage() {
+                    this.ls = {guid: guid()};
+                }
 
-                updatedFbState() {
-                    if (!this.state.page) {
-                        this.$.store.dispatch(this.$.store.actions.INITIALIZE_STATE, {
-                            page:   {hits: this.fbState.page.hits + 1} ,
-                            filter: this.fbState.filter || this.state.filter,
-                            quote:  this.fbState.quote,
-                            graph:  this.fbState.graph});
+                saveState() {
+                    this.fbState = Object.assign({}, {
+                        filter: this.state.filter,
+                        quote: this.state.quote,
+                        data: this.state.data
+                    });
+                }
 
-                        setTimeout(() => {
-                            this.fbState = Object.assign({}, this.fbState, {page: {hits: this.state.page.hits}});
-                        }, 0);
+                updatedFbStats() {
+                    if (this.pageHits !== this.fbStats.hits) {
+                        if (this.pageHits) {
+                            this.pageHits = this.fbStats.hits;
+                        } else {
+                            this.pageHits = this.fbStats.hits + 1;
 
-                    } else {
-                        if (this.fbState.page.hits > this.state.page.hits) {
-                            this.$.store.dispatch(this.$.store.actions.PAGE_HIT_CHANGE, {hits: this.fbState.page.hits});
+                            setTimeout(() => {
+                                this.fbStats = Object.assign({}, this.fbStats, {hits: this.pageHits});
+                            }, 0);
                         }
                     }
+                }
+
+                updatedFbState() {
+                    this.$.store.dispatch(this.$.store.actions.INITIALIZE_STATE, {
+                        filter: (this.fbState||{}).filter || this.state.filter,
+                        quote:  (this.fbState||{}).quote,
+                        data: (this.fbState||{}).data});
                 }
 
                 ready() {
