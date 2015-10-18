@@ -7,24 +7,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
     'use strict';
 
-    var TickerReducer = (function () {
-        function TickerReducer() {
-            _classCallCheck(this, TickerReducer);
+    var StateReducer = (function () {
+        function StateReducer() {
+            _classCallCheck(this, StateReducer);
         }
 
-        _createClass(TickerReducer, [{
+        _createClass(StateReducer, [{
             key: 'beforeRegister',
             value: function beforeRegister() {
-                this.is = 'ticker-reducer';
+                this.is = 'state-reducer';
             }
         }, {
             key: 'transform',
             value: function transform(state, action, data) {
                 switch (action) {
-                    case 'TICKER_SYMBOL_CHANGE':
-                        var filter = Object.assign({}, state.filter, { symbol: data.symbol });
-                        return Object.assign({}, state, { filter: filter });
-                    //return Object.assign({}, state, {quote: data});
+                    case 'INITIALIZE_STATE':
+                        return Object.assign({}, data);
                     default:
                         return state;
                 }
@@ -32,12 +30,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }, {
             key: 'actions',
             get: function get() {
-                return ['TICKER_SYMBOL_CHANGE'];
+                return ['INITIALIZE_STATE'];
             }
         }]);
 
-        return TickerReducer;
+        return StateReducer;
     })();
 
-    Polymer(TickerReducer);
+    Polymer(StateReducer);
 })();

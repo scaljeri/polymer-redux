@@ -18,19 +18,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 this.is = 'stock-search';
 
                 this.properties = {
-                    tickersymbol: {
+                    symbol: {
                         type: String,
                         notify: true
-
                     }
                 };
             }
         }, {
-            key: 'handleStockChange',
-            value: function handleStockChange() {
-                var store = this.$.store;
+            key: 'handleSymbolChange',
+            value: function handleSymbolChange() {
+                var store = this.$.store,
+                    symbol = this.$['stock-name'].value;
 
-                store.dispatch(store.actions.TICKER_SYMBOL_CHANGE, { tickerSymbol: this.$['stock-name'].value });
+                store.dispatch(store.actions.FILTER_SYMBOL_CHANGE, { symbol: symbol });
             }
         }]);
 

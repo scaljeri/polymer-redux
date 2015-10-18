@@ -7,24 +7,32 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
     'use strict';
 
-    var TickerReducer = (function () {
-        function TickerReducer() {
-            _classCallCheck(this, TickerReducer);
+    var FilterReducer = (function () {
+        function FilterReducer() {
+            _classCallCheck(this, FilterReducer);
         }
 
-        _createClass(TickerReducer, [{
+        _createClass(FilterReducer, [{
             key: 'beforeRegister',
             value: function beforeRegister() {
-                this.is = 'ticker-reducer';
+                this.is = 'filter-reducer';
             }
         }, {
             key: 'transform',
             value: function transform(state, action, data) {
+                var filter = undefined;
+
                 switch (action) {
-                    case 'TICKER_SYMBOL_CHANGE':
-                        var filter = Object.assign({}, state.filter, { symbol: data.symbol });
+                    case 'FILTER_SYMBOL_CHANGE':
+                        filter = Object.assign({}, state.filter, { symbol: data.symbol });
                         return Object.assign({}, state, { filter: filter });
                     //return Object.assign({}, state, {quote: data});
+                    case 'FILTER_INTERVAL_CHANGE':
+                        filter = Object.assign({}, state.filter, { interval: data.interval });
+                        return Object.assign({}, state, { filter: filter });
+                    case 'FILTER_POINTS_CHANGE':
+                        filter = Object.assign({}, state.filter, { points: data.points });
+                        return Object.assign({}, state, { filter: filter });
                     default:
                         return state;
                 }
@@ -32,12 +40,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }, {
             key: 'actions',
             get: function get() {
-                return ['TICKER_SYMBOL_CHANGE'];
+                return ['FILTER_SYMBOL_CHANGE', 'FILTER_INTERVAL_CHANGE', 'FILTER_POINTS_CHANGE'];
             }
         }]);
 
-        return TickerReducer;
+        return FilterReducer;
     })();
 
-    Polymer(TickerReducer);
+    Polymer(FilterReducer);
 })();

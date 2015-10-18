@@ -25,12 +25,11 @@
         <app-store id="store"></app-store>
 
         <div class="search-wrapper">
-          <paper-input-container>
-            <label>Ticker symbol</label>
-            <input id="stock-name" is="iron-input" value="{{tickersymbol}}">
-          </paper-input-container>
-            <!--<paper-input value$="{{tickersymbol}}" id="stock-name" label="Stock name" alwaysFloatLabel class="stock-input"></paper-input>-->
-            <paper-button on-click="handleStockChange" class="search">Search</paper-button>
+            <paper-input-container>
+                <label>Ticker symbol</label>
+                <input id="stock-name" is="iron-input" value="{{symbol}}">
+            </paper-input-container>
+            <paper-button on-click="handleSymbolChange" class="search">Search</paper-button>
         </div>
     </template>
     </dom-module>

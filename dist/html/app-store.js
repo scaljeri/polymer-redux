@@ -21,37 +21,35 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             value: function beforeRegister() {
                 this.is = 'app-store';
 
-                // Define the properties object in beforeRegister.
                 this.properties = {
                     state: {
                         type: Object,
                         notify: true,
                         readOnly: true,
-                        value: { quote: null, tickerSymbol: 'random' }
+                        value: { filter: { interval: 1000, points: 20 } }
                     },
                     reducer: {
                         type: Object,
                         notify: true,
                         readOnly: false,
-                        observer: '_updateReducers'
+                        observer: 'updateReducers'
                     }
                 };
             }
         }, {
-            key: '_updateReducers',
-            value: function _updateReducers(reducer) {
-                appReducer = reducer;
-                // If anything changes, we only trigger at the top level
-                appStore = this;
+            key: 'updateReducers',
+            value: function updateReducers(reducer) {
+                if (reducer) {
+                    appReducer = reducer;
+                    // If anything changes, we only trigger at the top level
+                    appStore = this;
 
-                appActions = appReducer.actions.reduce(function (actions, action, i) {
-                    actions[action] = action;
-                    return actions;
-                }, {});
+                    appActions = appReducer.actions.reduce(function (actions, action) {
+                        actions[action] = action;
+                        return actions;
+                    }, {});
+                }
             }
-        }, {
-            key: 'ready',
-            value: function ready() {}
         }, {
             key: 'dispatch',
             value: function dispatch(action, data) {

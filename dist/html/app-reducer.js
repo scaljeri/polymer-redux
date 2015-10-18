@@ -19,6 +19,13 @@ var actions = [],
             key: 'beforeRegister',
             value: function beforeRegister() {
                 this.is = 'app-reducer';
+
+                this.properties = {
+                    filter: {
+                        type: Object,
+                        notify: true
+                    }
+                };
             }
         }, {
             key: 'ready',

@@ -5,22 +5,24 @@ var _createClass = (function () { function defineProperties(target, props) { for
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 (function () {
-    var StockDetails = (function () {
-        function StockDetails() {
-            _classCallCheck(this, StockDetails);
+    var series = undefined;
+
+    var AppTicker = (function () {
+        function AppTicker() {
+            _classCallCheck(this, AppTicker);
         }
 
-        // Register the element using Polymer's constructor.
-
-        _createClass(StockDetails, [{
+        _createClass(AppTicker, [{
             key: 'beforeRegister',
-
-            // Element setup goes in beforeRegister instead of createdCallback.
             value: function beforeRegister() {
-                this.is = 'stock-details';
+                this.is = 'app-ticker';
 
-                // Define the properties object in beforeRegister.
                 this.properties = {
+                    filter: {
+                        type: Object,
+                        notify: true,
+                        observer: 'updateFilter'
+                    },
                     quote: {
                         type: Object,
                         notify: true
@@ -28,14 +30,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 };
             }
         }, {
-            key: 'status',
-            value: function status(change) {
-                return change === undefined ? '' : parseFloat(change) >= 0 ? 'up' : 'down';
+            key: 'updateFilter',
+            value: function updateFilter() {
+                if (this.filter.symbol && this.filter.interval) {
+                    if (this.current) {
+                        this.current.stop();
+                    }
+
+                    this.current = this.filter.symbol === 'polymer' ? this.$.polymer : this.$.yahoo;
+                    this.current.start();
+                }
             }
         }]);
 
-        return StockDetails;
+        return AppTicker;
     })();
 
-    Polymer(StockDetails);
+    Polymer(AppTicker);
 })();

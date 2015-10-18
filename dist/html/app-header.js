@@ -5,37 +5,29 @@ var _createClass = (function () { function defineProperties(target, props) { for
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 (function () {
-    var StockDetails = (function () {
-        function StockDetails() {
-            _classCallCheck(this, StockDetails);
+    'use strict';
+
+    var AppHeader = (function () {
+        function AppHeader() {
+            _classCallCheck(this, AppHeader);
         }
 
-        // Register the element using Polymer's constructor.
-
-        _createClass(StockDetails, [{
+        _createClass(AppHeader, [{
             key: 'beforeRegister',
-
-            // Element setup goes in beforeRegister instead of createdCallback.
             value: function beforeRegister() {
-                this.is = 'stock-details';
+                this.is = 'app-header';
 
-                // Define the properties object in beforeRegister.
                 this.properties = {
-                    quote: {
-                        type: Object,
+                    hits: {
+                        type: Number,
                         notify: true
                     }
                 };
             }
-        }, {
-            key: 'status',
-            value: function status(change) {
-                return change === undefined ? '' : parseFloat(change) >= 0 ? 'up' : 'down';
-            }
         }]);
 
-        return StockDetails;
+        return AppHeader;
     })();
 
-    Polymer(StockDetails);
+    Polymer(AppHeader);
 })();

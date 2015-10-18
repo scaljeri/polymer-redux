@@ -20,13 +20,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 this.is = 'stock-ticker';
 
                 this.properties = {
-                    tickersymbol: {
-                        type: String,
+                    interval: {
+                        type: Number,
                         notify: true
 
                     },
-                    interval: {
-                        type: Number,
+                    symbol: {
+                        type: String,
                         notify: true
                     }
                 };
@@ -39,7 +39,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     while (1) switch (context$3$0.prev = context$3$0.next) {
                         case 0:
                             url = 'http://query.yahooapis.com/v1/public/yql';
-                            data = encodeURIComponent('select * from yahoo.finance.quotes where symbol in (\'' + this.tickersymbol + '\')');
+                            data = encodeURIComponent('select * from yahoo.finance.quotes where symbol in (\'' + this.symbol + '\')');
                             requestUrl = url + '?q=' + data + '&format=json&diagnostics=true&env=http://datatables.org/alltables.env';
                             context$3$0.next = 5;
                             return regeneratorRuntime.awrap(fetch(requestUrl));
@@ -55,41 +55,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 }, null, this);
             }
         }, {
-            key: '_runner',
-            value: function _runner() {
-                var _this = this;
-
-                if (this.isRunning) {
-                    console.log(this.interval);
-                    this.timeoutId = setTimeout(function () {
-                        if (_this.tickersymbol) {
-                            _this.getQuote().then(function (response) {
-                                var json = JSON.parse(response);
-                                if (_this.isRunning) {
-                                    _this.$.store.dispatch(_this.$.store.actions.QUOTE_CHANGE, { quote: json.query.results.quote });
-                                }
-                            });
-                        }
-
-                        if (_this.isRunning) {
-                            _this._runner();
-                        }
-                    }, Math.max(1000, this.interval));
-                }
-            }
-        }, {
             key: 'start',
             value: function start() {
-                if (!this.isRunning) {
-                    this.isRunning = true;
-                    this._runner();
-                }
+                var _this = this;
+
+                this.timer = setTimeout(function () {
+                    _this.getQuote().then(function (response) {
+                        var json = JSON.parse(response);
+                        _this.$.store.dispatch(_this.$.store.actions.QUOTE_CHANGE, { quote: json.query.results.quote });
+                        _this.start();
+                    });
+                }, Math.max(1000, this.interval));
             }
         }, {
             key: 'stop',
             value: function stop() {
-                clearTimeout(this.timeoutId);
-                this.isRunning = false;
+                clearTimeout(this.timer);
+                this.timer = null;
             }
         }]);
 

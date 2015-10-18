@@ -5,39 +5,44 @@ var _createClass = (function () { function defineProperties(target, props) { for
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 (function () {
-    'use strict';
+    var series = undefined;
 
-    var TickerReducer = (function () {
-        function TickerReducer() {
-            _classCallCheck(this, TickerReducer);
+    var StockUrl = (function () {
+        function StockUrl() {
+            _classCallCheck(this, StockUrl);
         }
 
-        _createClass(TickerReducer, [{
+        _createClass(StockUrl, [{
             key: 'beforeRegister',
             value: function beforeRegister() {
-                this.is = 'ticker-reducer';
+                this.is = 'stock-url';
+
+                this.properties = {
+                    symbol: {
+                        type: String,
+                        notify: true,
+                        observer: 'updateSymbol'
+                    }
+                };
             }
         }, {
-            key: 'transform',
-            value: function transform(state, action, data) {
-                switch (action) {
-                    case 'TICKER_SYMBOL_CHANGE':
-                        var filter = Object.assign({}, state.filter, { symbol: data.symbol });
-                        return Object.assign({}, state, { filter: filter });
-                    //return Object.assign({}, state, {quote: data});
-                    default:
-                        return state;
+            key: 'updateSymbol',
+            value: function updateSymbol() {
+                history.replaceState(null, this.symbol, '?q=' + this.symbol);
+            }
+        }, {
+            key: 'ready',
+            value: function ready() {
+                var symbol = (location.search.match(/^\?q=(.*)$/) || [])[1];
+
+                if (symbol) {
+                    this.$.store.dispatch(this.$.store.actions.TICKER_SYMBOL_CHANGE, { symbol: symbol });
                 }
-            }
-        }, {
-            key: 'actions',
-            get: function get() {
-                return ['TICKER_SYMBOL_CHANGE'];
             }
         }]);
 
-        return TickerReducer;
+        return StockUrl;
     })();
 
-    Polymer(TickerReducer);
+    Polymer(StockUrl);
 })();
