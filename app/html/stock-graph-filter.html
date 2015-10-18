@@ -56,8 +56,8 @@
             </paper-input-container>
 
             <div class="slider-wrapper">
-                <label>Max data points: <span>{{points}}</label>
-                <paper-slider on-change="_onChangeSlider" min="10" max="100" value="{{filter.points}}" pin="true"></paper-slider>
+                <label>Max data points: <span>{{samples}}</label>
+                <paper-slider on-change="_onChangeSlider" min="10" max="100" value="{{filter.samples}}" pin="true"></paper-slider>
             <div>
         </div>
     </template>
@@ -80,9 +80,8 @@
                 }
 
                 _onChangeSlider(event) {
-                  this.$.store.dispatch(this.$.store.actions.FILTER_POINTS_CHANGE, {points: parseInt(event.target.value)});
+                  this.$.store.dispatch(this.$.store.actions.FILTER_SAMPLES_CHANGE, {samples: parseInt(event.target.value)});
                 }
-
             }
 
             Polymer(StockGraphFilter);

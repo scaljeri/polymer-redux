@@ -18,9 +18,11 @@
         justify-content: center;
       }
       .graph {
+        border: 2px solid #fff;
+        border-radius: 3px;
         position: relative;
         width: 600px;
-        height: 403px;
+        height: 400px;
         background-image: url(../img/background-blur.jpg);
       }
       .overlay {
@@ -46,14 +48,12 @@
 
     </style>
     <template>
-
         <content></content>
         <article class=graph>
               <div class="overlay"></div>
-              <stock-graph quote="[[quote]]" data="[[data]]" points="[[filter.points]]"></stock-graph>
+              <stock-graph quote="[[quote]]" data="[[data]]" samples="[[filter.samples]]"></stock-graph>
               <stock-graph-filter filter="[[filter]]"></stock-graph-filter>
         </article>
-        <div>{{pageHits}}</div>
     </template>
     <script>
         (function () {
@@ -71,16 +71,8 @@
                         quote: {
                             type: Object,
                             notify: true
-                        },
-                        pageHits: {
-                            type: Number,
-                            notify: true,
-                            observer: 'handleHits'
                         }
                     };
-                }
-                handleHits() {
-                    debugger;
                 }
             }
 

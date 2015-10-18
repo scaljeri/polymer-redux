@@ -32,6 +32,7 @@
         }
         paper-button.reload {
             background: #035177;
+            opacity: .9;
             color: #fff;
         }
     </style>
@@ -51,7 +52,7 @@
             <paper-button raised class="reload">Save app-state</paper-button>
         </app-header>
 
-        <stock-view filter="[[state.filter]]" quote="[[state.quote]]" data="[[state.data]]" pageHits="[[state.page.hits]]">
+        <stock-view filter="[[state.filter]]" quote="[[state.quote]]" data="[[state.data]]">
             <article id="details">
               <stock-search symbol="[[state.filter.symbol]]"></stock-search>
               <stock-details quote="[[state.quote]]"></stock-details>
@@ -83,7 +84,6 @@
                         },
                         state: {
                           type: Object,
-                          observer: 'changedState',
                           notify: true
                         }
                     };
@@ -92,17 +92,19 @@
                 updatedFbState() {
                     if (!this.state.page) {
                         this.$.store.dispatch(this.$.store.actions.INITIALIZE_STATE, {
-                            page:   this.fbState.page,
+                            page:   {hits: this.fbState.page.hits + 1} ,
                             filter: this.fbState.filter || this.state.filter,
                             quote:  this.fbState.quote,
                             graph:  this.fbState.graph});
 
-                        this.$.store.dispatch(this.$.store.actions.PAGE_HIT_CHANGE, {hits: this.fbState.page.hits + 1});
-
                         setTimeout(() => {
-                            this.fbState = Object.assign({}, this.fbState, {page: {hits: ++this.fbState.page.hits}});
+                            this.fbState = Object.assign({}, this.fbState, {page: {hits: this.state.page.hits}});
                         }, 0);
 
+                    } else {
+                        if (this.fbState.page.hits > this.state.page.hits) {
+                            this.$.store.dispatch(this.$.store.actions.PAGE_HIT_CHANGE, {hits: this.fbState.page.hits});
+                        }
                     }
                 }
 

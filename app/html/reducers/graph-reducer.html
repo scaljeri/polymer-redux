@@ -18,7 +18,7 @@
                 }
 
                 get actions() {
-                    return ['ADD_DATA_ITEM', 'FILTER_SYMBOL_CHANGE', 'FILTER_INTERVAL_CHANGE', 'FILTER_POINTS_CHANGE'];
+                    return ['ADD_DATA_ITEM', 'FILTER_SYMBOL_CHANGE', 'FILTER_INTERVAL_CHANGE', 'FILTER_SAMPLES_CHANGE'];
                 }
 
                 transform(state, action, data) {
@@ -30,21 +30,28 @@
                             let items = Object.assign([], state.data || []);
                             items.push(data.item);
 
-                            if (items.length === this.points) {
+                            if (items.length === state.filter.samples) {
                                 items.shift();
                             }
 
                             return Object.assign({}, state, {data: items});
                         case 'FILTER_SYMBOL_CHANGE':
                             filter = Object.assign({}, state.filter, {symbol: data.symbol});
-                            return Object.assign({}, state, {filter});
+                            return Object.assign({}, state, {filter}, {data: []});
                             //return Object.assign({}, state, {quote: data});
                         case 'FILTER_INTERVAL_CHANGE':
                             filter = Object.assign({}, state.filter, {interval: data.interval});
                             return Object.assign({}, state, {filter});
-                        case 'FILTER_POINTS_CHANGE':
-                            filter = Object.assign({}, state.filter, {points: Math.min(100, data.points)});
-                            return Object.assign({}, state, {filter});
+                        case 'FILTER_SAMPLES_CHANGE':
+                            let length = state.data.length,
+                                dataSamples = state.data;
+
+                            if (length > data.samples) {
+                                dataSamples = state.data.slice(length - data.samples);
+                            }
+
+                            filter = Object.assign({}, state.filter, {samples: Math.min(100, data.samples)});
+                            return Object.assign({}, state, {filter}, {data: dataSamples});
                         default:
                             return state;
                     }

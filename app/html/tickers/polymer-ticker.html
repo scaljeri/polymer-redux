@@ -32,7 +32,7 @@
 
                 getQuote() {
                     // Create new Quote object
-                    return this.quote && this.quote.LastTradePriceOnly ? this.quote :
+                    return this.quote && this.quote.Symbol === 'polymer' && this.quote.LastTradePriceOnly ? this.quote :
                         {
                             LastTradePriceOnly: 10,
                             Change: 0,
@@ -70,10 +70,11 @@
                                Volume: quote.Volume + 1,
                                Ask: (price - incr).toFixed(2),
                                Bid: (price + incr).toFixed(2),
-                               YearHigh: Math.max(price, 20.01).toFixed(2),
-                               YearLow: Math.min(price, 5.32).toFixed(2),
+                               YearHigh: Math.max(price, quote.YearHigh).toFixed(2),
+                               YearLow: Math.min(price, quote.YearLow).toFixed(2),
                                Currency: '€',
-                               Name: 'Polymer'
+                               Name: 'Polymer',
+                               Symbol: 'polymer'
                           }});
 
                           if (this.changeInterval) {

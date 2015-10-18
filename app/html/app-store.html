@@ -36,16 +36,11 @@
                             actions[action] = action;
                             return actions;
                         }, {});
-                        console.dir(appActions);
                 }
 
                 dispatch(action, data) {
                     if (action) {
-                        console.log(action);
-                        console.dir(appStore.state);
                         appStore._setState(appReducer.transform(appStore.state, action, data));
-                        console.dir(appStore.state);
-                        console.log('----')
                     } else {
                         throw 'Cannot dispatch an undefined action';
                     }

@@ -19,19 +19,18 @@
                     this.properties = {
                         quote: {
                             type: Object,
-                            notify: true,
-                            observer: 'updateQuote'
+                            notify: true
                         },
                         data: {
                           type: Array,
                           notify: true,
                           observer: 'updateData'
                         },
-                        points: {
+                        samples: {
                             type: Number,
-                            notify: true
+                            notify: true,
+                            observer: 'updateSamples'
                         }
-
                     };
                 }
 
@@ -87,6 +86,13 @@
                         exporting: {
                             enabled: false
                         },
+                        plotOptions: {
+                            series: {
+                                marker: {
+                                    enabled: true
+                                }
+                            }
+                        },
                         series: [{
                             name: 'Quote data',
                             data: []
@@ -95,51 +101,25 @@
 
                 }
 
-/*
-                updateTickerSymbol() {
-                    this.series.setData([]);
-                    this.dataCount = 0;
-
-                    if (this.tickersymbol === 'random') {
-                      $(this.$.highcharts).highcharts().setTitle({text: 'Random data'});
-                      this.$.ticker.stop();
-                      this.randomGen();
+                updateSamples() {
+                    if (this.series.data.length > this.samples) {
+                        this.series.setData(this.data);
                     }
-                    else if (this.tickersymbol) {
-                      clearInterval(this.timer);
-                      this.$.ticker.start();
-                    }
-                }
-*/
-
-
-                updatePoints() {
-                    //debugger;
                 }
 
                 updateData() {
-                    console.log('new data');
-                    console.log(this.quote.LastTradePriceOnly);
-                    let numberOfItems = this.data.length,
-                        lastItem = this.data[numberOfItems - 1]
+                    if (this.data && this.quote) {
+                        if (this.symbol !== this.quote.Symbol) {
+                            this.symbol = this.quote.Symbol;
+                            return this.series.setData(this.data)
+                        }
 
-                    $(this.$.highcharts).highcharts().setTitle({text: `Live data from ${this.quote.Name}`});
-                    this.series.addPoint(lastItem, true, this.series.data.length >= this.points);
-                    /*
-                    if (this.quote) {
-                        let x = (new Date()), // current time
-                            y = parseFloat(this.quote.LastTradePriceOnly);
+                        let numberOfItems = this.data.length,
+                            lastItem = this.data[numberOfItems - 1]
 
-                              // Yahoo quotes are delay by 15 minutes
-                        x.setSeconds(x.getSeconds() - 900);
-
-                        debugger;
-                        this.$.store.dispatch(this.$.store.actions.ADD_DATA_ITEM, {item: [x.getTime(),y]});
-
-                        $(this.$.highcharts).highcharts().setTitle({text: `Live data from ${this.quote.Name}`});
-                        //this.series.addPoint([x,y], true, ++this.dataCount > 20);
-                      }
-                      */
+                            $(this.$.highcharts).highcharts().setTitle({text: `Live data from ${this.quote.Name}`});
+                            this.series.addPoint(lastItem, true, this.series.data.length >= this.samples);
+                    }
                 }
             }
 
