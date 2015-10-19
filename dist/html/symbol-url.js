@@ -26,20 +26,27 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     }
                 };
             }
+        }, {
+            key: 'activate',
+            value: function activate() {
+                this.isActive = true;
 
-            /*
-                            attached() {
-                                let symbol = (location.search.match(/^\?q=(.*)$/) || [])[1];
-            
-                                this.$.store.dispatch(this.$.store.actions.FILTER_SYMBOL_CHANGE, {symbol: symbol || 'polymer'});
-                            }
-            
-                            updateSymbol() {
-                                if (this.symbol) { // this function is called before `attached`
-                                    history.replaceState(null, this.symbol, `?q=${this.symbol}`);
-                                }
-                            }
-                            */
+                if (!this.symbol) {
+                    var symbol = (location.search.match(/^\?q=(.*)$/) || [])[1];
+
+                    if (symbol) {
+                        this.$.store.dispatch(this.$.store.actions.FILTER_SYMBOL_CHANGE, { symbol: symbol || 'polymer' });
+                    }
+                }
+            }
+        }, {
+            key: 'updateSymbol',
+            value: function updateSymbol() {
+                if (this.isActive && this.symbol) {
+                    // this function is called before `attached`
+                    history.replaceState(null, this.symbol, '?q=' + this.symbol);
+                }
+            }
         }]);
 
         return SymbolUrl;

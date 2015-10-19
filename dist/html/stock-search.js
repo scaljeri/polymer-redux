@@ -20,9 +20,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 this.properties = {
                     symbol: {
                         type: String,
-                        notify: true
+                        notify: true,
+                        observer: 'handleUpdateSymbol'
                     }
                 };
+            }
+        }, {
+            key: 'handleUpdateSymbol',
+            value: function handleUpdateSymbol() {
+                this.localSymbol = this.symbol;
             }
         }, {
             key: 'handleSymbolChange',

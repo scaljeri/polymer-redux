@@ -90,6 +90,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                             _this.fbStats = Object.assign({}, _this.fbStats, { hits: _this.pageHits });
                         }, 0);
                     }
+
+                    this.$.urlSymbol.activate();
                 }
             }
         }, {
