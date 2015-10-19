@@ -27,7 +27,7 @@
         <div class="search-wrapper">
             <paper-input-container>
                 <label>Ticker symbol</label>
-                <input id="stock-name" is="iron-input" value="{{symbol}}">
+                <input id="stock-name" is="iron-input" bind-value="{{symbol}}">
             </paper-input-container>
             <paper-button on-click="handleSymbolChange" class="search">Search</paper-button>
         </div>
