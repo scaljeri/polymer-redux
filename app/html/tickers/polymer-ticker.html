@@ -59,7 +59,7 @@
                               incr = this.generatePriceIncr(),
                               price = parseFloat(quote.LastTradePriceOnly) + incr;
 
-                           this.$.store.dispatch(this.$.store.actions.QUOTE_CHANGE, {quote: {
+                           this.$.store.dispatch('QUOTE_CHANGE', {quote: {
                                LastTradePriceOnly: price.toFixed(2),
                                Change: (price >= 10 ? '+' : '') + (price - 10).toFixed(2),
                                DaysHigh: Math.max(quote.DaysHigh, price).toFixed(2),

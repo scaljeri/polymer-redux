@@ -3,9 +3,7 @@
 <dom-module id="app-store">
     <script>
         (function () {
-            'use strict';
-
-            let appActions, appReducer, appStore;
+            let appStore;
 
             class AppStore {
                 beforeRegister() {
@@ -13,43 +11,34 @@
 
                     this.properties = {
                         state: {
-                            type: Object,
-                            notify: true,
+                            notify:   true,
                             readOnly: true,
-                            value: {filter: {interval: 1000, points: 20}}
+                            type:     Object,
+                            value:    {filter: {interval: 1000, samples: 20}}
                         },
                         reducer: {
-                            type: Object,
-                            notify: true,
+                            notify:   true,
+                            observer: 'updateReducer',
                             readOnly: false,
-                            observer: 'updateReducers'
+                            type:     Object
                         }
                     };
                 }
 
-                updateReducers(reducer) {
+                updateReducer(reducer) {
                     if (reducer) {
-                        appReducer = reducer;
-                        // If anything changes, we only trigger at the top level
-                        appStore = this;
-
-                        appActions = appReducer.actions.reduce((actions, action) => {
-                            actions[action] = action;
-                            return actions;
-                        }, {});
+                        appStore = this; // Only use one store
                     }
                 }
 
                 dispatch(action, data) {
-                    if (action) {
-                        appStore._setState(appReducer.transform(appStore.state, action, data));
-                    } else {
-                        throw 'Cannot dispatch an undefined action';
-                    }
-                }
+                    let newState = appStore.reducer.transform(appStore.state, action, data);
 
-                get actions() {
-                    return appActions;
+                    if (newState === appStore.state) {
+                        throw 'Unknown action: ${action}';
+                    }
+
+                    appStore._setState(newState);
                 }
 
                 get state() { return appStore.state;}

@@ -127,11 +127,17 @@
                 }
 
                 saveState() {
-                    this.fbState = Object.assign({}, {
-                        filter: this.state.filter,
-                        quote: this.state.quote,
-                        data: this.state.data
-                    });
+                    let output = {filter: this.state.filter};
+
+                    if (this.state.data) {
+                        output.data = this.state.data;
+                    }
+
+                    if (this.state.quote) {
+                        output.quote = this.state.quote;
+                    }
+
+                    this.fbState = output;
                 }
 
                 updatedFbStats() {
@@ -151,7 +157,7 @@
                 }
 
                 updatedFbState() {
-                    this.$.store.dispatch(this.$.store.actions.INITIALIZE_STATE, {
+                    this.$.store.dispatch('INITIALIZE_STATE', {
                         filter: (this.fbState||{}).filter || this.state.filter,
                         quote:  (this.fbState||{}).quote,
                         data: (this.fbState||{}).data});

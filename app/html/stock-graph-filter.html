@@ -22,6 +22,10 @@
       width: 200px;
     }
 
+    paper-slider {
+        --paper-slider-active-color: green;
+    }
+
     .view-settings-wrapper {
       display: flex;
       margin: 0 20px;
@@ -76,11 +80,11 @@
                 }
 
                 _onChangeInput(event) {
-                  this.$.store.dispatch(this.$.store.actions.FILTER_INTERVAL_CHANGE, {interval: parseInt(event.target.value)})
+                  this.$.store.dispatch('FILTER_INTERVAL_CHANGE', {interval: parseInt(event.target.value)})
                 }
 
                 _onChangeSlider(event) {
-                  this.$.store.dispatch(this.$.store.actions.FILTER_SAMPLES_CHANGE, {samples: parseInt(event.target.value)});
+                  this.$.store.dispatch('FILTER_SAMPLES_CHANGE', {samples: parseInt(event.target.value)});
                 }
             }
 

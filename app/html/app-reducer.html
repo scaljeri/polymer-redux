@@ -7,43 +7,22 @@
 
 <dom-module id="app-reducer">
     <template>
-        <graph-reducer points=[[filter.points]]></graph-reducer>
+        <graph-reducer></graph-reducer>
         <page-reducer></page-reducer>
         <quote-reducer></quote-reducer>
         <state-reducer></state-reducer>
     </template>
     <script>
-        let actions = [], reducers = [];
-
         (function () {
             class AppReducer {
                 beforeRegister() {
                     this.is = 'app-reducer';
-
-                    this.properties = {
-                        filter: {
-                            type: Object,
-                            notify: true
-                        }
-                    };
-                }
-
-                ready() {
-                    // Note that `this.children` is a NodeList (host object) not an Array
-                    for( let i = 0; i < this.children.length; i++) {
-                        actions.push(...this.children[i].actions);
-                        reducers.push(this.children[i]);
-                    };
-                }
-
-                get actions() {
-                    return actions;
                 }
 
                 transform(state, action, data) {
-                    reducers.forEach( (reducer) => {
-                        state = reducer.transform(state, action, data);
-                    });
+                    for( let i = 0; i < this.children.length; i++) {
+                        state = this.children[i].transform(state, action, data);
+                    };
 
                     return state;
                 }

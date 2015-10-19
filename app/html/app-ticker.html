@@ -5,7 +5,7 @@
 
 <dom-module id="app-ticker">
     <template>
-      <stock-ticker  id="yahoo" interval="[[filter.interval]]" symbol="[[filter.symbol]]"></stock-ticker>
+      <stock-ticker   id="yahoo" interval="[[filter.interval]]" symbol="[[filter.symbol]]"></stock-ticker>
       <polymer-ticker id="polymer" filter="[[filter]]" quote="[[quote]]"></polymer-ticker>
     </template>
     <script>
@@ -18,13 +18,13 @@
 
                     this.properties = {
                         filter: {
-                            type: Object,
                             notify: true,
-                            observer: 'updateFilter'
+                            observer: 'updateFilter',
+                            type: Object
                         },
                         quote: {
-                            type: Object,
-                            notify: true
+                            notify: true,
+                            type: Object
                         }
                     };
                 }
