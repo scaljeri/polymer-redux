@@ -27,7 +27,7 @@
         <div class="search-wrapper">
             <paper-input-container>
                 <label>Ticker symbol</label>
-                <input id="stock-name" is="iron-input" value="{{symbol}}">
+                <input id="stock-name" is="iron-input" bind-value="{{localSymbol}}">
             </paper-input-container>
             <paper-button on-click="handleSymbolChange" class="search">Search</paper-button>
         </div>
@@ -43,16 +43,21 @@
                     this.properties = {
                         symbol: {
                             type: String,
-                            notify: true
+                            notify: true,
+                            observer: 'handleUpdateSymbol'
                         }
                     };
+                }
+
+                handleUpdateSymbol() {
+                    this.localSymbol = this.symbol;
                 }
 
                 handleSymbolChange() {
                     let store = this.$.store,
                         symbol = this.$['stock-name'].value;
 
-                    store.dispatch(store.actions.FILTER_SYMBOL_CHANGE, {symbol: symbol});
+                    store.dispatch(store.actions.FILTER_SYMBOL_CHANGE, {symbol});
                 }
             }
 

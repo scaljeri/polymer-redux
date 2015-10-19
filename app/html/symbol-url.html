@@ -23,19 +23,23 @@
                     };
                 }
 
-/*
-                attached() {
-                    let symbol = (location.search.match(/^\?q=(.*)$/) || [])[1];
+                activate() {
+                    this.isActive = true;
 
-                    this.$.store.dispatch(this.$.store.actions.FILTER_SYMBOL_CHANGE, {symbol: symbol || 'polymer'});
+                    if (!this.symbol) {
+                        let symbol = (location.search.match(/^\?q=(.*)$/) || [])[1];
+
+                        if (symbol) {
+                            this.$.store.dispatch(this.$.store.actions.FILTER_SYMBOL_CHANGE, {symbol: symbol || 'polymer'});
+                        }
+                    }
                 }
 
                 updateSymbol() {
-                    if (this.symbol) { // this function is called before `attached`
+                    if (this.isActive && this.symbol) { // this function is called before `attached`
                         history.replaceState(null, this.symbol, `?q=${this.symbol}`);
                     }
                 }
-                */
             }
 
             Polymer(SymbolUrl);

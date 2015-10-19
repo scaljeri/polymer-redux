@@ -56,7 +56,7 @@
         <app-reducer id="reducer" filter="[[state.filter]]"></app-reducer>
 
         <app-ticker quote="[[state.quote]]" filter="[[state.filter]]"></app-ticker>
-        <symbol-url symbol="[[state.filter.symbol]]"></symbol-url>
+        <symbol-url id="urlSymbol" symbol="[[state.filter.symbol]]"></symbol-url>
 
         <app-header hits="[[pageHits]]">
             <paper-button on-click="saveState" raised class="save">Save app-state</paper-button>
@@ -145,6 +145,8 @@
                                 this.fbStats = Object.assign({}, this.fbStats, {hits: this.pageHits});
                             }, 0);
                         }
+
+                        this.$.urlSymbol.activate();
                     }
                 }
 
