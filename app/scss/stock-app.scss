@@ -1,3 +1,21 @@
-header {
-  background-color: blue;
+:host {
+    display: block;
+}
+
+#details {
+    border: 2px solid #fff;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-image: url(../img/background-blur.jpg);
+    width: 400px;
+    height: 400px;
+}
+paper-button {
+    background: #035177;
+    opacity: .9;
+    color: #fff;
+    width: 170px;
+    z-index: 10;
 }

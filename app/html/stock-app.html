@@ -16,35 +16,17 @@
 <link rel="import" href="quote-transform.html">
 
 <dom-module id="stock-app">
-    <style>
-        :host {
-            display: block;
-        }
+    <link rel="import" type="css" href="../css/stock-app.css">
 
-        #details {
-          border: 2px solid #fff;
-          border-radius: 3px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          background-image: url(../img/background-blur.jpg);
-          width: 400px;
-          height: 400px;
-        }
-        paper-button.save {
-            background: #035177;
-            opacity: .9;
-            color: #fff;
-        }
-    </style>
     <template>
         <iron-localstorage name="stock-app"
             value="{{ls}}"
+            log="false"
             on-iron-localstorage-load-empty="initializeLocalStorage"></iron-localstorage>
 
         <firebase-document id='fstats'
             location="https://polymer-redux.firebaseio.com/stats"
-            log="true"
+            log="false"
             data="{{fbStats}}"></firebase-document>
 
         <firebase-document id='fstate'
@@ -60,6 +42,7 @@
 
         <app-header hits="[[pageHits]]">
             <paper-button on-click="saveState" raised class="save">Save app-state</paper-button>
+            <paper-button on-click="resetState" raised class="reset">Reset app-state</paper-button>
         </app-header>
 
         <stock-view filter="[[state.filter]]" quote="[[state.quote]]" data="[[state.data]]">
@@ -119,11 +102,11 @@
                 }
                 handleLs() {
                     if (this.ls) {
-                        this.fbLocation = `https://polymer-redux.firebaseio.com/${this.ls.guid}`;
+                        this.set('fbLocation', `https://polymer-redux.firebaseio.com/${this.ls.guid}`);
                     }
                 }
                 initializeLocalStorage() {
-                    this.ls = {guid: guid()};
+                    this.set('ls', {guid: guid()});
                 }
 
                 saveState() {
@@ -137,35 +120,39 @@
                         output.quote = this.state.quote;
                     }
 
-                    this.fbState = output;
+                    this.set('fbState', output);
+                }
+                resetState() {
+                    //this.set('fbState', {filter: {}, data: [], quote: {}});
+                    //this.$.fstate.remove({filter: {}, data: [], quote: {}});
                 }
 
                 updatedFbStats() {
-                    if (this.pageHits !== this.fbStats.hits) {
-                        if (this.pageHits) {
-                            this.pageHits = this.fbStats.hits;
-                        } else {
-                            this.pageHits = this.fbStats.hits + 1;
+                    if (this.pageHits) {
+                        this.pageHits = this.fbStats.hits;
+                    } else {
+                        this.pageHits = this.fbStats.hits + 1;
 
-                            setTimeout(() => {
-                                this.fbStats = Object.assign({}, this.fbStats, {hits: this.pageHits});
-                            }, 0);
-                        }
-
-                        this.$.urlSymbol.activate();
+                        setTimeout(() => {
+                            this.set('fbStats.hits', this.pageHits);
+                        }, 0);
                     }
+
+                    this.$.urlSymbol.activate();
                 }
 
                 updatedFbState() {
-                    this.$.store.dispatch('INITIALIZE_STATE', {
-                        filter: (this.fbState||{}).filter || this.state.filter,
-                        quote:  (this.fbState||{}).quote,
-                        data: (this.fbState||{}).data});
+                    if (this.fbState) {
+                        debugger;
+                        this.$.store.dispatch('INITIALIZE_STATE', {state: this.fbState});
+                    }
                 }
 
                 ready() {
-                    this.state = this.$.store.state;
-                    this.reducer = this.$.reducer;
+                    //this.state = this.$.store.state;
+                    //this.reducer = this.$.reducer;
+                    this.set('state', this.$.store.state);
+                    this.set('reducer', this.$.reducer);
                 }
             }
 

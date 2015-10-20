@@ -35,7 +35,7 @@
                     let newState = appStore.reducer.transform(appStore.state, action, data);
 
                     if (newState === appStore.state) {
-                        throw 'Unknown action: ${action}';
+                        throw `Unknown action: ${action}`;
                     }
 
                     appStore._setState(newState);

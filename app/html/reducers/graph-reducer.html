@@ -10,41 +10,37 @@
                     this.is = 'graph-reducer';
                 }
 
-                get actions() {
-                    return ['ADD_DATA_ITEM', 'FILTER_SYMBOL_CHANGE', 'FILTER_INTERVAL_CHANGE', 'FILTER_SAMPLES_CHANGE'];
-                }
-
-                transform(state, action, data) {
-                    let filter;
+                transform(state, action, input) {
+                    let filter, data;
 
                     switch (action) {
                         case 'ADD_DATA_ITEM':
-                            // TODO ??? NOTE that data array is still the same
-                            let items = Object.assign([], state.data || []);
-                            items.push(data.item);
+                            data = Object.assign([], state.data || []);
 
-                            if (items.length === state.filter.samples) {
-                                items.shift();
+                            if (data.push(input.item) === state.filter.samples) {
+                                data.shift();
                             }
 
-                            return Object.assign({}, state, {data: items});
+                            return Object.assign({}, state, {data});
                         case 'FILTER_SYMBOL_CHANGE':
-                            filter = Object.assign({}, state.filter, {symbol: data.symbol});
+                            filter = Object.assign({}, state.filter, {symbol: input.symbol});
+
                             return Object.assign({}, state, {filter}, {data: []});
-                            //return Object.assign({}, state, {quote: data});
                         case 'FILTER_INTERVAL_CHANGE':
-                            filter = Object.assign({}, state.filter, {interval: data.interval});
+                            filter = Object.assign({}, state.filter, {interval: input.interval});
+
                             return Object.assign({}, state, {filter});
                         case 'FILTER_SAMPLES_CHANGE':
-                            let length = state.data.length,
-                                dataSamples = state.data;
+                            let samples = Math.min(100, input.samples);
+                            data = state.data;
 
-                            if (length > data.samples) {
-                                dataSamples = state.data.slice(length - data.samples);
+                            if (data.length > samples) {
+                                data = data.slice(length - samples);
                             }
 
-                            filter = Object.assign({}, state.filter, {samples: Math.min(100, data.samples)});
-                            return Object.assign({}, state, {filter}, {data: dataSamples});
+                            //filter = Object.assign({}, state.filter, {samples});
+                            filter.samples = samples;
+                            return Object.assign({}, state, {filter}, {data});
                         default:
                             return state;
                     }

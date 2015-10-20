@@ -3,7 +3,6 @@ var gulp = require('gulp');
 var gulpLoadPlugins = require('gulp-load-plugins');
 var $ = gulpLoadPlugins();
 
-console.dir($);
 var b = require('browserify')();
 
 // Transpile all JS to ES5.
