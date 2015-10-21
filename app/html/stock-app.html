@@ -57,15 +57,13 @@
     </template>
     <script>
         (function () {
-
             function guid() {
                 function s4() {
                     return Math.floor((1 + Math.random()) * 0x10000)
                     .toString(16)
                     .substring(1);
                 }
-                return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-                s4() + '-' + s4() + s4() + s4();
+                return `${s4()+s4()}-${s4()}-${s4()}-${s4()}-${s4()+s4()+s4()}`;
             }
 
             class StockApp {
@@ -76,27 +74,27 @@
                     // Define the properties object in beforeRegister.
                     this.properties = {
                         fbState: {
-                            type: Object,
                             notify: true,
-                            observer: 'updatedFbState'
+                            observer: 'updatedFbState',
+                            type: Object
                         },
                         fbStats: {
-                            type: Object,
                             notify: true,
-                            observer: 'updatedFbStats'
+                            observer: 'updatedFbStats',
+                            type: Object
                         },
                         ls: {
-                            type: Object,
                             notify: true,
-                            observer: 'handleLs'
+                            observer: 'handleLs',
+                            type: Object
                         },
                         reducer: {
-                            type: Object,
-                            notify: true
+                            notify: true,
+                            type: Object
                         },
                         state: {
-                          type: Object,
-                          notify: true
+                          notify: true,
+                          type: Object
                         }
                     };
                 }
@@ -105,6 +103,7 @@
                         this.set('fbLocation', `https://polymer-redux.firebaseio.com/${this.ls.guid}`);
                     }
                 }
+                
                 initializeLocalStorage() {
                     this.set('ls', {guid: guid()});
                 }
@@ -123,8 +122,7 @@
                     this.set('fbState', output);
                 }
                 resetState() {
-                    //this.set('fbState', {filter: {}, data: [], quote: {}});
-                    //this.$.fstate.remove({filter: {}, data: [], quote: {}});
+                    this.set('fbState', {filter: {}, data: [], quote: {}});
                 }
 
                 updatedFbStats() {
@@ -142,15 +140,12 @@
                 }
 
                 updatedFbState() {
-                    if (this.fbState) {
-                        debugger;
+                    if (this.fbState && this.fbState.filter.samples) {
                         this.$.store.dispatch('INITIALIZE_STATE', {state: this.fbState});
                     }
                 }
 
                 ready() {
-                    //this.state = this.$.store.state;
-                    //this.reducer = this.$.reducer;
                     this.set('state', this.$.store.state);
                     this.set('reducer', this.$.reducer);
                 }
