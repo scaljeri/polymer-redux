@@ -3,6 +3,7 @@ var $,
     del = require('del'),
     gulp = require('gulp'),
     path = require('path'),
+    clean = require('gulp-clean'),
     runSequence = require('run-sequence'),
     gulpLoadPlugins = require('gulp-load-plugins');
 
@@ -16,7 +17,19 @@ gulp.task('clean', function () {
     del.sync('./dist/');
 });
 
-// Transpile all JS to ES5.
+gulp.task('watch', ['clean'], function() {
+    runSequence('copy', 'js', 'inject-css', function () {
+        return gulp.watch(['app/**/*.{js,html,scss}'], function () {
+            runSequence('clean', 'copy', 'js', 'inject-css');
+        });
+    });
+});
+
+gulp.task('copy', function() {
+    return gulp.src('assets/img/*.*')
+        .pipe(gulp.dest('./dist/img'));
+});
+
 gulp.task('js', function() {
     return gulp.src(['app/**/*.{js,html}'])
         .pipe($.sourcemaps.init())
@@ -27,24 +40,12 @@ gulp.task('js', function() {
         .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('watch', ['copy', 'js', 'inject-css'], function() {
-    return gulp.watch(['app/**/*.{js,html}', 'app/scss/*.scss'], function () {
-        runSequence('clean', 'copy', 'js', 'inject-css');
-    });
-});
-
 gulp.task('sass', function() {
     return gulp.src('./app/scss/**/*.scss')
         .pipe($.sass().on('error', $.sass.logError))
         .pipe(gulp.dest('./dist/css'));
 });
 
-gulp.task('copy', function() {
-    return gulp.src('assets/img/*.*')
-        .pipe(gulp.dest('./dist/img'));
-});
-
-var clean = require('gulp-clean');
 
 gulp.task('inject-css', ['sass'], function() {
     return gulp.src('./dist/html/**/*.html', {base: './dist/html'})

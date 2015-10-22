@@ -5,47 +5,12 @@
 <link rel="import" href="../../bower/polymer/polymer.html">
 <link rel="import" href="../../bower/paper-slider/paper-slider.html">
 <link rel="import" href="app-ticker.html">
-<link rel="import" href="stock-graph.html">
-<link rel="import" href="stock-graph-filter.html">
+<link rel="import" href="view/stock-graph.html">
+<link rel="import" href="view/stock-graph-filter.html">
 
 <dom-module id="stock-view">
     <style>
-      * {
-        --paper-input-container-input-color: #fff;
-      }
-      :host {
-        display: flex;
-        justify-content: center;
-      }
-      .graph {
-        border: 2px solid #fff;
-        border-radius: 3px;
-        position: relative;
-        width: 600px;
-        height: 400px;
-        background-image: url(../img/background-blur.jpg);
-      }
-      .overlay {
-        background-color: #fff;
-        opacity: .3;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        height: 0;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-      }
-
-      #highcharts {
-        border: 2px solid #fff;
-        border-radius: 3px;
-      }
-
-      :host > article {
-          margin-left: 30px;
-      }
-
+        /* inject:css */
     </style>
     <template>
         <content></content>

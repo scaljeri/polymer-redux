@@ -1,0 +1,14 @@
+:host {
+    display: flex;
+    justify-content: center;
+
+    --paper-input-container-label: {
+        color: lightgray;
+    }
+    --paper-input-container-label-focus: {
+        color: #000;
+    }
+    --paper-input-container-underline-focus: {
+        background: green;
+    }
+}
