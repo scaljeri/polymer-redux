@@ -5,6 +5,17 @@
 <dom-module id="stock-graph-filter">
     <style>
         /* inject:css */
+        paper-input-container {
+            --paper-input-container-label: {
+                 color: lightgray;
+            }
+            --paper-input-container-label-focus: {
+                color: #000;
+            }
+            --paper-input-container-underline-focus: {
+                background: green;
+            }
+        }
     </style>
     <template>
         <app-store id="store"></app-store>
