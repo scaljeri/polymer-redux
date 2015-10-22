@@ -7,13 +7,13 @@
 <link rel="import" href="../../bower/iron-localstorage/iron-localstorage.html">
 
 <link rel="import" href="app-store.html">
-<link rel="import" href="symbol-url.html">
 <link rel="import" href="app-reducer.html">
-<link rel="import" href="app-header.html">
 <link rel="import" href="stock-view.html">
-<link rel="import" href="stock-search.html">
-<link rel="import" href="stock-details.html">
-<link rel="import" href="quote-transform.html">
+<link rel="import" href="view/app-header.html">
+<link rel="import" href="view/stock-search.html">
+<link rel="import" href="view/stock-details.html">
+<link rel="import" href="utils/quote-transform.html">
+<link rel="import" href="utils/symbol-url.html">
 
 <dom-module id="stock-app">
     <link rel="import" type="css" href="../css/stock-app.css">
@@ -94,16 +94,21 @@
                         },
                         state: {
                           notify: true,
-                          type: Object
+                          type: Object,
+                          observer: 'handleStateUpdate'
                         }
                     };
+                }
+                handleStateUpdate() {
+                    debugger;
+                    this.set('state.filter', {interval: 1001, samples: 40});
                 }
                 handleLs() {
                     if (this.ls) {
                         this.set('fbLocation', `https://polymer-redux.firebaseio.com/${this.ls.guid}`);
                     }
                 }
-                
+
                 initializeLocalStorage() {
                     this.set('ls', {guid: guid()});
                 }

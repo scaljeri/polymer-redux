@@ -18,6 +18,7 @@
                 }
 
                 transform(state, action, data) {
+                    debugger;
                     for( let i = 0; i < this.children.length; i++) {
                         state = this.children[i].transform(state, action, data);
                     };
