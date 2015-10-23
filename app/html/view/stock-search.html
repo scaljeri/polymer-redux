@@ -1,4 +1,5 @@
 <link rel="import" href="../../../bower/polymer/polymer.html">
+<link rel="import" href="../../../bower/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../../../bower/paper-input/paper-input.html">
 <link rel="import" href="../../../bower/paper-button/paper-button.html">
 
@@ -26,11 +27,12 @@
         <app-store id="store"></app-store>
 
         <div class="search-wrapper">
+            <iron-a11y-keys keyEventTarget="tickerInput" keys="enter" on-keys-pressed="handleSymbolChange"></iron-a11y-keys>
             <paper-input-container>
                 <label>Ticker symbol</label>
                 <input id="stock-name" is="iron-input" bind-value="{{localSymbol}}">
             </paper-input-container>
-            <paper-button on-click="handleSymbolChange" class="search">Search</paper-button>
+            <paper-button id="tickerInput" on-click="handleSymbolChange" class="search">Search</paper-button>
         </div>
     </template>
     <script>

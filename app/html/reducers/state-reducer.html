@@ -17,7 +17,11 @@
                 transform(state, action, input) {
                     switch (action) {
                         case 'INITIALIZE_STATE':
-                             return Object.assign({}, input.state);
+                             return Object.assign({}, state, input.state);
+                        case 'UPDATE_PAGEHITS':
+                             let page = Object.assign({}, state.page, {hits: input.hits});
+
+                             return Object.assign({}, state, {page});
                         default:
                             return state;
                     }

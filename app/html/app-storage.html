@@ -1,0 +1,110 @@
+<link rel="import" href="../../bower/polymer/polymer.html">
+<link rel="import" href="../../bower/firebase-element/firebase-document.html">
+<link rel="import" href="../../bower/iron-localstorage/iron-localstorage.html">
+
+<link rel="import" href="app-store.html">
+
+<dom-module id="app-storage">
+    <template>
+        <iron-localstorage name="stock-app"
+                           value="{{ls}}"
+                           log="true"
+                           on-iron-localstorage-load-empty="initializeLocalStorage"></iron-localstorage>
+
+        <firebase-document location="https://polymer-redux.firebaseio.com/page"
+                           log="true"
+                           data="{{page}}"></firebase-document>
+
+        <firebase-document location="https://polymer-redux.firebaseio.com/symbols"
+                           log="true"
+                           data="{{symbols}}"></firebase-document>
+
+        <firebase-document location="{{location}}"
+                           log="true"
+                           data="{{fbState}}"></firebase-document>
+
+        <app-store id="store"></app-store>
+    </template>
+    <script>
+        (function () {
+            function guid() {
+                function s4() {
+                    return Math.floor((1 + Math.random()) * 0x10000)
+                    .toString(16)
+                    .substring(1);
+                }
+                return `${s4()+s4()}-${s4()}-${s4()}-${s4()}-${s4()+s4()+s4()}`;
+            }
+            
+            class AppStorage {
+                beforeRegister() {
+                    this.is = 'app-storage';
+
+                    this.properties = {
+                        state: {
+                            notify: true,
+                            type: Object
+                        },
+                        fbState: {
+                            notify: true,
+                            observer: 'updatedState',
+                            type: Object
+                        },
+                        page: {
+                            notify: true,
+                            observer: 'updatedPage',
+                            type: Object
+                        },
+                        ls: {
+                            notify: true,
+                            observer: 'handleLs',
+                            type: Object
+                        },
+                        symbols: {
+                            notify: true,
+                            type: Array
+                        }
+                    };
+                }
+                handleLs() {
+                    if (this.ls) {
+                        this.set('location', `https://polymer-redux.firebaseio.com/${this.ls.guid}`);
+                    }
+                }
+
+                initializeLocalStorage() {
+                    this.set('ls', {guid: guid()});
+                }
+
+                updatedPage() {
+                    let hits = this.page.hits;
+
+                    if (!this.state.page.hit) { // first time
+                        hits++;
+
+                        setTimeout(() => {
+                                this.set('page.hits', hits);
+                            }, 0);
+                    }
+                    this.$.store.dispatch('UPDATE_PAGEHITS', {hits});
+                }
+
+                updatedState() {
+                    if (this.fbState && !this.state.quote) {
+                        this.$.store.dispatch('INITIALIZE_STATE', {state: this.fbState});
+                    }
+                }
+
+                saveState() {
+                    this.set('fbState', this.state);
+                }
+
+                resetState() {
+                    this.set('fbState', {filter: {}, data: [], quote: {}, page: {}});
+                }
+            }
+
+            Polymer(AppStorage);
+        })();
+    </script>
+</dom-module>

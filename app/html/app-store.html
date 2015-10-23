@@ -14,7 +14,7 @@
                             notify:   true,
                             readOnly: true,
                             type:     Object,
-                            value:    {filter: {interval: 1000, samples: 20}}
+                            value:    {filter: {interval: 1000, samples: 2}, page: {}}
                         },
                         reducer: {
                             notify:   true,
@@ -38,6 +38,7 @@
                         throw `Unknown action: ${action}`;
                     }
 
+                    newState.page.updated = new Date();
                     appStore._setState(newState);
                 }
 
