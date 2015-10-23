@@ -8,9 +8,9 @@
     <template>
         <iron-localstorage name="stock-app" value="{{ls}}" log="true" on-iron-localstorage-load-empty="initializeLocalStorage"></iron-localstorage>
 
-        <firebase-document location="https://polymer-redux.firebaseio.com/page" log="true" data="{{page}}"></firebase-document>
+        <firebase-document location="https://polymer-redux.firebaseio.com/page" log="true" data="{{fbPage}}"></firebase-document>
 
-        <firebase-document location="https://polymer-redux.firebaseio.com/symbols" log="true" data="{{symbols}}"></firebase-document>
+        <firebase-document location="https://polymer-redux.firebaseio.com/symbols" log="true" data="{{fbSymbols}}"></firebase-document>
 
         <firebase-document location="{{location}}" log="true" data="{{fbState}}"></firebase-document>
 

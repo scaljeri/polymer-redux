@@ -22,9 +22,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             value: function transform(state, action, input) {
                 switch (action) {
                     case 'INITIALIZE_STATE':
+                        if (state.page) {
+                            input.state.page = state.page;
+                        }
+
                         return Object.assign({}, state, input.state);
                     case 'UPDATE_PAGEHITS':
-                        var page = Object.assign({}, state.page, { hits: input.hits });
+                        var page = Object.assign({}, state.page, { hit: input.hit });
 
                         return Object.assign({}, state, { page: page });
                     default:

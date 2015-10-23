@@ -32,7 +32,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                         observer: 'updatedState',
                         type: Object
                     },
-                    page: {
+                    fbPage: {
                         notify: true,
                         observer: 'updatedPage',
                         type: Object
@@ -65,17 +65,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             value: function updatedPage() {
                 var _this = this;
 
-                var hits = this.page.hits;
-
-                if (!this.state.page.hit) {
-                    // first time
-                    hits++;
+                if (!this.pageHit) {
+                    this.pageHit = this.fbPage.hits + 1;
 
                     setTimeout(function () {
-                        _this.set('page.hits', hits);
+                        _this.set('fbPage.hits', _this.pageHit);
                     }, 0);
+                } else {
+                    this.pageHit = this.fbPage.hits;
                 }
-                this.$.store.dispatch('UPDATE_PAGEHITS', { hits: hits });
+
+                this.$.store.dispatch('UPDATE_PAGEHITS', { hit: this.pageHit });
             }
         }, {
             key: 'updatedState',

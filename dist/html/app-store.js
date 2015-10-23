@@ -22,7 +22,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                         notify: true,
                         readOnly: true,
                         type: Object,
-                        value: { filter: { interval: 1000, samples: 2 }, page: {} }
+                        value: { filter: { interval: 1000, samples: 2 } }
                     },
                     reducer: {
                         notify: true,
