@@ -25,7 +25,7 @@
         <app-ticker quote="[[state.quote]]" filter="[[state.filter]]"></app-ticker>
         <symbol-url id="urlSymbol" symbol="[[state.filter.symbol]]"></symbol-url>
 
-        <app-header hits="[[state.page.hits]]">
+        <app-header hits="[[state.page.hit]]">
             <paper-button on-click="saveState" raised class="save">Save app-state</paper-button>
             <paper-button on-click="resetState" raised class="reset">Reset app-state</paper-button>
         </app-header>

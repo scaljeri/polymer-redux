@@ -13,11 +13,11 @@
 
         <firebase-document location="https://polymer-redux.firebaseio.com/page"
                            log="true"
-                           data="{{page}}"></firebase-document>
+                           data="{{fbPage}}"></firebase-document>
 
         <firebase-document location="https://polymer-redux.firebaseio.com/symbols"
                            log="true"
-                           data="{{symbols}}"></firebase-document>
+                           data="{{fbSymbols}}"></firebase-document>
 
         <firebase-document location="{{location}}"
                            log="true"
@@ -35,7 +35,7 @@
                 }
                 return `${s4()+s4()}-${s4()}-${s4()}-${s4()}-${s4()+s4()+s4()}`;
             }
-            
+
             class AppStorage {
                 beforeRegister() {
                     this.is = 'app-storage';
@@ -50,7 +50,7 @@
                             observer: 'updatedState',
                             type: Object
                         },
-                        page: {
+                        fbPage: {
                             notify: true,
                             observer: 'updatedPage',
                             type: Object
@@ -77,16 +77,17 @@
                 }
 
                 updatedPage() {
-                    let hits = this.page.hits;
-
-                    if (!this.state.page.hit) { // first time
-                        hits++;
+                    if (!this.pageHit) {
+                        this.pageHit = this.fbPage.hits + 1;
 
                         setTimeout(() => {
-                                this.set('page.hits', hits);
+                                this.set('fbPage.hits', this.pageHit);
                             }, 0);
+                    } else {
+                        this.pageHit = this.fbPage.hits;
                     }
-                    this.$.store.dispatch('UPDATE_PAGEHITS', {hits});
+
+                    this.$.store.dispatch('UPDATE_PAGEHITS', {hit: this.pageHit});
                 }
 
                 updatedState() {
