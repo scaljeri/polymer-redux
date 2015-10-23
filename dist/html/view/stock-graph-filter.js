@@ -5,39 +5,37 @@ var _createClass = (function () { function defineProperties(target, props) { for
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 (function () {
-    'use strict';
-
-    var TickerReducer = (function () {
-        function TickerReducer() {
-            _classCallCheck(this, TickerReducer);
+    var StockGraphFilter = (function () {
+        function StockGraphFilter() {
+            _classCallCheck(this, StockGraphFilter);
         }
 
-        _createClass(TickerReducer, [{
+        _createClass(StockGraphFilter, [{
             key: 'beforeRegister',
             value: function beforeRegister() {
-                this.is = 'ticker-reducer';
+                this.is = 'stock-graph-filter';
+
+                this.properties = {
+                    filter: {
+                        type: Object,
+                        notify: true
+                    }
+                };
             }
         }, {
-            key: 'transform',
-            value: function transform(state, action, data) {
-                switch (action) {
-                    case 'TICKER_SYMBOL_CHANGE':
-                        var filter = Object.assign({}, state.filter, { symbol: data.symbol });
-                        return Object.assign({}, state, { filter: filter });
-                    //return Object.assign({}, state, {quote: data});
-                    default:
-                        return state;
-                }
+            key: '_onChangeInput',
+            value: function _onChangeInput(event) {
+                this.$.store.dispatch('FILTER_INTERVAL_CHANGE', { interval: parseInt(event.target.value) });
             }
         }, {
-            key: 'actions',
-            get: function get() {
-                return ['TICKER_SYMBOL_CHANGE'];
+            key: '_onChangeSlider',
+            value: function _onChangeSlider(event) {
+                this.$.store.dispatch('FILTER_SAMPLES_CHANGE', { samples: parseInt(event.target.value) });
             }
         }]);
 
-        return TickerReducer;
+        return StockGraphFilter;
     })();
 
-    Polymer(TickerReducer);
+    Polymer(StockGraphFilter);
 })();

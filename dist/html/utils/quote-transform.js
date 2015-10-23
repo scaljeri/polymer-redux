@@ -5,37 +5,44 @@ var _createClass = (function () { function defineProperties(target, props) { for
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 (function () {
-    var StockDetails = (function () {
-        function StockDetails() {
-            _classCallCheck(this, StockDetails);
+    'use strict';
+
+    var QuoteTransform = (function () {
+        function QuoteTransform() {
+            _classCallCheck(this, QuoteTransform);
         }
 
-        // Register the element using Polymer's constructor.
-
-        _createClass(StockDetails, [{
+        _createClass(QuoteTransform, [{
             key: 'beforeRegister',
-
-            // Element setup goes in beforeRegister instead of createdCallback.
             value: function beforeRegister() {
-                this.is = 'stock-details';
+                this.is = 'quote-transform';
 
-                // Define the properties object in beforeRegister.
                 this.properties = {
                     quote: {
-                        type: Object,
-                        notify: true
+                        notify: true,
+                        observer: 'updateQuote',
+                        type: Object
                     }
                 };
             }
         }, {
-            key: 'status',
-            value: function status(change) {
-                return change === undefined ? '' : parseFloat(change) >= 0 ? 'up' : 'down';
+            key: 'updateQuote',
+            value: function updateQuote() {
+                if (this.quote) {
+                    var x = new Date(),
+                        // current time
+                    y = parseFloat(this.quote.LastTradePriceOnly);
+
+                    // Yahoo quotes are delayed by 15 minutes
+                    x.setSeconds(x.getSeconds() - 900);
+
+                    this.$.store.dispatch('ADD_DATA_ITEM', { item: [x.getTime(), y] });
+                }
             }
         }]);
 
-        return StockDetails;
+        return QuoteTransform;
     })();
 
-    Polymer(StockDetails);
+    Polymer(QuoteTransform);
 })();

@@ -35,7 +35,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     var symbol = (location.search.match(/^\?q=(.*)$/) || [])[1];
 
                     if (symbol) {
-                        this.$.store.dispatch(this.$.store.actions.FILTER_SYMBOL_CHANGE, { symbol: symbol || 'polymer' });
+                        this.$.store.dispatch('FILTER_SYMBOL_CHANGE', { symbol: symbol || 'polymer' });
                     }
                 }
             }

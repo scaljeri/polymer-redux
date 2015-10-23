@@ -19,13 +19,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
                 this.properties = {
                     filter: {
-                        type: Object,
                         notify: true,
-                        observer: 'updateFilter'
+                        observer: 'updateFilter',
+                        type: Object
                     },
                     quote: {
-                        type: Object,
-                        notify: true
+                        notify: true,
+                        type: Object
                     }
                 };
             }

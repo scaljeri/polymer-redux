@@ -1,6 +1,6 @@
-<html><head><link rel="import" href="../../bower/polymer/polymer.html">
+<html><head><link rel="import" href="../../../bower/polymer/polymer.html">
 
-<link rel="import" href="app-store.html">
+<link rel="import" href="../app-store.html">
 
 </head><body><dom-module id="stock-graph-filter">
     <style>
@@ -31,6 +31,17 @@ paper-input-container {
   padding: 10px 0 6px 15px;
   height: 24px; }
 
+        paper-input-container {
+            --paper-input-container-label: {
+                 color: lightgray;
+            }
+            --paper-input-container-label-focus: {
+                color: #000;
+            }
+            --paper-input-container-underline-focus: {
+                background: green;
+            }
+        }
     </style>
     <template>
         <app-store id="store"></app-store>

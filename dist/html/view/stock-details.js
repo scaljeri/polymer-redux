@@ -5,40 +5,32 @@ var _createClass = (function () { function defineProperties(target, props) { for
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 (function () {
-    'use strict';
-
-    var PageReducer = (function () {
-        function PageReducer() {
-            _classCallCheck(this, PageReducer);
+    var StockDetails = (function () {
+        function StockDetails() {
+            _classCallCheck(this, StockDetails);
         }
 
-        _createClass(PageReducer, [{
+        _createClass(StockDetails, [{
             key: 'beforeRegister',
             value: function beforeRegister() {
-                this.is = 'page-reducer';
-            }
-        }, {
-            key: 'transform',
-            value: function transform(state, action, data) {
-                switch (action) {
-                    case 'PAGE_HIT_CHANGE':
-                        var page = Object.assign({}, state.page);
-                        page.hits++;
+                this.is = 'stock-details';
 
-                        return Object.assign({}, state, { page: page });
-                    default:
-                        return state;
-                }
+                this.properties = {
+                    quote: {
+                        notify: true,
+                        type: Object
+                    }
+                };
             }
         }, {
-            key: 'actions',
-            get: function get() {
-                return ['PAGE_HIT_CHANGE'];
+            key: 'status',
+            value: function status(change) {
+                return change === undefined ? '' : parseFloat(change) >= 0 ? 'up' : 'down';
             }
         }]);
 
-        return PageReducer;
+        return StockDetails;
     })();
 
-    Polymer(PageReducer);
+    Polymer(StockDetails);
 })();

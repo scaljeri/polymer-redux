@@ -19,10 +19,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             }
         }, {
             key: 'transform',
-            value: function transform(state, action, data) {
+            value: function transform(state, action, input) {
                 switch (action) {
                     case 'INITIALIZE_STATE':
-                        return Object.assign({}, data);
+                        return Object.assign({}, state, input.state);
+                    case 'UPDATE_PAGEHITS':
+                        var page = Object.assign({}, state.page, { hits: input.hits });
+
+                        return Object.assign({}, state, { page: page });
                     default:
                         return state;
                 }

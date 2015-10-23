@@ -7,37 +7,41 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
     'use strict';
 
-    var TickerReducer = (function () {
-        function TickerReducer() {
-            _classCallCheck(this, TickerReducer);
+    var StockSearch = (function () {
+        function StockSearch() {
+            _classCallCheck(this, StockSearch);
         }
 
-        _createClass(TickerReducer, [{
+        _createClass(StockSearch, [{
             key: 'beforeRegister',
             value: function beforeRegister() {
-                this.is = 'ticker-reducer';
+                this.is = 'stock-search';
+
+                this.properties = {
+                    symbol: {
+                        type: String,
+                        notify: true,
+                        observer: 'handleUpdateSymbol'
+                    }
+                };
             }
         }, {
-            key: 'transform',
-            value: function transform(state, action, data) {
-                switch (action) {
-                    case 'TICKER_SYMBOL_CHANGE':
-                        var filter = Object.assign({}, state.filter, { symbol: data.symbol });
-                        return Object.assign({}, state, { filter: filter });
-                    //return Object.assign({}, state, {quote: data});
-                    default:
-                        return state;
-                }
+            key: 'handleUpdateSymbol',
+            value: function handleUpdateSymbol() {
+                this.localSymbol = this.symbol;
             }
         }, {
-            key: 'actions',
-            get: function get() {
-                return ['TICKER_SYMBOL_CHANGE'];
+            key: 'handleSymbolChange',
+            value: function handleSymbolChange() {
+                var store = this.$.store,
+                    symbol = this.$['stock-name'].value;
+
+                store.dispatch('FILTER_SYMBOL_CHANGE', { symbol: symbol });
             }
         }]);
 
-        return TickerReducer;
+        return StockSearch;
     })();
 
-    Polymer(TickerReducer);
+    Polymer(StockSearch);
 })();

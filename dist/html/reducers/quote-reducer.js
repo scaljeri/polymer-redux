@@ -19,18 +19,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             }
         }, {
             key: 'transform',
-            value: function transform(state, action, data) {
+            value: function transform(state, action, input) {
                 switch (action) {
                     case 'QUOTE_CHANGE':
-                        return Object.assign({}, state, { quote: data.quote });
+                        return Object.assign({}, state, { quote: input.quote });
                     default:
                         return state;
                 }
-            }
-        }, {
-            key: 'actions',
-            get: function get() {
-                return ['QUOTE_CHANGE'];
             }
         }]);
 

@@ -62,7 +62,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 this.timer = setTimeout(function () {
                     _this.getQuote().then(function (response) {
                         var json = JSON.parse(response);
-                        _this.$.store.dispatch(_this.$.store.actions.QUOTE_CHANGE, { quote: json.query.results.quote });
+                        _this.$.store.dispatch('QUOTE_CHANGE', { quote: json.query.results.quote });
                         _this.start();
                     });
                 }, Math.max(1000, this.interval));

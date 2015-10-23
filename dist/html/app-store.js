@@ -5,11 +5,7 @@ var _createClass = (function () { function defineProperties(target, props) { for
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 (function () {
-    'use strict';
-
-    var appActions = undefined,
-        appReducer = undefined,
-        appStore = undefined;
+    var appStore = undefined;
 
     var AppStore = (function () {
         function AppStore() {
@@ -23,46 +19,37 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
                 this.properties = {
                     state: {
-                        type: Object,
                         notify: true,
                         readOnly: true,
-                        value: { filter: { interval: 1000, points: 20 } }
+                        type: Object,
+                        value: { filter: { interval: 1000, samples: 2 }, page: {} }
                     },
                     reducer: {
-                        type: Object,
                         notify: true,
+                        observer: 'updateReducer',
                         readOnly: false,
-                        observer: 'updateReducers'
+                        type: Object
                     }
                 };
             }
         }, {
-            key: 'updateReducers',
-            value: function updateReducers(reducer) {
+            key: 'updateReducer',
+            value: function updateReducer(reducer) {
                 if (reducer) {
-                    appReducer = reducer;
-                    // If anything changes, we only trigger at the top level
-                    appStore = this;
-
-                    appActions = appReducer.actions.reduce(function (actions, action) {
-                        actions[action] = action;
-                        return actions;
-                    }, {});
+                    appStore = this; // Only use one store
                 }
             }
         }, {
             key: 'dispatch',
             value: function dispatch(action, data) {
-                if (action) {
-                    appStore._setState(appReducer.transform(appStore.state, action, data));
-                } else {
-                    throw 'Cannot dispatch an undefined action';
+                var newState = appStore.reducer.transform(appStore.state, action, data);
+
+                if (newState === appStore.state) {
+                    throw 'Unknown action: ' + action;
                 }
-            }
-        }, {
-            key: 'actions',
-            get: function get() {
-                return appActions;
+
+                newState.page.updated = new Date();
+                appStore._setState(newState);
             }
         }, {
             key: 'state',

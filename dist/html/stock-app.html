@@ -1,57 +1,52 @@
 <html><head><link rel="import" href="../../bower/polymer/polymer.html">
 <link rel="import" href="../../bower/paper-input/paper-input.html">
 <link rel="import" href="../../bower/paper-button/paper-button.html">
-<link rel="import" href="../../bower/iron-icon/iron-icon.html">
-<link rel="import" href="../../bower/iron-iconset-svg/iron-iconset-svg.html">
-<link rel="import" href="../../bower/firebase-element/firebase-document.html">
-<link rel="import" href="../../bower/iron-localstorage/iron-localstorage.html">
 
 <link rel="import" href="app-store.html">
-<link rel="import" href="symbol-url.html">
 <link rel="import" href="app-reducer.html">
-<link rel="import" href="app-header.html">
+<link rel="import" href="app-storage.html">
 <link rel="import" href="stock-view.html">
-<link rel="import" href="stock-search.html">
-<link rel="import" href="stock-details.html">
-<link rel="import" href="quote-transform.html">
+<link rel="import" href="view/app-header.html">
+<link rel="import" href="view/stock-search.html">
+<link rel="import" href="view/stock-details.html">
+<link rel="import" href="utils/quote-transform.html">
+<link rel="import" href="utils/symbol-url.html">
 
 </head><body><dom-module id="stock-app">
     <style>
         :host {
-            display: block;
-        }
+  display: block; }
 
-        #details {
-          border: 2px solid #fff;
-          border-radius: 3px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          background-image: url(../img/background-blur.jpg);
-          width: 400px;
-          height: 400px;
-        }
-        paper-button.save {
-            background: #035177;
-            opacity: .9;
-            color: #fff;
-        }
+#details {
+  border: 2px solid #fff;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-image: url(../img/background-blur.jpg);
+  width: 400px;
+  height: 400px; }
+
+paper-button {
+  background: #035177;
+  opacity: .9;
+  color: #fff;
+  width: 170px;
+  z-index: 10; }
+
     </style>
+
     <template>
-        <iron-localstorage name="stock-app" value="{{ls}}" on-iron-localstorage-load-empty="initializeLocalStorage"></iron-localstorage>
-
-        <firebase-document id="fstats" location="https://polymer-redux.firebaseio.com/stats" log="true" data="{{fbStats}}"></firebase-document>
-
-        <firebase-document id="fstate" location="{{fbLocation}}" log="true" data="{{fbState}}"></firebase-document>
-
         <app-store id="store" state="{{state}}" reducer="[[reducer]]"></app-store>
+        <app-storage id="storage" state="[[state]]"></app-storage>
         <app-reducer id="reducer" filter="[[state.filter]]"></app-reducer>
 
         <app-ticker quote="[[state.quote]]" filter="[[state.filter]]"></app-ticker>
         <symbol-url id="urlSymbol" symbol="[[state.filter.symbol]]"></symbol-url>
 
-        <app-header hits="[[pageHits]]">
+        <app-header hits="[[state.page.hits]]">
             <paper-button on-click="saveState" raised="" class="save">Save app-state</paper-button>
+            <paper-button on-click="resetState" raised="" class="reset">Reset app-state</paper-button>
         </app-header>
 
         <stock-view filter="[[state.filter]]" quote="[[state.quote]]" data="[[state.data]]">

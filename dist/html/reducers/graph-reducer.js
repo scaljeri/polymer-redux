@@ -16,55 +16,44 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             key: 'beforeRegister',
             value: function beforeRegister() {
                 this.is = 'graph-reducer';
-
-                this.properties = {
-                    points: {
-                        type: Number,
-                        notify: true
-                    }
-                };
             }
         }, {
             key: 'transform',
-            value: function transform(state, action, data) {
-                var filter = undefined;
+            value: function transform(state, action, input) {
+                var filter = undefined,
+                    data = undefined;
 
                 switch (action) {
                     case 'ADD_DATA_ITEM':
-                        // TODO ??? NOTE that data array is still the same
-                        var items = Object.assign([], state.data || []);
-                        items.push(data.item);
+                        data = Object.assign([], state.data || []);
 
-                        if (items.length === state.filter.samples) {
-                            items.shift();
+                        if (data.push(input.item) === state.filter.samples) {
+                            data.shift();
                         }
 
-                        return Object.assign({}, state, { data: items });
+                        return Object.assign({}, state, { data: data });
                     case 'FILTER_SYMBOL_CHANGE':
-                        filter = Object.assign({}, state.filter, { symbol: data.symbol });
+                        filter = Object.assign({}, state.filter, { symbol: input.symbol });
+
                         return Object.assign({}, state, { filter: filter }, { data: [] });
-                    //return Object.assign({}, state, {quote: data});
                     case 'FILTER_INTERVAL_CHANGE':
-                        filter = Object.assign({}, state.filter, { interval: data.interval });
+                        filter = Object.assign({}, state.filter, { interval: input.interval });
+
                         return Object.assign({}, state, { filter: filter });
                     case 'FILTER_SAMPLES_CHANGE':
-                        var length = state.data.length,
-                            dataSamples = state.data;
+                        var samples = Math.min(100, input.samples);
+                        data = state.data;
 
-                        if (length > data.samples) {
-                            dataSamples = state.data.slice(length - data.samples);
+                        if (data.length > samples) {
+                            data = data.slice(length - samples);
                         }
 
-                        filter = Object.assign({}, state.filter, { samples: Math.min(100, data.samples) });
-                        return Object.assign({}, state, { filter: filter }, { data: dataSamples });
+                        //filter = Object.assign({}, state.filter, {samples});
+                        filter.samples = samples;
+                        return Object.assign({}, state, { filter: filter }, { data: data });
                     default:
                         return state;
                 }
-            }
-        }, {
-            key: 'actions',
-            get: function get() {
-                return ['ADD_DATA_ITEM', 'FILTER_SYMBOL_CHANGE', 'FILTER_INTERVAL_CHANGE', 'FILTER_SAMPLES_CHANGE'];
             }
         }]);
 

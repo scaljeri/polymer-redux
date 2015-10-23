@@ -60,7 +60,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                         }
                     },
                     title: {
-                        text: 'Live ' + this.tickersymbol + ' data'
+                        text: this.createGraphTitle()
                     },
                     xAxis: {
                         type: 'datetime',
@@ -119,9 +119,25 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     var numberOfItems = this.data.length,
                         lastItem = this.data[numberOfItems - 1];
 
-                    $(this.$.highcharts).highcharts().setTitle({ text: 'Live data from ' + this.quote.Name });
+                    this.createGraphTitle();
                     this.series.addPoint(lastItem, true, this.series.data.length >= this.samples);
                 }
+            }
+        }, {
+            key: 'createGraphTitle',
+            value: function createGraphTitle() {
+                var highcharts = $(this.$.highcharts).highcharts(),
+                    title = 'No data available';
+
+                if (this.quote) {
+                    title = 'Live data from ' + this.quote.Name;
+                }
+
+                if (highcharts) {
+                    highcharts.setTitle({ text: title });
+                }
+
+                return title;
             }
         }]);
 

@@ -1,0 +1,20 @@
+<html><head><link rel="import" href="../../bower/polymer/polymer.html">
+<link rel="import" href="../../bower/firebase-element/firebase-document.html">
+<link rel="import" href="../../bower/iron-localstorage/iron-localstorage.html">
+
+<link rel="import" href="app-store.html">
+
+</head><body><dom-module id="app-storage">
+    <template>
+        <iron-localstorage name="stock-app" value="{{ls}}" log="true" on-iron-localstorage-load-empty="initializeLocalStorage"></iron-localstorage>
+
+        <firebase-document location="https://polymer-redux.firebaseio.com/page" log="true" data="{{page}}"></firebase-document>
+
+        <firebase-document location="https://polymer-redux.firebaseio.com/symbols" log="true" data="{{symbols}}"></firebase-document>
+
+        <firebase-document location="{{location}}" log="true" data="{{fbState}}"></firebase-document>
+
+        <app-store id="store"></app-store>
+    </template>
+    </dom-module>
+<script src="app-storage.js"></script></body></html>

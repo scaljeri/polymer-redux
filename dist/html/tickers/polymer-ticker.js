@@ -67,7 +67,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                             incr = _this.generatePriceIncr(),
                             price = parseFloat(quote.LastTradePriceOnly) + incr;
 
-                        _this.$.store.dispatch(_this.$.store.actions.QUOTE_CHANGE, { quote: {
+                        _this.$.store.dispatch('QUOTE_CHANGE', { quote: {
                                 LastTradePriceOnly: price.toFixed(2),
                                 Change: (price >= 10 ? '+' : '') + (price - 10).toFixed(2),
                                 DaysHigh: Math.max(quote.DaysHigh, price).toFixed(2),

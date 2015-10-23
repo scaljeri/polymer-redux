@@ -25,12 +25,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }, {
             key: '_onChangeInput',
             value: function _onChangeInput(event) {
-                this.$.store.dispatch(this.$.store.actions.FILTER_INTERVAL_CHANGE, { interval: parseInt(event.target.value) });
+                this.$.store.dispatch('FILTER_INTERVAL_CHANGE', { interval: parseInt(event.target.value) });
             }
         }, {
             key: '_onChangeSlider',
             value: function _onChangeSlider(event) {
-                this.$.store.dispatch(this.$.store.actions.FILTER_SAMPLES_CHANGE, { samples: parseInt(event.target.value) });
+                this.$.store.dispatch('FILTER_SAMPLES_CHANGE', { samples: parseInt(event.target.value) });
             }
         }]);
 
