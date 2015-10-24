@@ -38,7 +38,7 @@ paper-button {
 
     <template>
         <app-store id="store" state="{{state}}" reducer="[[reducer]]"></app-store>
-        <app-storage id="storage" state="[[state]]"></app-storage>
+        <app-storage id="storage" state="[[state]]" on-ready="handleReady"></app-storage>
         <app-reducer id="reducer" filter="[[state.filter]]"></app-reducer>
 
         <app-ticker quote="[[state.quote]]" filter="[[state.filter]]"></app-ticker>

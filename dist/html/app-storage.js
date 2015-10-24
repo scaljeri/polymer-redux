@@ -83,6 +83,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 if (this.fbState && !this.state.quote) {
                     this.$.store.dispatch('INITIALIZE_STATE', { state: this.fbState });
                 }
+
+                this.fire('ready');
             }
         }, {
             key: 'saveState',

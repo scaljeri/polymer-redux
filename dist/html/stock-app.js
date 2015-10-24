@@ -42,6 +42,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 this.$.storage.resetState();
             }
         }, {
+            key: 'handleReady',
+            value: function handleReady() {
+                debugger;
+                this.$.urlSymbol.activate();
+            }
+        }, {
             key: 'ready',
             value: function ready() {
                 this.set('state', this.$.store.state);

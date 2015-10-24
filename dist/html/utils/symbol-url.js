@@ -37,13 +37,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     if (symbol) {
                         this.$.store.dispatch('FILTER_SYMBOL_CHANGE', { symbol: symbol || 'polymer' });
                     }
+                } else {
+                    this.updateSymbol();
                 }
             }
         }, {
             key: 'updateSymbol',
             value: function updateSymbol() {
                 if (this.isActive && this.symbol) {
-                    // this function is called before `attached`
                     history.replaceState(null, this.symbol, '?q=' + this.symbol);
                 }
             }
