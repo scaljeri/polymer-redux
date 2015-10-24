@@ -94,6 +94,8 @@
                     if (this.fbState && !this.state.quote) {
                         this.$.store.dispatch('INITIALIZE_STATE', {state: this.fbState});
                     }
+
+                    this.fire('ready');
                 }
 
                 saveState() {
