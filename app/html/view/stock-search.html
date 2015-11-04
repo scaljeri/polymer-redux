@@ -27,12 +27,12 @@
         <app-store id="store"></app-store>
 
         <div class="search-wrapper">
-            <iron-a11y-keys keyEventTarget="tickerInput" keys="enter" on-keys-pressed="handleSymbolChange"></iron-a11y-keys>
+            <iron-a11y-keys keyEventTarget="stockName" keys="enter" on-keys-pressed="updateSymbol"></iron-a11y-keys>
             <paper-input-container>
                 <label>Ticker symbol</label>
-                <input id="stock-name" is="iron-input" bind-value="{{localSymbol}}">
+                <input id="stockName" is="iron-input" bind-value="{{queryString}}">
             </paper-input-container>
-            <paper-button id="tickerInput" on-click="handleSymbolChange" class="search">Search</paper-button>
+            <paper-button id="tickerInput" on-click="updateSymbol" class="search">Search</paper-button>
         </div>
     </template>
     <script>
@@ -44,23 +44,30 @@
                     this.is = 'stock-search';
 
                     this.properties = {
-                        symbol: {
-                            type: String,
+                        symbols: {
+                            type: Array,
                             notify: true,
-                            observer: 'handleUpdateSymbol'
+                            observer: 'updatedSymbol'
+                        },
+                        queryString: {
+                            notify: true,
+                            observer: 'updatedQueryString',
+                            type: String
                         }
                     };
                 }
 
-                handleUpdateSymbol() {
-                    this.localSymbol = this.symbol;
+                updatedQueryString() {
+                    if (this.oldQueryString) {
+                        this.$.store.dispatch('FILTER_QUERYSTRING_CHANGE', {queryString: this.queryString});
+                    }
+
+                    this.oldQueryString = this.queryString;
                 }
 
-                handleSymbolChange() {
-                    let store = this.$.store,
-                        symbol = this.$['stock-name'].value;
-
-                    store.dispatch('FILTER_SYMBOL_CHANGE', {symbol});
+                updateSymbol() {
+                    debugger;
+                    this.$.store.dispatch('FILTER_SYMBOL_CHANGE', {symbol: this.queryString});
                 }
             }
 

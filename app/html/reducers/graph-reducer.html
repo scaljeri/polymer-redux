@@ -25,6 +25,10 @@
                         case 'FILTER_SYMBOL_CHANGE':
                             filter = Object.assign({}, state.filter, {symbol: input.symbol});
 
+                            if (!filter.queryString) {
+                                filter.queryString = input.symbol;
+                            }
+
                             return Object.assign({}, state, {filter}, {data: []});
                         case 'FILTER_INTERVAL_CHANGE':
                             filter = Object.assign({}, state.filter, {interval: input.interval});
@@ -38,9 +42,11 @@
                                 data = data.slice(length - samples);
                             }
 
-                            //filter = Object.assign({}, state.filter, {samples});
                             filter.samples = samples;
                             return Object.assign({}, state, {filter}, {data});
+                        case 'FILTER_QUERYSTRING_CHANGE':
+                            let filter = Object.assign({}, state.filter, {queryString: input.queryString});
+                            return Object.assign({}, state, {filter});
                         default:
                             return state;
                     }

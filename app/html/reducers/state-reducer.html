@@ -21,6 +21,10 @@
                                  input.state.page = state.page;
                              }
 
+                             if (!input.state.filter.queryString) {
+                                 state.filter.queryString = input.state.filter.symbol;
+                             }
+
                              return Object.assign({}, state, input.state);
                         case 'UPDATE_PAGEHITS':
                              let page = Object.assign({}, state.page, {hit: input.hit});

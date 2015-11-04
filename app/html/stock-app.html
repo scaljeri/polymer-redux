@@ -32,7 +32,7 @@
 
         <stock-view filter="[[state.filter]]" quote="[[state.quote]]" data="[[state.data]]">
             <article id="details">
-              <stock-search symbol="[[state.filter.symbol]]"></stock-search>
+              <stock-search symbols="[[state.symbols]]" query-string="[[state.filter.queryString]]"></stock-search>
               <stock-details quote="[[state.quote]]"></stock-details>
             <article>
         </stock-view>
@@ -68,7 +68,6 @@
                 }
 
                 handleReady() {
-                    debugger;
                     this.$.urlSymbol.activate();
                 }
 

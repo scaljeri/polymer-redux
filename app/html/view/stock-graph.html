@@ -1,11 +1,33 @@
 <link rel="import" href="../../../bower/polymer/polymer.html">
+<link rel="import" href="../../../bower/paper-dialog/paper-dialog.html">
 
 <dom-module id="stock-graph">
     <style>
+        paper-button {
+            --paper-button: {
+                background-color: lightgray;
+            };
+            float: right;
+            margin-right: 24px;
+        }
+
+        .symbol {
+            font-weight: 700;
+            font-style: oblique;
+        }
     </style>
     <template>
         <quote-transform quote="[[quote]]"></quote-transform>
         <div id="highcharts"></div>
+
+        <paper-dialog id="ooops" entry-animation="scale-up-animation"
+              modal="true"
+              withBackdrop="true"
+              exit-animation="fade-out-animation">
+              <h2>Oooops</h2>
+              <div>Ticker symbol <span class="symbol">{{quote.Symbol}}</span> is unknown!!</div>
+              <paper-button dialog-dismiss>Close</paper-button>
+        </paper-dialog>
     </template>
     <script>
         (function () {
@@ -109,16 +131,20 @@
 
                 updateData() {
                     if (this.data && this.quote) {
-                        if (this.symbol !== this.quote.Symbol) {
-                            this.symbol = this.quote.Symbol;
-                            return this.series.setData(this.data)
-                        }
+                        if (!this.quote.Name) {
+                            this.$.ooops.open();
+                        } else {
+                            if (this.symbol !== this.quote.Symbol) {
+                                this.symbol = this.quote.Symbol;
+                                return this.series.setData(this.data)
+                            }
 
-                        let numberOfItems = this.data.length,
+                            let numberOfItems = this.data.length,
                                 lastItem = this.data[numberOfItems - 1];
 
-                        this.createGraphTitle();
-                        this.series.addPoint(lastItem, true, this.series.data.length >= this.samples);
+                                this.createGraphTitle();
+                                this.series.addPoint(lastItem, true, this.series.data.length >= this.samples);
+                        }
                     }
                 }
 

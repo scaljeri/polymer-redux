@@ -11,13 +11,16 @@
                            log="true"
                            on-iron-localstorage-load-empty="initializeLocalStorage"></iron-localstorage>
 
+        <firebase-collection
+                           order-by-child="symbol"
+                           limit-to-first="10"
+                           equal-to="[[queryString]]"
+                           location="https://polymer-redux.firebaseio.com/symbols"
+                           data="{{fbSymbols}}"></firebase-collection>
+
         <firebase-document location="https://polymer-redux.firebaseio.com/page"
                            log="true"
                            data="{{fbPage}}"></firebase-document>
-
-        <firebase-document location="https://polymer-redux.firebaseio.com/symbols"
-                           log="true"
-                           data="{{fbSymbols}}"></firebase-document>
 
         <firebase-document location="{{location}}"
                            log="true"
@@ -43,11 +46,12 @@
                     this.properties = {
                         state: {
                             notify: true,
+                            observer: 'updatedState',
                             type: Object
                         },
                         fbState: {
                             notify: true,
-                            observer: 'updatedState',
+                            observer: 'updatedFbState',
                             type: Object
                         },
                         fbPage: {
@@ -62,10 +66,31 @@
                         },
                         symbols: {
                             notify: true,
+                            observer: 'upadatedSymbols',
                             type: Array
                         }
                     };
                 }
+                updatedState() {
+                    let queryString = this.state.filter.queryString;
+
+                    if (queryString && queryString.length > 2) {
+                        this.set('queryString', queryString);
+                    }
+
+/*
+                    if (this.state.quote && this.state.quote.Symbol !== this.symbol) {
+                            this.symbol = this.state.quote.Symbol;
+
+                            this.$.symbols.add({symbol: this.symbol, count: 1});
+                    }
+                    */
+                }
+
+                upadatedSymbols() {
+
+                }
+
                 handleLs() {
                     if (this.ls) {
                         this.set('location', `https://polymer-redux.firebaseio.com/${this.ls.guid}`);
@@ -90,7 +115,7 @@
                     this.$.store.dispatch('UPDATE_PAGEHITS', {hit: this.pageHit});
                 }
 
-                updatedState() {
+                updatedFbState() {
                     if (this.fbState && !this.state.quote) {
                         this.$.store.dispatch('INITIALIZE_STATE', {state: this.fbState});
                     }

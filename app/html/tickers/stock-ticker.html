@@ -41,8 +41,12 @@
                     this.timer = setTimeout(() => {
                         this.getQuote().then((response) => {
                             let json = JSON.parse(response);
+
                             this.$.store.dispatch('QUOTE_CHANGE', {quote: json.query.results.quote})
-                            this.start();
+
+                            if (json.query.results.quote.Name) {
+                                this.start();
+                            }
                         });
                     }, Math.max(1000, this.interval));
                 }
