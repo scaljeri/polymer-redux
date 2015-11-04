@@ -1,0 +1,56 @@
+<!doctype html>
+
+<html>
+<head>
+    <link rel="stylesheet" href="main.css">
+    <link href='https://fonts.googleapis.com/css?family=Antic' rel='stylesheet' type='text/css'>
+    <script>
+    </script>
+</head>
+
+<body>
+<section>
+    <header>
+        <img src="polymer-logo.svg">
+
+        <h1>Polymer - Redux</h1>
+    </header>
+
+    <article>
+
+        <div class="content-container">
+            <p>
+                Some time ago I realised that the two best things currently out
+                there, <a href="https://www.polymer-project.org">Polymer</a> and
+                <a href="https://github.com/rackt/redux">Redux</a>, were not yet used
+                together. So I decided to dig into this and prove
+                that they work great together!
+
+                I mist admit that <a href="https://facebook.github.io/react/">React</a> and <a
+                    href="https://angularjs.org/">Angular</a> are great
+                frameworks too, but why invent a whole new concepts, while the DOM itself has a lot of framework type
+                concepts
+                just built into it:
+
+            <ol>
+                <li>Component model (custom element)</li>
+                <li>Concept of data flow (attributes/properties and events)
+                <li>declarative syntax (HTML)</li>
+            </ol>
+
+            Anyway, this is not a post about Polymer :) <br><br>
+
+            Below I'll explain how I use a single store, no two-way data-binding, actions and reducers!
+            </p>
+
+            <h2>Single source of truth</h2>
+
+            <p class="first-dark-blue">
+                Having just one state object is awesome. I especially realised this when I tried to save the current
+                state to <a href="https://www.firebase.com/">Firebase</a>.
+            </p>
+        </div>
+    </article>
+</section>
+</body>
+</html>
