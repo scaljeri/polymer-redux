@@ -10,10 +10,6 @@
                     this.is = 'state-reducer';
                 }
 
-                get actions() {
-                    return ['INITIALIZE_STATE'];
-                }
-
                 transform(state, action, input) {
                     switch (action) {
                         case 'INITIALIZE_STATE':

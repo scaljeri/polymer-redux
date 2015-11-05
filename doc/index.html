@@ -20,35 +20,113 @@
 
         <div class="content-container">
             <p>
-                Some time ago I realised that the two best things currently out
-                there, <a href="https://www.polymer-project.org">Polymer</a> and
-                <a href="https://github.com/rackt/redux">Redux</a>, were not yet used
-                together. So I decided to dig into this and prove
-                that they work great together!
+                With the rise of SPA the complexity of web applications exploded. If you think that the IE6
+                <a href="http://www.superstarcoders.com/blogs/posts/ie6-ie7-peekaboo-bug-fix.aspx">peekaboo</a> css
+                bug was nasty, wait until you're faced with some weirdness in your SPA application and are bug hunting
+                for days. So many times I wished I could zip my whole website and upload it to
+                <a href="stackoverflow.com">stackoverflow.com</a>.<br>
+                <br>
+                Luckily, there are projects out there that aim at simplification
 
-                I mist admit that <a href="https://facebook.github.io/react/">React</a> and <a
-                    href="https://angularjs.org/">Angular</a> are great
-                frameworks too, but why invent a whole new concepts, while the DOM itself has a lot of framework type
-                concepts
-                just built into it:
+                    <ol>
+                        <li> <a href="https://github.com/rackt/redux">Redux</a> - a brilliant architecture which simplifies
+                                state maintenance</li>
+                        <li> <a href="https://www.polymer-project.org">Polymer</a> -
+                            a back-to-nature approach that puts elements back at the center of the universe</li>
+                    </ol>
 
-            <ol>
-                <li>Component model (custom element)</li>
-                <li>Concept of data flow (attributes/properties and events)
-                <li>declarative syntax (HTML)</li>
-            </ol>
 
-            Anyway, this is not a post about Polymer :) <br><br>
+                Of course frameworks like <a href="https://facebook.github.io/react/">React</a> and <a
+                href="https://angularjs.org/">Angular</a> are great, but why invent a whole new concepts,
+                while the DOM itself has a lot of framework type concepts just built into it:
 
-            Below I'll explain how I use a single store, no two-way data-binding, actions and reducers!
+                <ol>
+                    <li>Component model (custom element)</li>
+                    <li>Concept of data flow (attributes/properties and events)
+                    <li>declarative syntax (HTML)</li>
+                </ol>
+
+                Anyway, this is not a post about Polymer :) <br><br>
+
+                So, below I'll explain how I've used a single store, no two-way data-binding, actions and reducers.
+            You can visit
+                the DEMO <a href="./demo">here</a> and checkout the code <a href="https://github.com/scaljeri/polymer-redux">here</a>
+            </p>
+
+            <h2>Demo site</h2>
+            <p>
+                For the purpose of this excerise I've written a <a href="./demo">Stock ticker application</a>. If no
+                stock symbol pops up in your mind here are some suggestions
+
+                <ol>
+                    <li>polymer - random generated data</li>
+                    <li>aapl</li>
+                    <li>goog</li>
+                    <li>fb</li>
+                    <li>rdsa.as</li>
+                </ol>
+
+                At any point you can save the current state and hit reload from than on. The application
+                will load its state back from Firebase and re-initializes. With Redux you almost get this
+                functionality for free :)
             </p>
 
             <h2>Single source of truth</h2>
 
             <p class="first-dark-blue">
-                Having just one state object is awesome. I especially realised this when I tried to save the current
-                state to <a href="https://www.firebase.com/">Firebase</a>.
+                In Polymer everything is an element, for example, an
+                <a href="https://elements.polymer-project.org/elements/iron-ajax">AJAX call</a> can be expressed in HTML.
+                There is truly an <a href="https://elements.polymer-project.org/">element for everyting</a>.
+                <br>
+
+                In the main component of the demo app <a href="https://github.com/scaljeri/polymer-redux/blob/master/app/html/stock-app.html">app-app.html</a>
+                I connect the reducers and store
+
+                <pre class="demo-code"><span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>app-store</span> id=<span style='color:#2a00ff; '>"store"</span>
+           state=<span style='color:#2a00ff; '>"{{state}}"</span>
+           reducer=<span style='color:#2a00ff; '>"[[reducer]]"</span><span style='color:#7f0055; '>></span><span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>app-store</span><span style='color:#7f0055; '>></span></pre>
+
+                I pass the <b>reducers</b> to the store and with two-way data-binding
+                <pre>{{state}}</pre>I gain access to the state. From there on I pass state properties to child elements
+                only by one-way data-binding.
             </p>
+
+            <h2>Actions</h2>
+
+            <p class="first-dark-red">
+                Through attributes components receive parts of the state. In order to change the state
+                each component included the store and can thus dispatch actions as follows
+
+                <pre class="demo-code"><span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>app-store</span> id=<span style='color:#2a00ff; '>"store"</span><span style='color:#7f0055; '>></span><span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>app-store</span><span style='color:#7f0055; '>></span>
+...
+this.$.store.dispatch('CHANGE_QUERYSTRING',
+           {queryString: this.queryString});
+</pre>
+
+                The store passes the action through to the reducers
+            </p>
+
+            <h2>Reducers</h2>
+
+            <p>
+                Reducers are pure function (wrapped in an element of course). They don't change the state
+                object, but return a complete new object if changes are made
+                <br><br>
+                <pre class="demo-code"><span style='color:#7f0055; font-weight:bold; '>class</span> QuoteReducer {
+    transform(state, action, input) {
+        <span style='color:#7f0055; font-weight:bold; '>switch</span> (action) {
+            <span style='color:#7f0055; font-weight:bold; '>case</span> <span style='color:#2a00ff; '>'</span><span style='color:#2a00ff; '>QUOTE_CHANGE</span><span style='color:#2a00ff; '>'</span>:
+                <span style='color:#7f0055; font-weight:bold; '>return</span> Object.assign({}, state, {quote: input.quote});
+            <span style='color:#7f0055; font-weight:bold; '>default</span>:
+                <span style='color:#7f0055; font-weight:bold; '>return</span> state;
+        }
+    }
+}
+</pre>
+            Finally, when the reducers are ready, the store updates its state and Polymer makes sure
+            that the changes flow (from top to bottom) through the application.
+            </p>
+
         </div>
     </article>
 </section>

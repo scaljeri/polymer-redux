@@ -29,6 +29,7 @@ h1 {
 article {
 	display: flex;
 	justify-content: center;
+	margin-bottom: 50px;
 	padding-top: 150px;
 }
 
@@ -67,4 +68,15 @@ p.first-dark-blue::first-letter {
 
 p.first-dark-red::first-letter {
 	color: #802041!important;
+}
+pre {
+	display: inline;
+	background-color: lightgray;
+	margin-right: 5px;
+}
+pre.demo-code {
+	background-color: #fff;
+	color:#000000;
+	display: block;
+	margin-left: 50px;
 }
