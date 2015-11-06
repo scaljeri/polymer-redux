@@ -36,7 +36,7 @@
                             return Object.assign({}, state, {filter});
                         case 'FILTER_SAMPLES_CHANGE':
                             let samples = Math.min(100, input.samples);
-                            data = state.data;
+                            data = [...state.data];
 
                             if (data.length > samples) {
                                 data = data.slice(length - samples);
