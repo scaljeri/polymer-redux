@@ -1,6 +1,8 @@
 body {
 	font-family: 'Antic', sans-serif;
 	font-size: 16px;
+	margin: 0;
+	padding: 0;
 }
 
 header {
@@ -34,7 +36,8 @@ article {
 }
 
 div.content-container {
-	width: 600px;
+	max-width: 600px;
+	overflow: hidden;
 }
 
 h2 {
@@ -43,32 +46,43 @@ h2 {
 }
 
 p {
+	font-size: 1rem; /* 12px */
+	line-height: 1.5000rem; /* 18px */
+	margin: 0 0 1.5000rem 0;
+}
 
+.up2date {
+	display: inline-block;
+	position: relative;
+	top: -2px;
 }
 
 ol {
 	margin-left: 50px;
 }
 
-/* Drop Caps */
-p::first-letter {
-	float: left;
-	color: #758afe;
-	font-size: 5rem;
-	line-height: 60px;
-	padding-top: 4px;
-	padding-right: 8px;
-	padding-left: 3px;
-	font-family: Georgia;
+@media screen and (min-width: 650px) {
+	/* Drop Caps */
+	p::first-letter {
+		float: left;
+		color: #758afe;
+		font-size: 5rem;
+		line-height: 60px;
+		padding-top: 4px;
+		padding-right: 8px;
+		padding-left: 3px;
+		font-family: Georgia;
+	}
+
+	p.first-dark-blue::first-letter {
+		color: #273380;
+	}
+
+	p.first-dark-red::first-letter {
+		color: #802041 !important;
+	}
 }
 
-p.first-dark-blue::first-letter {
-	color: #273380;
-}
-
-p.first-dark-red::first-letter {
-	color: #802041!important;
-}
 pre {
 	display: inline;
 	background-color: lightgray;
@@ -79,4 +93,37 @@ pre.demo-code {
 	color:#000000;
 	display: block;
 	margin-left: 50px;
+}
+
+@media screen and (max-width: 650px) {
+	img {
+		position: absolute;
+		height: auto;
+		width: 20px;
+		top: 10px;
+		left: 10px;
+
+	}
+
+	div {
+		margin-left: 10px;
+		margin-right: 10px;
+	}
+
+	pre.demo-code {
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
+
+@media screen and (max-width: 451px) {
+	header, section, div {
+		position: relative;
+		width: 450px;
+		overflow: scroll!important;
+	}
+
+	article {
+		padding-top: 10px;
+	}
 }
