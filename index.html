@@ -92,8 +92,10 @@
            reducer=<span style='color:#2a00ff; '>"[[reducer]]"</span><span style='color:#7f0055; '>></span><span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>app-store</span><span style='color:#7f0055; '>></span></pre>
 
                 I pass the <b>reducers</b> to the store and with two-way data-binding
-                <pre>{{state}}</pre>I gain access to the state. From there on I pass state properties to child elements
-                only by one-way data-binding.
+                <pre>{{state}}</pre>I gain access only at the top-level to the state. From there on I
+                pass state properties to child elements by one-way data-binding.
+
+                <pre class="demo-code">&lt;app-header hits=<span style='color:#2a00ff; '>"</span><span style='color:#2a00ff; '>[[state.page.hit]]</span><span style='color:#2a00ff; '>"</span>> ... &lt;/app-header> </pre>
             </p>
 
             <h2>Actions</h2>
@@ -129,11 +131,20 @@ this.$.store.dispatch('CHANGE_QUERYSTRING',
     <span style='color:#800080; '>}</span>
 <span style='color:#800080; '>}</span>
 </pre>
-
-            Finally, when the reducers are ready, the store updates its state and Polymer makes sure
+            I've tried to simplify the reducers even more by using
+            <a href="https://facebook.github.io/immutable-js/">Immutable.js</a>, but that didn't
+            work very well, because it breaks Polymer's data-binding.<br>
+            <br>
+            So finally, when the reducers are ready, the store updates its state and Polymer makes sure
             that the changes flow (from top to bottom) through the application.
             </p>
 
+            <h2>Conclusion</h2>
+
+            <p>
+                It turns out that these two great project work very well together. Unfortunately
+                at the moment you cannot use Immutable.js
+            </p>
         </div>
     </article>
 </section>
