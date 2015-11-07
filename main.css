@@ -12,11 +12,13 @@ header {
 	height: 120px;
 	position: fixed;
 	background-color: #235653;
+	transition: all 0.4s ease-in-out;
 }
 
 img {
 	height: 100px;
 	margin: 10px 0;
+	transition: all 0.4s ease-in-out;
 }
 
 h1 {
@@ -27,7 +29,23 @@ h1 {
 	font-size: 50px;
 	margin-left: 10px;
 	line-height: 120px;
+	transition: all 0.4s ease-in-out;
 }
+
+header.minified {
+	height: 30px;
+}
+
+header.minified h1 {
+	font-size: 15px;
+	line-height: 30px;
+}
+
+header.minified img {
+	height: 20px;
+	margin: 6px 0;
+}
+
 article {
 	display: flex;
 	justify-content: center;
@@ -96,13 +114,25 @@ pre.demo-code {
 }
 
 @media screen and (max-width: 650px) {
-	img {
-		position: absolute;
-		height: auto;
-		width: 20px;
-		top: 10px;
-		left: 10px;
+	header {
+		height: 30px;
+	}
 
+	h1 {
+		font-size: 15px;
+		line-height: 30px;
+	}
+
+	img {
+		height: 20px;
+		margin: 6px 0;
+	}
+
+	article {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 50px;
+		padding-top: 50px;
 	}
 
 	div {
