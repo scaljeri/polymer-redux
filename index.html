@@ -54,7 +54,7 @@
             <h2>Demo site</h2>
             <p class="first-dark-blue">
                 For the purpose of this exercise I've written a <a href="./demo">Stock ticker application</a>. As you can
-                see in the demo you can search for ticker symbols. Now if no stock symbol pops up in your mind right now,
+                see in the demo you can search for ticker symbols. If no stock symbol pops up in your mind right now,
                 here are some suggestions
 
                 <ol>
@@ -89,9 +89,8 @@
            state=<span style='color:#2a00ff; '>"{{state}}"</span>
            reducer=<span style='color:#2a00ff; '>"[[reducer]]"</span><span style='color:#7f0055; '>></span><span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>app-store</span><span style='color:#7f0055; '>></span></pre>
 
-                I pass the <b>reducers</b> to the store and with two-way data-binding
-                <pre>{{state}}</pre>I gain access only at the top-level to the state. From there on I
-                pass state properties to child elements by one-way data-binding.
+                I pass the <b>reducers</b> to the store and bind the state (child-to-host) <pre>{{state}}</pre>.
+                From there on I pass state properties to child elements by one-way data-binding only.
 
                 <pre class="demo-code">&lt;app-header hits=<span style='color:#2a00ff; '>"</span><span style='color:#2a00ff; '>[[state.page.hit]]</span><span style='color:#2a00ff; '>"</span>> ... &lt;/app-header> </pre>
             </p>
@@ -107,8 +106,10 @@
 this.$.store.dispatch('CHANGE_QUERYSTRING',
            {queryString: this.queryString});
 </pre>
+            However, everytime you include the store a new instance is created. So I've turned
+            the <a href="https://github.com/scaljeri/polymer-redux/blob/master/app/html/app-store.html">app-store.html</a>
+            into a singleton.
 
-                The store passes the action to the reducers
             </p>
 
             <h2>Reducers</h2>
