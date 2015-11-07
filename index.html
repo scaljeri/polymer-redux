@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="main.css">
     <link href='https://fonts.googleapis.com/css?family=Antic' rel='stylesheet' type='text/css'>
-    <script>
-    </script>
 </head>
 
 <body>
@@ -148,5 +146,20 @@ this.$.store.dispatch('CHANGE_QUERYSTRING',
         </div>
     </article>
 </section>
+    <script>
+        var header = document.querySelector('header'), isMinified = false;
+
+        window.onscroll = function(event) {
+            if (window.pageYOffset > 100) {
+                if (!isMinified) {
+                    header.classList.add('minified');
+                    isMinified = true;
+                }
+            } else if (isMinified) {
+                header.classList.remove('minified');
+                isMinified = false;
+            }
+        }
+    </script>
 </body>
 </html>
