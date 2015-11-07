@@ -11,15 +11,13 @@
 
                     this.properties = {
                         state: {
-                            notify:   true,
-                            readOnly: true,
                             type:     Object,
                             value:    {filter: {interval: 1000, samples: 2}}
                         },
                         reducer: {
                             notify:   true,
                             observer: 'updateReducer',
-                            readOnly: false,
+                            readOnly: true,
                             type:     Object
                         }
                     };
