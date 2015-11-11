@@ -18,9 +18,9 @@
     </style>
 
     <template>
+        <app-reducer id="reducer" filter="[[state.filter]]"></app-reducer>
         <app-store id="store" state="{{state}}" reducer="[[reducer]]"></app-store>
         <app-storage id="storage" state="[[state]]" on-ready="handleReady"></app-storage>
-        <app-reducer id="reducer" filter="[[state.filter]]"></app-reducer>
 
         <app-ticker quote="[[state.quote]]" filter="[[state.filter]]"></app-ticker>
         <symbol-url id="urlSymbol" symbol="[[state.filter.symbol]]"></symbol-url>
@@ -51,6 +51,7 @@
                     this.properties = {
                         reducer: {
                             notify: true,
+                            readonly: true,
                             type: Object
                         },
                         state: {
@@ -60,6 +61,7 @@
                         }
                     };
                 }
+
                 saveState() {
                     this.$.storage.saveState();
                 }

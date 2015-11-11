@@ -9,7 +9,7 @@
     "paper-radio-button": "PolymerElements/paper-radio-button#~1.0.8",
     "paper-radio-group": "PolymerElements/paper-radio-group#~1.0.4",
     "paper-slider": "PolymerElements/paper-slider#~1.0.7",
-    "firebase-element": "GoogleWebComponents/firebase-element#~1.0.6",
+    "firebase-element": "GoogleWebComponents/firebase-element#~1.0.8",
     "paper-behaviors": "PolymerElements/paper-behaviors#~1.0.5",
     "iron-localstorage": "PolymerElements/iron-localstorage#~1.0.4",
     "iron-a11y-keys": "PolymerElements/iron-a11y-keys#~1.0.2",

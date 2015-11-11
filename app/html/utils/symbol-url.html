@@ -23,6 +23,11 @@
                         }
                     };
                 }
+                updateSymbol() {
+                    if (this.isActive && this.symbol) {
+                        history.replaceState(null, this.symbol, `?q=${this.symbol}`);
+                    }
+                }
 
                 activate() {
                     this.isActive = true;
@@ -35,12 +40,6 @@
                         }
                     } else {
                         this.updateSymbol();
-                    }
-                }
-
-                updateSymbol() {
-                    if (this.isActive && this.symbol) {
-                        history.replaceState(null, this.symbol, `?q=${this.symbol}`);
                     }
                 }
             }

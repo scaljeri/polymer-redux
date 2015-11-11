@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower/polymer/polymer.html">
 <link rel="import" href="../../bower/firebase-element/firebase-document.html">
+<link rel="import" href="../../bower/firebase-element/firebase-collection.html">
 <link rel="import" href="../../bower/iron-localstorage/iron-localstorage.html">
 
 <link rel="import" href="app-store.html">
@@ -8,22 +9,32 @@
     <template>
         <iron-localstorage name="stock-app"
                            value="{{ls}}"
-                           log="true"
+                           log="false"
                            on-iron-localstorage-load-empty="initializeLocalStorage"></iron-localstorage>
 
+        <!--
+        <firebase-document
+                id="savedSymbols"
+                log="true"
+                location="https://polymer-redux.firebaseio.com/symbols"
+                data="{{fbSymbols}}"></firebase-document>-->
+
         <firebase-collection
-                           order-by-child="symbol"
+                           id="savedSymbols"
                            limit-to-first="10"
-                           equal-to="[[queryString]]"
+                           log="true"
                            location="https://polymer-redux.firebaseio.com/symbols"
                            data="{{fbSymbols}}"></firebase-collection>
 
+        <!--limit-to-first="10"-->
+        <!--start-at="[[queryString]]"-->
+
         <firebase-document location="https://polymer-redux.firebaseio.com/page"
-                           log="true"
+                           log="false"
                            data="{{fbPage}}"></firebase-document>
 
         <firebase-document location="{{location}}"
-                           log="true"
+                           log="false"
                            data="{{fbState}}"></firebase-document>
 
         <app-store id="store"></app-store>
@@ -59,25 +70,31 @@
                             observer: 'updatedPage',
                             type: Object
                         },
+                        fbSymbols: {
+                            notify: true,
+                            observer: 'updatedSymbols',
+                            type: Array
+                        },
                         ls: {
                             notify: true,
                             observer: 'handleLs',
                             type: Object
-                        },
-                        symbols: {
-                            notify: true,
-                            observer: 'upadatedSymbols',
-                            type: Array
                         }
                     };
                 }
                 updatedState() {
                     let queryString = this.state.filter.queryString;
 
+                    // ??
                     if (queryString && queryString.length > 2) {
                         this.set('queryString', queryString);
                     }
 
+                    if ((this.state.symbols||[]).length > 0 && this.state.symbols.length !== (this.fbSymbols||[]).length) {
+                        //this.$.savedSymbols.add(this.state.symbols[this.state.symbols.length-1]);
+                        //this.$.symbols.add({symbol: this.symbol, count: 1});
+                        //this.$.symbols.add(this.state.filter.symbol);
+                    }
 /*
                     if (this.state.quote && this.state.quote.Symbol !== this.symbol) {
                             this.symbol = this.state.quote.Symbol;
@@ -85,10 +102,12 @@
                             this.$.symbols.add({symbol: this.symbol, count: 1});
                     }
                     */
+                    //this.$.savedSymbols.add('inga.as');
                 }
 
-                upadatedSymbols() {
-
+                updatedSymbols() {
+                    debugger;
+                    this.$.store.dispatch('UPDATE_SYMBOLS', {symbols: this.fbSymbols});
                 }
 
                 handleLs() {

@@ -14,63 +14,64 @@
 
             --paper-input-container-label: {
                 color: lightgray;
-            }
+            };
             --paper-input-container-label-focus: {
                 color: #000;
-            }
+            };
             --paper-input-container-underline-focus: {
                 background: green;
-            }
+            };
         }
     </style>
     <template>
         <app-store id="store"></app-store>
+        <datalist id="symbols-list">
+            <template is="dom-repeat" items="{{symbols}}" as="item">
+                <option value="{{item}}"></option>
+            </template>
+        </datalist>
 
         <div class="search-wrapper">
-            <iron-a11y-keys keyEventTarget="stockName" keys="enter" on-keys-pressed="updateSymbol"></iron-a11y-keys>
+            <iron-a11y-keys keyEventTarget="stockName" keys="enter" on-keys-pressed="changedSymbol"></iron-a11y-keys>
             <paper-input-container>
                 <label>Ticker symbol</label>
-                <input id="stockName" is="iron-input" bind-value="{{queryString}}">
+                <input id="stockName" is="iron-input" bind-value="{{queryString}}" list="symbols-list" autocomplete="true">
             </paper-input-container>
-            <paper-button id="tickerInput" on-click="updateSymbol" class="search">Search</paper-button>
-        </div>
-    </template>
-    <script>
-        (function () {
-            'use strict';
+            <paper-button id="tickerInput" on-click="changedSymbol" class="search">Search</paper-button>
+            </div>
+        </template>
+        <script>
+            (function () {
+                'use strict';
 
-            class StockSearch {
-                beforeRegister() {
-                    this.is = 'stock-search';
+                class StockSearch {
+                    beforeRegister() {
+                        this.is = 'stock-search';
 
-                    this.properties = {
-                        symbols: {
-                            type: Array,
-                            notify: true,
-                            observer: 'updatedSymbol'
-                        },
-                        queryString: {
-                            notify: true,
-                            observer: 'updatedQueryString',
-                            type: String
-                        }
-                    };
-                }
+                        this.properties = {
+                            symbols: {
+                                type: Array,
+                                notify: true
+                            },
+                            queryString: {
+                                notify: true,
+                                observer: 'updatedQueryString',
+                                type: String
+                            }
+                        };
+                    }
 
-                updatedQueryString() {
-                    if (this.oldQueryString) {
+                    updatedQueryString() {
                         this.$.store.dispatch('FILTER_QUERYSTRING_CHANGE', {queryString: this.queryString});
                     }
 
-                    this.oldQueryString = this.queryString;
+                    changedSymbol() {
+                        debugger;
+                        this.$.store.dispatch('FILTER_SYMBOL_CHANGE', {symbol: this.queryString});
+                    }
                 }
 
-                updateSymbol() {
-                    this.$.store.dispatch('FILTER_SYMBOL_CHANGE', {symbol: this.queryString});
-                }
-            }
-
-            Polymer(StockSearch);
-        })();
-    </script>
-</dom-module>
+                Polymer(StockSearch);
+            })();
+        </script>
+    </dom-module>

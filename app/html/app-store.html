@@ -3,7 +3,7 @@
 <dom-module id="app-store">
     <script>
         (function () {
-            let appStore;
+            let appStore = {};
 
             class AppStore {
                 beforeRegister() {
@@ -11,13 +11,14 @@
 
                     this.properties = {
                         state: {
+                            notify: true,
                             type:     Object,
                             value:    {filter: {interval: 1000, samples: 2}}
                         },
                         reducer: {
                             notify:   true,
+                            readonly: true,
                             observer: 'updateReducer',
-                            readOnly: true,
                             type:     Object
                         }
                     };
@@ -26,21 +27,18 @@
                 updateReducer(reducer) {
                     if (reducer) {
                         appStore = this; // Only use one store
+                        window.x = appStore;
                     }
                 }
 
                 dispatch(action, data) {
-                    let newState = appStore.reducer.transform(appStore.state, action, data);
+                    if (appStore.reducer) {
+                        let newState = appStore.reducer.transform(appStore.state, action, data);
 
-                    if (newState === appStore.state) {
-                        throw `Unknown action: ${action}`;
+                        newState.updated = new Date();
+                        appStore.state = newState;
                     }
-
-                    newState.page.updated = new Date();
-                    appStore._setState(newState);
                 }
-
-                get state() { return appStore.state;}
             }
 
             Polymer(AppStore);
