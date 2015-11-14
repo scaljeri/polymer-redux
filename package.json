@@ -15,6 +15,7 @@
   "devDependencies": {
     "del": "^2.0.2",
     "gulp-babel": "^5.2.1",
+    "gulp-clean": "^0.3.1",
     "gulp-crisper": "0.0.6",
     "gulp-if": "^2.0.0",
     "gulp-inject": "^3.0.0",
