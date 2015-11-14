@@ -94,7 +94,7 @@
                 }
 
                 updatedState() {
-                    if (this.state.quote) {
+                    if (this.state.quote && this.state.quote.Name) {
                         let newSymbol = this.state.quote.symbol;
                         if (newSymbol !== this.currentSymbol) {
                             // new symbol
