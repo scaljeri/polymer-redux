@@ -20,19 +20,18 @@
                             }
 
                             return Object.assign({}, state, {
-                                    data:    Object.assign([], input.state.data),
-                                    filter:  Object.assign({}, input.state.filter),
-                                    symbols: Object.assign([], state.symbols),
-                                    quote:   Object.assign({}, input.state.quote)});
+                                data: Object.assign([], input.state.data),
+                                filter: Object.assign({}, input.state.filter),
+                                symbols: Object.assign([], state.symbols),
+                                quote: Object.assign({}, input.state.quote)
+                            });
                         case 'UPDATE_PAGEHITS':
                             page = Object.assign({}, state.page, {hit: input.hit});
 
                             return Object.assign({}, state, {page});
                         case 'UPDATE_SYMBOLS':
-                                if ((state.symbols||[]).length !== input.symbols.length) {
-                                    let symbols =Object.assign([], input.symbols);
-                                    return Object.assign({}, state, {symbols});
-                                }
+                            let symbols = Object.assign({}, input.symbols);
+                            return Object.assign({}, state, {symbols});
                         default:
                             return state;
                     }
