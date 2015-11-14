@@ -94,31 +94,22 @@
                 }
 
                 updatedState() {
-                    let queryString = this.state.filter.queryString;
+                    if (this.state.quote) {
+                        let newSymbol = this.state.quote.symbol;
+                        if (newSymbol !== this.currentSymbol) {
+                            // new symbol
+                            this.currentSymbol = newSymbol;
+                            console.dir(this.fbSymbols);
+                            let isPresent = this.fbSymbols.find((symbol) => {
+                                return symbol.code === newSymbol;
+                            });
 
-                    // ??
-                    if (queryString && queryString.length > 2) {
-                        this.set('queryString', queryString);
+                            if (!isPresent) {
+                                this.$.savedSymbols.add({code: newSymbol, name: this.state.quote.Name});
+                            }
+                        }
                     }
-
-                    if ((this.state.symbols||[]).length > 0 && this.state.symbols.length !== (this.fbSymbols||[]).length) {
-                        //this.$.savedSymbols.add(this.state.symbols[this.state.symbols.length-1]);
-                        //this.$.symbols.add({symbol: this.symbol, count: 1});
-                        //this.$.symbols.add(this.state.filter.symbol);
-                    }
-/*
-                    if (this.state.quote && this.state.quote.Symbol !== this.symbol) {
-                            this.symbol = this.state.quote.Symbol;
-
-                            this.$.symbols.add({symbol: this.symbol, count: 1});
-                    }
-                    */
-                    //this.$.savedSymbols.add('inga.as');
                 }
-
-                /*
-                updatedSymbols() {
-                } */
 
                 handleLs() {
                     if (this.ls) {
@@ -157,6 +148,7 @@
                 }
 
                 resetState() {
+                    // TODO: page???
                     this.set('fbState', {filter: {}, data: [], quote: {}, page: {}});
                 }
             }

@@ -19,7 +19,7 @@
                     this.properties = {
                         filter: {
                             notify: true,
-                            observer: 'updateFilter',
+                            observer: 'updatedFilter',
                             type: Object
                         },
                         quote: {
@@ -29,8 +29,8 @@
                     };
                 }
 
-                updateFilter() {
-                    if (this.filter.symbol && this.filter.interval) {
+                updatedFilter() {
+                    if (this.filter.symbol) {
                         if (this.current) {
                             this.current.stop();
                         }

@@ -30,7 +30,10 @@
 
                             return Object.assign({}, state, {page});
                         case 'UPDATE_SYMBOLS':
-                            let symbols = Object.assign({}, input.symbols);
+                            let symbols = input.symbols.map((symbol) => {
+                                return `${symbol.code} - ${symbol.name}`;
+                            });
+
                             return Object.assign({}, state, {symbols});
                         default:
                             return state;

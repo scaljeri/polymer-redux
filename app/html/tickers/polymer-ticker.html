@@ -20,7 +20,7 @@
                     this.properties = {
                         filter: {
                             notify: true,
-                            observer: 'updateFilter',
+                            observer: 'updatedFilter',
                             type: Object
                         },
                         quote: {
@@ -48,48 +48,50 @@
                     return Math.random() * 2 - .9; // Note that our random stock increases over time :)
                 }
 
-                updateFilter(newFilter, oldFilter) {
+                updatedFilter(newFilter, oldFilter) {
                     this.changeInterval = true;
                 }
 
                 start() {
-                  if (!this.timer) {
-                      this.timer = setInterval(() => {
-                          let quote = this.getQuote(),
-                              incr = this.generatePriceIncr(),
-                              price = parseFloat(quote.LastTradePriceOnly) + incr;
+                    if (!this.timer) {
+                        this.timer = setInterval(() => {
+                            let quote = this.getQuote(),
+                                incr = this.generatePriceIncr(),
+                                price = parseFloat(quote.LastTradePriceOnly) + incr;
 
-                           this.$.store.dispatch('QUOTE_CHANGE', {quote: {
-                               LastTradePriceOnly: price.toFixed(2),
-                               Change: (price >= 10 ? '+' : '') + (price - 10).toFixed(2),
-                               DaysHigh: Math.max(quote.DaysHigh, price).toFixed(2),
-                               DaysLow: Math.min(quote.DaysLow, price).toFixed(2),
-                               LastTradeDate: new Date().toString().match(DATE_RE)[1],
-                               LastTradeTime: new Date().toString().match(TIME_RE)[1],
-                               PercentChange: `${Math.round((price/10 - 1) * 10000)/100}%`,
-                               Volume: quote.Volume + 1,
-                               Ask: (price - incr).toFixed(2),
-                               Bid: (price + incr).toFixed(2),
-                               YearHigh: Math.max(price, quote.YearHigh).toFixed(2),
-                               YearLow: Math.min(price, quote.YearLow).toFixed(2),
-                               Currency: '€',
-                               Name: 'Polymer',
-                               Symbol: 'polymer'
-                          }});
+                            this.$.store.dispatch('QUOTE_CHANGE', {quote: {
+                                LastTradePriceOnly: price.toFixed(2),
+                                Change: (price >= 10 ? '+' : '') + (price - 10).toFixed(2),
+                                DaysHigh: Math.max(quote.DaysHigh, price).toFixed(2),
+                                DaysLow: Math.min(quote.DaysLow, price).toFixed(2),
+                                LastTradeDate: new Date().toString().match(DATE_RE)[1],
+                                LastTradeTime: new Date().toString().match(TIME_RE)[1],
+                                PercentChange: `${Math.round((price/10 - 1) * 10000)/100}%`,
+                                Volume: quote.Volume + 1,
+                                Ask: (price - incr).toFixed(2),
+                                Bid: (price + incr).toFixed(2),
+                                YearHigh: Math.max(price, quote.YearHigh).toFixed(2),
+                                YearLow: Math.min(price, quote.YearLow).toFixed(2),
+                                Currency: '€',
+                                Name: 'Polymer',
+                                Symbol: 'polymer'
+                            }});
 
-                          if (this.changeInterval) {
-                              this.changeInterval = false;
-                              this.restart();
-                          }
-                      }, this.filter.interval);
-                  }
+                            if (this.changeInterval) {
+                                this.changeInterval = false;
+                                this.restart();
+                            }
+                        }, this.filter.interval);
+                    }
+
+                    return this;
                 }
 
                 stop() {
-                  clearTimeout(this.timer);
-                  this.timer = null;
+                    clearTimeout(this.timer);
+                    this.timer = null;
 
-                  return this;
+                    return this;
                 }
 
                 restart() {
