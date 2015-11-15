@@ -68,12 +68,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 if (this.state.quote && this.state.quote.Name) {
                     (function () {
                         var newSymbol = _this.state.quote.symbol;
+
                         if (newSymbol !== _this.currentSymbol) {
                             // new symbol
                             _this.currentSymbol = newSymbol;
-                            console.dir(_this.fbSymbols);
                             var isPresent = _this.fbSymbols.find(function (symbol) {
-                                return symbol.code === newSymbol;
+                                return symbol.code.toLowerCase() === newSymbol.toLowerCase();
                             });
 
                             if (!isPresent) {
