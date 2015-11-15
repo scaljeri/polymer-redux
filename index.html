@@ -1,170 +1,48 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html>
+
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="main.css">
-    <link href='https://fonts.googleapis.com/css?family=Antic' rel='stylesheet' type='text/css'>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+    <title>Polymer classes in ES6</title>
+    <link rel=icon href="favicon.png">
+    <link rel="import" href="bower/polymer/polymer.html">
+
+    <script src="./node_modules/gulp-babel/node_modules/babel-core/browser-polyfill.js"></script>
+
+    <link rel="import" href="dist/html/stock-app.html">
+    <style>
+        body {
+            background-image: url(dist/img/background.jpg);
+        }
+        main {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title {
+            font-size: 35px;
+        }
+
+        .search-wrapper {
+            align-items: center;
+            display: flex;
+        }
+
+        .stock-input {
+            width: 200px;
+        }
+
+        .search {
+            border: 2px solid lightgray;
+            height: 40px;
+        }
+    </style>
 </head>
 
 <body>
-<section>
-    <header>
-        <img src="polymer-logo.svg">
-
-        <h1>Polymer - Redux</h1>
-    </header>
-
-    <article>
-
-        <div class="content-container">
-            <p>
-                Web Applications have changed over the years from being a simple static page to complex single page
-                application (<a href="https://en.wikipedia.org/wiki/Single-page_application">SPA</a>).
-                With the increase of complexity, the problems to solve are much harder too. If you get some random
-                weirdness in you SPA, you can easily bug-hunt for days.
-                <br><br>
-                Luckily, there are two projects out there that aim at simplification
-
-                    <ol>
-                        <li> <a href="https://github.com/rackt/redux">Redux</a> - a brilliant architecture which simplifies
-                                state maintenance</li>
-                        <li> <a href="https://www.polymer-project.org">Polymer</a> -
-                            a back-to-nature approach that puts elements back at the center of the universe</li>
-                    </ol>
-
-
-                Of course frameworks like <a href="https://facebook.github.io/react/">React</a> and <a
-                href="https://angularjs.org/">Angular</a> help you to build complex SPAs too, but why invent whole new concepts,
-                while the DOM itself has a lot of framework type concepts just built into it:
-
-                <ol>
-                    <li>Component model (custom element)</li>
-                    <li>Concept of data flow (attributes/properties and events)
-                    <li>declarative syntax (HTML)</li>
-                </ol>
-
-                Anyway, below I'll explain how I've used a single store, no two-way data-binding, actions and reducers in
-                Polymer. You can visit the DEMO <a href="./demo">here</a> and find the code on
-                <a href="https://github.com/scaljeri/polymer-redux">github</a>
-            </p>
-
-            <h2>Demo site</h2>
-            <p class="first-dark-blue">
-                For the purpose of this exercise I've written a <a href="./demo">Stock ticker application</a>. As you can
-                see in the demo you can search for ticker symbols. Here are some symbols to get you started
-
-                <ol>
-                    <li><a href="./demo/?q=polymer">polymer</a> - random generated data</li>
-                    <li><a href="./demo/?q=aapl">Apple - aapl</a></li>
-                    <li><a href="./demo/?q=goog">Google - goog</a></li>
-                    <li><a href="./demo/?q=fb">Facebook - fb</a></li>
-                    <li><a href="./demo/?q=rdsa.as">Shell - rdsa.as</a></li>
-                </ol>
-
-                At any time you can save the current state and hit reload without losing any data.
-                The application will save a unique key to
-                <a href="https://elements.polymer-project.org/elements/iron-localstorage">Localstorage</a> which is used
-                to restore the state from
-                <a href="https://elements.polymer-project.org/elements/firebase-element?active=firebase-document">Firebase</a>
-                With Redux you almost get this functionality for free :)<br>
-                <br>
-                NOTE: If the demo doesn't work, make sure you're using an up<span class="up2date">2</span>date browser,
-                like <a href="https://www.google.com/chrome/browser/canary.html">Chrome Canary</a>!!
-            </p>
-
-            <h2>Single source of truth</h2>
-
-            <p class="first-dark-red">
-                In Polymer everything is an element, for example, an
-                <a href="https://elements.polymer-project.org/elements/iron-ajax">AJAX call</a> can be expressed in HTML.
-                There is an <a href="https://elements.polymer-project.org/">element</a> for everything.
-                <br>
-
-                So, in the main component of the demo app
-                (<a href="https://github.com/scaljeri/polymer-redux/blob/master/app/html/stock-app.html">stock-app.html</a>)
-                I connect the reducers with the store
-
-                <pre class="demo-code"><span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>app-store</span> id=<span style='color:#2a00ff; '>"store"</span>
-           state=<span style='color:#2a00ff; '>"{{state}}"</span>
-           reducer=<span style='color:#2a00ff; '>"[[reducer]]"</span><span style='color:#7f0055; '>></span><span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>app-store</span><span style='color:#7f0055; '>></span></pre>
-
-                I pass the <b>reducers</b> to the store and bind the state (child-to-host) <pre>{{state}}</pre>.
-                From there on I pass state properties to child elements by one-way data-binding only.
-
-                <pre class="demo-code"><span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>app-header</span> hits=<span style='color:#2a00ff; '>"[[state.page.hit]]"</span><span style='color:#7f0055; '>></span>
-    ...
-<span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>app-header</span><span style='color:#7f0055; '>></span>
-</pre>
-            </p>
-
-            <h2>Actions</h2>
-
-            <p>
-                Through attributes components receive parts of the state. In order to change the state
-                each component includes the store and can dispatches actions
-
-                <pre class="demo-code"><span style='color:#7f0055; '>&lt;</span><span style='color:#7f0055; '>app-store</span> id=<span style='color:#2a00ff; '>"store"</span><span style='color:#7f0055; '>></span><span style='color:#7f0055; '>&lt;/</span><span style='color:#7f0055; '>app-store</span><span style='color:#7f0055; '>></span>
-...
-this.$.store.dispatch('CHANGE_QUERYSTRING',
-           {queryString: this.queryString});
-</pre>
-            However, everytime you include the store a new instance is created. So I've turned
-            the <a href="https://github.com/scaljeri/polymer-redux/blob/master/app/html/app-store.html">app-store.html</a>
-            into a singleton.
-
-            </p>
-
-            <h2>Reducers</h2>
-
-            <p class="first-dark-blue">
-                Reducers are pure function (wrapped in an element of course). They don't change the state
-                object, but return a complete new state object
-                <br>
-                <pre class="demo-code"><span style='color:#7f0055; font-weight:bold; '>class</span> QuoteReducer {
-  transform(state, action, input) {
-    <span style='color:#7f0055; font-weight:bold; '>switch</span> (action) {
-      <span style='color:#7f0055; font-weight:bold; '>case</span> <span style='color:#2a00ff; '>'</span><span style='color:#2a00ff; '>QUOTE_CHANGE</span><span style='color:#2a00ff; '>'</span>:
-        <span style='color:#7f0055; font-weight:bold; '>return</span> Object.assign({}, state,
-                 {quote: input.quote});
-      <span style='color:#7f0055; font-weight:bold; '>default</span>:
-        <span style='color:#7f0055; font-weight:bold; '>return</span> state;
-    }
-  }
-}
-</pre>
-            I've tried to simplify the reducers even more by using
-            <a href="https://facebook.github.io/immutable-js/">Immutable.js</a>, but that didn't
-            work very well, because it breaks Polymer's data-binding.<br>
-            <br>
-            So finally, when the reducers are ready, the store updates its state and Polymer makes sure
-            that the changes flow (from top to bottom) through the application.
-            </p>
-
-            <h2>Conclusion</h2>
-
-            <p class="first-dark-red">
-                It turns out that these two great project work very well together. Unfortunately
-                at the moment you need to do some additional work to create a Singleton and you
-                cannot use Immutable.js.
-            </p>
-        </div>
-    </article>
-</section>
-    <script>
-        var header = document.querySelector('header'), isMinified = false;
-
-        window.onscroll = function(event) {
-            if (window.pageYOffset > 100) {
-                if (!isMinified) {
-                    header.classList.add('minified');
-                    isMinified = true;
-                }
-            } else if (isMinified) {
-                header.classList.remove('minified');
-                isMinified = false;
-            }
-        }
-    </script>
+    <stock-app></stock-app>
 </body>
+
 </html>

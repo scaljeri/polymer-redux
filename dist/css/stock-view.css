@@ -1,0 +1,29 @@
+:host {
+  display: flex;
+  justify-content: center;
+  --paper-input-container-input-color: #fff; }
+  :host > article {
+    margin-left: 30px; }
+
+.graph {
+  border: 2px solid #fff;
+  border-radius: 3px;
+  position: relative;
+  width: 600px;
+  height: 400px;
+  background-image: url(../img/background-blur.jpg); }
+
+.overlay {
+  background-color: #fff;
+  opacity: .3;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  height: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%; }
+
+#highcharts {
+  border: 2px solid #fff;
+  border-radius: 3px; }

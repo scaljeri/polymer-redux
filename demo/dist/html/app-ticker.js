@@ -20,7 +20,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 this.properties = {
                     filter: {
                         notify: true,
-                        observer: 'updateFilter',
+                        observer: 'updatedFilter',
                         type: Object
                     },
                     quote: {
@@ -30,9 +30,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 };
             }
         }, {
-            key: 'updateFilter',
-            value: function updateFilter() {
-                if (this.filter.symbol && this.filter.interval) {
+            key: 'updatedFilter',
+            value: function updatedFilter() {
+                if (this.filter.symbol) {
                     if (this.current) {
                         this.current.stop();
                     }

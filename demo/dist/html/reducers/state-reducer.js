@@ -20,25 +20,33 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }, {
             key: 'transform',
             value: function transform(state, action, input) {
+                var page = undefined;
+
                 switch (action) {
                     case 'INITIALIZE_STATE':
-                        if (state.page) {
-                            input.state.page = state.page;
+                        if (!input.state.filter.queryString) {
+                            state.filter.queryString = input.state.filter.symbol;
                         }
 
-                        return Object.assign({}, state, input.state);
+                        return Object.assign({}, state, {
+                            data: Object.assign([], input.state.data),
+                            filter: Object.assign({}, input.state.filter),
+                            symbols: Object.assign([], state.symbols),
+                            quote: Object.assign({}, input.state.quote)
+                        });
                     case 'UPDATE_PAGEHITS':
-                        var page = Object.assign({}, state.page, { hit: input.hit });
+                        page = Object.assign({}, state.page, { hit: input.hit });
 
                         return Object.assign({}, state, { page: page });
+                    case 'UPDATE_SYMBOLS':
+                        var symbols = input.symbols.map(function (symbol) {
+                            return symbol.code + ' - ' + symbol.name;
+                        });
+
+                        return Object.assign({}, state, { symbols: symbols });
                     default:
                         return state;
                 }
-            }
-        }, {
-            key: 'actions',
-            get: function get() {
-                return ['INITIALIZE_STATE'];
             }
         }]);
 
