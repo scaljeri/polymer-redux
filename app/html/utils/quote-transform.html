@@ -24,7 +24,7 @@
                 }
 
                 updateQuote() {
-                    if (this.quote) {
+                    if (this.quote && this.quote.LastTradePriceOnly !== undefined) {
                         let x = (new Date()), // current time
                             y = parseFloat(this.quote.LastTradePriceOnly);
 

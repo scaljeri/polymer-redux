@@ -30,7 +30,8 @@
                 }
 
                 updatedFilter() {
-                    if (this.filter.symbol) {
+                    if (this.filter.symbol && this.symbol !== this.filter.symbol) {
+                        this.symbol = this.filter.symbol;
                         if (this.current) {
                             this.current.stop();
                         }

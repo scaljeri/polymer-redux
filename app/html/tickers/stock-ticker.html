@@ -42,7 +42,7 @@
                         this.getQuote().then((response) => {
                             let json = JSON.parse(response);
 
-                            this.$.store.dispatch('QUOTE_CHANGE', {quote: json.query.results.quote})
+                            this.$.store.dispatch('QUOTE_CHANGE', {quote: json.query.results.quote});
 
                             if (json.query.results.quote.Name) {
                                 this.start();

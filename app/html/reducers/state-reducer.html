@@ -15,13 +15,13 @@
 
                     switch (action) {
                         case 'INITIALIZE_STATE':
-                            if (!input.state.filter.queryString) {
+                            if (input.state.filter && !input.state.filter.queryString) {
                                 state.filter.queryString = input.state.filter.symbol;
                             }
 
                             return Object.assign({}, state, {
                                 data: Object.assign([], input.state.data),
-                                filter: Object.assign({}, input.state.filter),
+                                filter: Object.assign({}, state.filter, input.state.filter),
                                 symbols: Object.assign([], state.symbols),
                                 quote: Object.assign({}, input.state.quote)
                             });

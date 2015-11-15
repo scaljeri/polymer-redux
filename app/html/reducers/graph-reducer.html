@@ -24,7 +24,9 @@
                             return Object.assign({}, state, {data});
                         case 'FILTER_SYMBOL_CHANGE':
                             if (state.filter.symbol !== input.symbol) {
-                                filter = Object.assign({}, state.filter, {symbol: input.symbol});
+                                filter = Object.assign({}, state.filter, {
+                                    symbol: input.symbol,
+                                    queryString: input.symbol});
 
                                 return Object.assign({}, state, {filter}, {data: []});
                             }
@@ -45,7 +47,7 @@
                             return Object.assign({}, state, {filter}, {data});
                         case 'FILTER_QUERYSTRING_CHANGE':
                             if (input.queryString !== state.filter.queryString) {
-                                let filter = Object.assign({}, state.filter, {queryString: input.queryString.replace(/\s-.*/, '')});
+                                let filter = Object.assign({}, state.filter, {queryString: input.queryString.replace(/\s-.*$/, '')});
                                 return Object.assign({}, state, {filter});
                             }
                             return state;
