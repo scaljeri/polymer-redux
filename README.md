@@ -12,3 +12,7 @@ The Stock Ticker application DEMO can be found [here](http://scaljeri.github.io/
     $> bower install
     $> gulp
     $> python -m SimpleHTTPServer # or an other webserver
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/scaljeri/polymer-redux/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
