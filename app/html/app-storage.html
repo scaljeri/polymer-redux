@@ -96,12 +96,12 @@
                 updatedState() {
                     if (this.state.quote && this.state.quote.Name) {
                         let newSymbol = this.state.quote.symbol;
+
                         if (newSymbol !== this.currentSymbol) {
                             // new symbol
                             this.currentSymbol = newSymbol;
-                            console.dir(this.fbSymbols);
                             let isPresent = this.fbSymbols.find((symbol) => {
-                                return symbol.code === newSymbol;
+                                return symbol.code.toLowerCase() === newSymbol.toLowerCase();
                             });
 
                             if (!isPresent) {
