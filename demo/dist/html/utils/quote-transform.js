@@ -28,7 +28,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }, {
             key: 'updateQuote',
             value: function updateQuote() {
-                if (this.quote) {
+                if (this.quote && this.quote.LastTradePriceOnly !== undefined) {
                     var x = new Date(),
                         // current time
                     y = parseFloat(this.quote.LastTradePriceOnly);

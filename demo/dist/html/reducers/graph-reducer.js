@@ -36,7 +36,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                         return Object.assign({}, state, { data: data });
                     case 'FILTER_SYMBOL_CHANGE':
                         if (state.filter.symbol !== input.symbol) {
-                            filter = Object.assign({}, state.filter, { symbol: input.symbol });
+                            filter = Object.assign({}, state.filter, {
+                                symbol: input.symbol,
+                                queryString: input.symbol });
 
                             return Object.assign({}, state, { filter: filter }, { data: [] });
                         }
@@ -57,7 +59,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                         return Object.assign({}, state, { filter: filter }, { data: data });
                     case 'FILTER_QUERYSTRING_CHANGE':
                         if (input.queryString !== state.filter.queryString) {
-                            var _filter = Object.assign({}, state.filter, { queryString: input.queryString.replace(/\s-.*/, '') });
+                            var _filter = Object.assign({}, state.filter, { queryString: input.queryString.replace(/\s-.*$/, '') });
                             return Object.assign({}, state, { filter: _filter });
                         }
                         return state;

@@ -32,7 +32,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }, {
             key: 'updatedFilter',
             value: function updatedFilter() {
-                if (this.filter.symbol) {
+                if (this.filter.symbol && this.symbol !== this.filter.symbol) {
+                    this.symbol = this.filter.symbol;
                     if (this.current) {
                         this.current.stop();
                     }

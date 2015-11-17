@@ -111,19 +111,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             key: 'updateData',
             value: function updateData() {
                 if (this.data && this.quote) {
-                    if (!this.quote.Name) {
+                    if (this.quote.Symbol && !this.quote.Name) {
                         this.$.ooops.open();
                     } else {
                         if (this.symbol !== this.quote.Symbol) {
                             this.symbol = this.quote.Symbol;
                             return this.series.setData(this.data);
+                        } else if (this.data.length > 0) {
+
+                            var numberOfItems = this.data.length,
+                                lastItem = this.data[numberOfItems - 1];
+
+                            this.createGraphTitle();
+                            this.series.addPoint(lastItem, true, this.series.data.length >= this.samples);
                         }
-
-                        var numberOfItems = this.data.length,
-                            lastItem = this.data[numberOfItems - 1];
-
-                        this.createGraphTitle();
-                        this.series.addPoint(lastItem, true, this.series.data.length >= this.samples);
                     }
                 }
             }
